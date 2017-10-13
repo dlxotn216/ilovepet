@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+	<link rel="stylesheet" th:href="@{/css/fullPage.css}"
+		  href="../../static/css/fullPage.css"/>
+	<style>
+		body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre,
+		form, fieldset, input, textarea, p, blockquote, th, td {
+			padding: 0;
+			margin: 0;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		table {
+			border-spacing: 0;
+		}
+
+		fieldset, img {
+			border: 0;
+		}
+
+		address, caption, cite, code, dfn, em, strong, th, var {
+			font-weight: normal;
+			font-style: normal;
+		}
+
+		strong {
+			font-weight: bold;
+		}
+
+		ol, ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		caption, th {
+			text-align: left;
+
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			font-weight: normal;
+			font-size: 100%;
+			margin: 0;
+			padding: 0;
+			color: #444;
+		}
+
+		q:before, q:after {
+			content: '';
+		}
+
+		abbr, acronym {
+			border: 0;
+		}
+
+		/* Custom CSS
+		 * --------------------------------------- */
+		body {
+			font-family: arial, helvetica;
+		}
+
+		h1 {
+			font-size: 6em;
+		}
+
+		p {
+			font-size: 2em;
+		}
+
+		.caption p {
+			color: olive !important;
+			font-weight: bolder !important;
+		}
+
+		.content {
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+			text-align: center;
+		}
+
+		/* Section 1
+		 * --------------------------------------- */
+		#section0 {
+			background: url('/images/visit_section4.png');
+			no-repeat center center fixed;
+		}
+
+		#section0 h1 {
+			color: #444;
+		}
+
+		#section0 p {
+			color: #333;
+			opacity: 0.4;
+		}
+
+		/* Section 2
+		 * --------------------------------------- */
+		#section1 {
+			background: url('/images/visit_section3.png');
+		}
+
+		#section1 h1 {
+			color: #444;
+		}
+
+		#section1 p {
+			opacity: 0.8;
+		}
+
+		/* Section 3
+		 * --------------------------------------- */
+		#section2 {
+			background: url('/images/walking_section1.png');
+		}
+
+		#section2 h1 {
+			color: #444;
+		}
+
+		#section2 p {
+			opacity: 0.6;
+		}
+	</style>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div id="fullpage">
+	<div class="section " id="section0">
+		<div class="content">
+			<div class="row">
+				<h1>I LOVE PET!</h1>
+			</div>
+			<div class="row" style="margin-bottom: 40px;">
+				<p>혼자 남을 애완견이 걱정 되시나요?</p>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<img src="/images/walk-1.png"/>
+					<div class="caption">
+						<p>산책도 문제 없이</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<img src="/images/walkingmanners.png"/>
+					<div class="caption">
+						<p>반려 동물에 의한</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<img src="/images/clean.png"/>
+					<div class="caption">
+						<p>깔금하게</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<img src="/images/theorem.png"/>
+					<div class="caption">
+						<p>뒷처리도 완벽히</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="section1">
+		<div class="slide" id="slide1">
+			<div class="content">
+				<div class="row">
+					<h1>기초적 놀이 훈련</h1>
+				</div>
+				<div class="row">
+					<img src="/images/play.png"/>
+				</div>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="content">
+				<div class="row">
+					<h1>전문 산책 교육</h1>
+				</div>
+				<div class="row">
+					<img src="/images/walk-2.png"/>
+				</div>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="content">
+				<div class="row">
+					<h1>예절 교육도 완벽히</h1>
+				</div>
+				<div class="row">
+					<img src="/images/education-1.png"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="section2">
+		<div class="content">
+			<h1>Compatible</h1>
+			<p>IE 8+ support.</p>
+		</div>
+	</div>
+</div>
+<!--<div class="container">-->
+
+<!--<div class="starter-template">-->
+<!--<h1>Spring Boot Web Thymeleaf + Spring Security</h1>-->
+<!--<h2>1. Visit <a th:href="@{/admin}">Admin page (Spring Security protected, Need Admin Role)</a></h2>-->
+<!--<h2>2. Visit <a th:href="@{/user}">User page (Spring Security protected, Need User Role)</a></h2>-->
+<!--<h2>3. Visit <a th:href="@{/about}">Normal page</a></h2>-->
+<!--</div>-->
+
+<!--</div>-->
+<!-- /.container -->
+<script type="text/javascript" th:src="@{/js/fullPage.min.js}" src="/js/fullPage.min.js"></script>
+<script type="text/javascript">
+	fullpage.initialize('#fullpage', {
+		anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
+		menu: '#menu',
+		css3: true
+	});
+
+</script>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

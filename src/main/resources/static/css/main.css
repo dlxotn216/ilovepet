@@ -1,0 +1,22 @@
+/**
+ * @author Lee Tae Su
+ * @project recommendation
+ * @version 1.0
+ * @since 2017-10-13
+ */
+
+h1{
+    color:#0000FF;
+}
+
+h2{
+    color:#FF0000;
+}
+
+footer{
+    margin-top:60px;
+}
+
+.wrap {
+    margin-top: 60px;
+}

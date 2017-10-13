@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="java.sql.Timestamp" alias="Timestamp" />
+        <typeAlias type="sch.pl.graduate.recommendation.Epidemic.model.Epidemic" alias="Epidemic"/>
+        <typeAlias type="sch.pl.graduate.recommendation.file.model.File" alias="File"/>
+        <typeAlias type="sch.pl.graduate.recommendation.file.model.FileType" alias="FileType"/>
+        <typeAlias type="sch.pl.graduate.recommendation.file.model.FileTypeHandler" alias="FileTypeHandler"/>
+        <typeAlias type="sch.pl.graduate.recommendation.pet.model.Pet" alias="Pet"/>
+        <typeAlias type="sch.pl.graduate.recommendation.pet.model.PetType" alias="PetType"/>
+        <typeAlias type="sch.pl.graduate.recommendation.role.model.Role" alias="Role"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.admin.model.Admin" alias="Admin"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.caretaker.model.Caretaker" alias="Caretaker"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.Consigner" alias="Consigner"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.model.User" alias="User"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.model.GenderType" alias="GenderType"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.model.GenderTypeHandler" alias="GenderTypeHandler"/>
+    </typeAliases>
+
+    <typeHandlers>
+        <!-- Common -->
+        <typeHandler javaType="Boolean" jdbcType="TINYINT" handler="org.apache.ibatis.type.BooleanTypeHandler" />
+        <typeHandler javaType="FileType" handler="FileTypeHandler"/>
+        <typeHandler javaType="GenderType" handler="GenderTypeHandler"/>
+    </typeHandlers>
+
+</configuration>
