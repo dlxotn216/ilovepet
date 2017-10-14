@@ -8,7 +8,7 @@ package sch.pl.graduate.recommendation.user.consigner.model;
 
 import lombok.Data;
 import sch.pl.graduate.recommendation.pet.model.Pet;
-import sch.pl.graduate.recommendation.user.model.User;
+import sch.pl.graduate.recommendation.user.common.model.User;
 
 import java.util.List;
 

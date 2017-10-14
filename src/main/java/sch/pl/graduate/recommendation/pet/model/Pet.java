@@ -10,7 +10,7 @@ import lombok.Data;
 import sch.pl.graduate.recommendation.Epidemic.model.Epidemic;
 import sch.pl.graduate.recommendation.common.model.AbstractModel;
 import sch.pl.graduate.recommendation.file.model.File;
-import sch.pl.graduate.recommendation.user.model.GenderType;
+import sch.pl.graduate.recommendation.user.common.model.GenderType;
 
 import java.util.List;
 

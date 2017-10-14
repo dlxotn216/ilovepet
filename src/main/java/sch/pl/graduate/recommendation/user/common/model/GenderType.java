@@ -4,7 +4,7 @@
  * @version 1.0
  * @since 2017-10-13
  */
-package sch.pl.graduate.recommendation.user.model;
+package sch.pl.graduate.recommendation.user.common.model;
 
 import sch.pl.graduate.recommendation.common.util.HashMapUtil;
 

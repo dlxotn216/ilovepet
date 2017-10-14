@@ -10,12 +10,13 @@
         <typeAlias type="sch.pl.graduate.recommendation.pet.model.Pet" alias="Pet"/>
         <typeAlias type="sch.pl.graduate.recommendation.pet.model.PetType" alias="PetType"/>
         <typeAlias type="sch.pl.graduate.recommendation.role.model.Role" alias="Role"/>
+        <typeAlias type="org.springframework.security.core.GrantedAuthority" alias="GrantedAuthority"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.admin.model.Admin" alias="Admin"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.caretaker.model.Caretaker" alias="Caretaker"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.Consigner" alias="Consigner"/>
-        <typeAlias type="sch.pl.graduate.recommendation.user.model.User" alias="User"/>
-        <typeAlias type="sch.pl.graduate.recommendation.user.model.GenderType" alias="GenderType"/>
-        <typeAlias type="sch.pl.graduate.recommendation.user.model.GenderTypeHandler" alias="GenderTypeHandler"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.common.model.User" alias="User"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.common.model.GenderType" alias="GenderType"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.common.model.GenderTypeHandler" alias="GenderTypeHandler"/>
     </typeAliases>
 
     <typeHandlers>

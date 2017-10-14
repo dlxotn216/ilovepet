@@ -7,11 +7,15 @@
 package sch.pl.graduate.recommendation.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import sch.pl.graduate.recommendation.user.common.service.UserService;
+import sch.pl.graduate.recommendation.user.common.service.impl.CustomAuthenticationProvider;
 
 /**
  * Created by Lee Tae Su on 2017-10-13.
@@ -20,13 +24,19 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
 
     @Autowired
+    private CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Autowired
     private AccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/about", "/signup", "/consigner/signup", "/caretaker/signup").permitAll()
+                .antMatchers("/", "/home", "/files", "/about", "/signup", "/consigner/signup", "/caretaker/signup").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/admins/**").hasAnyRole("ADMIN")
                 .antMatchers("/consigner/**").hasAnyRole("CONSIGNER")
@@ -39,9 +49,13 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .usernameParameter("userId")
+                .passwordParameter("password")
+                .loginProcessingUrl("/login")
                 .permitAll()
                 .and()
                 .logout()
+                .logoutUrl("/logout")
                 .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
@@ -49,13 +63,12 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
     // create two users, admin and user
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.inMemoryAuthentication()
-                .withUser("consigner").password("password").roles("CONSIGNER")
-                .and()
-                .withUser("caretaker").password("password").roles("CARETAKER")
-                .and()
-                .withUser("admin").password("password").roles("ADMIN");
+        auth.userDetailsService(userService);
+        auth.authenticationProvider(customAuthenticationProvider);
     }
 
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 }
