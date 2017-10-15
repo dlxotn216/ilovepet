@@ -14,12 +14,12 @@
             <div class="col-sm-12 nav-tab-holder">
                 <ul class="nav nav-tabs row" role="tablist">
                     <li role="presentation" class="col-sm-6"
-                        th:classappend="${#strings.equals('caretaker', signupValue.value) ? 'active' : ''}"><a
-                            th:href="@{/signup(target='caretaker')}" aria-controls="home" role="tab" data-toggle="tab">돌보미</a>
+                        th:classappend="${#strings.equals('ROLE_CARETAKER', signupValue.value) ? 'active' : ''}"><a
+                            th:href="@{/signup(target='ROLE_CARETAKER')}" aria-controls="home" role="tab" data-toggle="tab">돌보미</a>
                     </li>
                     <li role="presentation" class="col-sm-6"
-                        th:classappend="${#strings.equals('consigner', signupValue.value) ? 'active' : ''}"><a
-                            th:href="@{/signup(target='consigner')}" aria-controls="profile" role="tab"
+                        th:classappend="${#strings.equals('CONSIGNER', signupValue.value) ? 'active' : ''}"><a
+                            th:href="@{/signup(target='CONSIGNER')}" aria-controls="profile" role="tab"
                             data-toggle="tab">맡기미</a></li>
                 </ul>
             </div>

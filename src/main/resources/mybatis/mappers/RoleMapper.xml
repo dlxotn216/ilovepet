@@ -4,14 +4,46 @@
 
 <mapper namespace="sch.pl.graduate.recommendation.role.mapper.RoleMapper">
 
-    <resultMap id="RoleMap" type="GrantedAuthority">
-        <id property="authority" column="ROLE_NAME"/>
+    <resultMap id="RoleMap" type="Role">
+        <id property="roleKey" column="ROLE_KEY"/>
+        <id property="roleName" column="ROLE_NAME"/>
+        <id property="description" column="DESCRIPTION"/>
     </resultMap>
 
-    <select id="getUserRolesByUserId" resultMap="RoleMap">
+    <resultMap id="GrantedAuthorityMap" type="GrantedAuthority">
+        <id property="role" column="ROLE_NAME"/>
+    </resultMap>
+
+    <select id="getRole" resultMap="RoleMap">
         SELECT *
-          FROM ROLE
-        WHERE USER_ID = #{userId};
+        FROM ROLE
+        WHERE
+        ROLE_KEY = #{roleKey}
+        <if test="roleName != null">
+            AND UPPER(ROLE_NAME) = UPPER(#{roleName})
+        </if>
+    </select>
+
+    <select id="getRoleByRoleKey" resultMap="RoleMap">
+        SELECT *
+        FROM ROLE
+        WHERE
+        ROLE_KEY = #{roleKey}
+    </select>
+
+    <select id="getRoleByRoleName" resultMap="RoleMap">
+        SELECT *
+        FROM ROLE
+        WHERE
+        UPPER(ROLE_NAME) = UPPER(#{roleName})
+    </select>
+
+    <select id="getUserRolesByUserId" resultMap="GrantedAuthorityMap">
+        SELECT A.ROLE_NAME
+          FROM ROLE A
+          INNER JOIN USER B
+            ON A.ROLE_KEY = B.ROLE_KEY
+        WHERE B.USER_ID = #{userId}
     </select>
 
 </mapper>

@@ -82,6 +82,7 @@ signupButton.onclick = function () {
 
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('fileType', 'USER_PROFILE');
 
         var xhr = new XMLHttpRequest();
         // xhr.setRequestHeader()
@@ -100,16 +101,35 @@ signupButton.onclick = function () {
             console.log("FIEL:", file);
         }
         const requestBody = {
-            'userType': userType,
+            'roleName': userType,
             'userId': userId,
             'password': password,
             'userName': userName,
             'email': email,
-            'emaphoneil': phone,
+            'phone': phone,
             'age': age,
             'gender': gender
-        }
+        };
         console.log("DEBUG CHECK REQU BODY :", requestBody);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/users");
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === 4 && xhr.status === 200)
+            {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send(JSON.stringify(requestBody));
+        // $.ajax({
+        //     type: 'POST',
+        //     uri: '/users',
+        //     data: requestBody,
+        //     dataType: 'application/json',
+        //     success: function(res){
+        //         console.log(res);
+        //     }
+        // });
     };
 
     if(profileFileValue){

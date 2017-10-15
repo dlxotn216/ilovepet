@@ -18,6 +18,22 @@ public class RoleServiceImpl implements RoleService{
     @Autowired
     private RoleMapper roleMapper;
 
+
+    @Override
+    public Role getRole(Role role) {
+        return roleMapper.getRole(role);
+    }
+
+    @Override
+    public Role getRoleByRoleKey(Long roleKey) {
+        return roleMapper.getRoleByRoleKey(roleKey);
+    }
+
+    @Override
+    public Role getRoleByRoleName(String roleName) {
+        return roleMapper.getRoleByRoleName(roleName);
+    }
+
     @Override
     public List<GrantedAuthority> getUserRolesByUserId(String userId) {
         return roleMapper.getUserRolesByUserId(userId);

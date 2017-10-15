@@ -16,8 +16,8 @@ import java.util.Map;
  * Created by Lee Tae Su on 2017-10-13.
  */
 public enum SignupTargetType {
-    Consigner(0, "consigner", "맡기미 회원가입"),
-    Caretaker(1, "caretaker", "돌보미 회원가입");
+    Consigner(0, "ROLE_CONSIGNER", "맡기미 회원가입"),
+    Caretaker(1, "ROLE_CARETAKER", "돌보미 회원가입");
 
     private static final Map<Integer, SignupTargetType> lookup = new HashMap<>(HashMapUtil.getCapacity(4));
     private static final Map<String, SignupTargetType> lookupValue = new HashMap<>(HashMapUtil.getCapacity(4));

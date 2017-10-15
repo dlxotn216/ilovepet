@@ -36,7 +36,7 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/files", "/about", "/signup", "/consigner/signup", "/caretaker/signup").permitAll()
+                .antMatchers("/", "/home", "/files", "/users", "/about", "/signup", "/consigner/signup", "/caretaker/signup").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/admins/**").hasAnyRole("ADMIN")
                 .antMatchers("/consigner/**").hasAnyRole("CONSIGNER")
@@ -56,9 +56,9 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .permitAll()
-                .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .permitAll();
+//                .and()
+//                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
     // create two users, admin and user
     @Autowired

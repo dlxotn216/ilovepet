@@ -26,10 +26,121 @@
         <result property="userNameUpdate" column="USER_NAME_UPDATE"/>
     </resultMap>
 
+    <insert id="addUser">
+        INSERT INTO USER
+        (
+            USER_ID,
+            PASSWORD,
+            AGE,
+            GENDER,
+            EMAIL,
+            PHONE,
+            PROFILE_FILE_KEY,
+            ROLE_KEY,
+            USER_NAME,
+            IS_ACCOUNT_NON_EXPIRED,
+            IS_ACCOUNT_NON_LOCKED,
+            IS_CREDENTIALS_NON_EXPIRED,
+            IS_ENABLED
+        )
+        VALUES
+        (
+            #{userId},
+            #{password},
+            #{age},
+            #{gender},
+            #{email},
+            #{phone},
+            #{profileFileKey},
+            #{roleKey},
+            #{userName},
+            1,
+            1,
+            1,
+            1
+        )
+    </insert>
+
+    <select id="getUser">
+        SELECT *
+        FROM USER
+        WHERE
+        USER_KEY = #{userKey}
+        <if test="userId != null">
+            AND USER_ID = #{userId}
+        </if>
+    </select>
+
+    <select id="getUserByUserKey">
+        SELECT *
+          FROM USER
+        WHERE USER_KEY = #{userKey}
+    </select>
+
     <select id="getUserByUserId" resultMap="UserMap">
         SELECT *
           FROM USER
-        WHERE USER_ID = #{userId};
+        WHERE USER_ID = #{userId}
     </select>
 
+    <select id="getUsers" resultMap="UserMap">
+        SELECT *
+          FROM USER
+    </select>
+
+    <select id="getUsersTotalCount">
+        SELECT COUNT(*)
+        FROM USER
+    </select>
+
+    <update id="updateUser">
+        UPDATE
+        USER
+        <set>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="age != null">
+                AGE = #{age},
+            </if>
+            <if test="gender != null">
+                GENDER = #{gender},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email},
+            </if>
+            <if test="phone != null">
+                PHONE = #{phone},
+            </if>
+            <if test="profileFileKey != null">
+                PROFILE_FILE_KEY = #{profileFileKey},
+            </if>
+            <if test="roleKey != null">
+                ROLE_KEY = #{roleKey},
+            </if>
+            <if test="userName != null">
+                USER_NAME = #{userName},
+            </if>
+            <if test="isAccountNonExpired != null">
+                IS_ACCOUNT_NON_EXPIRED = #{isAccountNonExpired},
+            </if>
+            <if test="isAccountNonLocked != null">
+                IS_ACCOUNT_NON_LOCKED = #{isAccountNonLocked},
+            </if>
+            <if test="isCredentialsNonExpired != null">
+                IS_CREDENTIALS_NON_EXPIRED = #{isCredentialsNonExpired},
+            </if>
+            <if test="isEnabled != null">
+                IS_ENABLED = #{isEnabled}
+            </if>
+        </set>
+        WHERE
+        USER_KEY = #{userKey}
+    </update>
+
+    <delete id="deleteUser">
+        DELETE FROM USER
+          WHERE
+          USER_KEY = #{userKey}
+    </delete>
 </mapper>

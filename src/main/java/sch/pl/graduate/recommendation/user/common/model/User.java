@@ -29,6 +29,9 @@ public class User extends AbstractModel implements UserDetails {
     private Boolean gender;
     private String email;
     private String phone;
+    private Long roleKey;
+    private String roleName;
+    private Long profileFileKey;
     private Role role;
     private File profileFile;
 
@@ -40,7 +43,7 @@ public class User extends AbstractModel implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return userId;
     }
 
 

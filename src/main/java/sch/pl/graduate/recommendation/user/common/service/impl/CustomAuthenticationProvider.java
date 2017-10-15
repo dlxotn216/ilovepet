@@ -41,11 +41,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         try {
             user = userService.loadUserByUsername(username);
-            String hashedPassword = passwordEncoder.encode(password);
-            logger.info("username : " + username + " / password : " + password + " / hash password : " + hashedPassword);
+            logger.info("username : " + username + " / password : " + password);
             logger.info("username : " + user.getUsername() + " / password : " + user.getPassword());
-            if (!hashedPassword.equals(user.getPassword()))
+            if (!passwordEncoder.matches(password, user.getPassword())) {
                 throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+            }
             authorities = user.getAuthorities();
         } catch (UsernameNotFoundException e) {
             logger.info(e.toString());
