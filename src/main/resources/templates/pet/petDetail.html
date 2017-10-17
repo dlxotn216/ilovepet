@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/css/nouislider.min.css" th:href="@{/css/nouislider.min.css}"/>
+	<link rel="stylesheet" href="/css/pet/petDetail.css" th:href="@{/css/pet/petDetail.css}"/>
+
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<div class="col-md-12">
+			<div class="card hovercard">
+				<div class="card-background">
+					<img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/"/>
+				</div>
+				<div class="useravatar">
+					<img th:each="file : ${pet.profileFiles}"
+						 th:if="${file.fileKey != null}"
+						 th:src="@{'/files/'+ ${file.fileKey} + '/downloads'}"/>
+					<img alt="" src="http://lorempixel.com/100/100/people/9/"/>
+				</div>
+			</div>
+			<div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+				<div class="btn-group" role="group">
+					<button type="button" id="stars" class="btn tab-btn btn-primary" onclick="onTabClick(this, 'tab1')" data-toggle="tab"><span
+							class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						<div class="hidden-xs">기본 정보</div>
+					</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" id="favorites" class="btn tab-btn btn-default" onclick="onTabClick(this, 'tab2')" data-toggle="tab"><span
+							class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+						<div class="hidden-xs">특성</div>
+					</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" id="following" class="btn tab-btn btn-default" onclick="onTabClick(this, 'tab3')" data-toggle="tab"><span
+							class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<div class="hidden-xs">돌보미 이력</div>
+					</button>
+				</div>
+			</div>
+
+			<div class="well">
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab1">
+						<div class="tab-pane-header">
+							<h3>반려 동물의 기본 정보입니다.</h3>
+						</div>
+						<div class="tab-pane-content-wrap">
+							<div class="tab-pane-body">
+								<table class="table">
+									<tr>
+										<th class="no-border">이름</th>
+										<td class="no-border" th:text="${pet.petName}"></td>
+									</tr>
+									<tr>
+										<th>나이</th>
+										<td th:text="${pet.age}"></td>
+									</tr>
+									<tr>
+										<th>성별</th>
+										<td th:if="${pet.gender.getValue()}=='MEN'">남</td>
+										<td th:if="${pet.gender.getValue()}=='WOMEN'">여</td>
+									</tr>
+									<tr>
+										<th>중성화</th>
+										<td th:if="${pet.neutralizing==true}">중성화 했습니다</td>
+										<td th:if="${pet.neutralizing==false}">중성화 하지 않았습니다</td>
+									</tr>
+									<tr>
+										<th>종</th>
+										<td th:text="${pet.petType.petTypeName}"></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane-footer">
+							<button th:if="${isOwner}" class="glyphicon glyphicon-edit btn btn-warning btn-xs"
+									th:onclick="${'javascript:onPetUpdateButtonClick(' + pet.petKey + ')'}"> 수정</button>
+						</div>
+					</div>
+					<div class="tab-pane fade in" id="tab2">
+						<div class="tab-pane-header">
+							<h3>반려 동물의 특성입니다.</h3>
+						</div>
+						<input type="hidden" th:value="${pet.barking}" id="barking"/>
+						<input type="hidden" th:value="${pet.marking}" id="marking"/>
+						<input type="hidden" th:value="${pet.mounting}" id="mounting"/>
+						<input type="hidden" th:value="${pet.aggression}" id="aggression"/>
+						<input type="hidden" th:value="${pet.size}" id="size"/>
+						<div class="tab-pane-content-wrap">
+							<div class="tab-pane-body">
+								<div class="form-group">
+									<label>짖음 <span th:text="${'('+pet.barking+')'}"></span></label>
+									<div id="slider-barking" class="pet-slider slider-barking"></div>
+								</div>
+
+								<div class="form-group">
+									<label>마킹 <span th:text="${'('+pet.marking+')'}"></span></label>
+									<div id="slider-marking" class="pet-slider slider-marking"></div>
+								</div>
+
+								<div class="form-group">
+									<label>마운팅 <span th:text="${'('+pet.mounting+')'}"></span></label>
+									<div id="slider-mounting" class="pet-slider slider-mounting"></div>
+								</div>
+
+								<div class="form-group">
+									<label>공격성 <span th:text="${'('+pet.aggression+')'}"></span></label>
+									<div id="slider-aggression" class="pet-slider slider-aggression"></div>
+								</div>
+
+								<div class="form-group">
+									<label>크기 <span th:text="${'('+pet.size+')'}"></span></label>
+									<div id="slider-size" class="pet-slider slider-size"></div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane-footer">
+							<button th:if="${isOwner}" class="glyphicon glyphicon-edit btn btn-warning btn-xs"
+									th:onclick="${'javascript:onPetUpdateButtonClick(' + pet.petKey + ')'}"> 수정</button>
+						</div>
+					</div>
+					<div class="tab-pane fade in" id="tab3">
+						<div class="tab-pane-header">
+							<h3>돌보미 이력입니다.</h3>
+						</div>
+						<div class="tab-pane-content-wrap">
+							<div class="tab-pane-body">
+							</div>
+						</div>
+						<div class="tab-pane-footer">
+							<button th:if="${isOwner}" class="glyphicon glyphicon-edit btn btn-warning btn-xs"
+									th:onclick="${'javascript:onPetUpdateButtonClick(' + pet.petKey + ')'}"> 수정</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+
+<script type="text/javascript"
+		src="/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript"
+		src="/js/pet/petDetail.js" th:src="@{/js/pet/petDetail.js}"></script>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

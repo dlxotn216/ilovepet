@@ -10,5 +10,4 @@ package sch.pl.graduate.recommendation.home.service;
  * Created by Lee Tae Su on 2017-10-13.
  */
 public interface HomeService {
-    Integer test();
 }

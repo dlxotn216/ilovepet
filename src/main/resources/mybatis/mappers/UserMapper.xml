@@ -8,22 +8,13 @@
         <id property="userKey" column="USER_KEY"/>
         <result property="userId" column="USER_ID"/>
         <result property="userName" column="USER_NAME"/>
-        <result property="userEmail" column="USER_EMAIL"/>
+        <result property="age" column="AGE"/>
+        <result property="email" column="EMAIL"/>
         <result property="phone" column="PHONE"/>
-        <result property="mobile" column="MOBILE"/>
-        <result property="fax" column="FAX"/>
-        <result property="timezone" column="TIMEZONE"/>
-        <result property="language" column="LANG"/>
-        <result property="active" column="ACTIVE" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
-        <result property="deleted" column="DELETED" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
-        <result property="reason" column="REASON"/>
-        <result property="createdAt" column="CREATED_AT"/>
-        <result property="createdBy" column="CREATED_BY"/>
-        <result property="updatedAt" column="UPDATED_AT"/>
-        <result property="updatedBy" column="UPDATED_BY"/>
-        <result property="companyKey" column="COMP_KEY"/>
-        <result property="userNameCreate" column="USER_NAME_CREATE"/>
-        <result property="userNameUpdate" column="USER_NAME_UPDATE"/>
+        <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
+        <result property="profileFileKey" column="PROFILE_FILE_KEY" />
+        <result property="roleKey" column="ROLE_KEY" />
+
     </resultMap>
 
     <insert id="addUser">
@@ -141,6 +132,6 @@
     <delete id="deleteUser">
         DELETE FROM USER
           WHERE
-          USER_KEY = #{userKey}
+          USER_KEY = #{userKey};
     </delete>
 </mapper>

@@ -2,7 +2,10 @@ package sch.pl.graduate.recommendation.file.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import sch.pl.graduate.recommendation.file.model.File;
+import sch.pl.graduate.recommendation.file.model.AppFile;
+import sch.pl.graduate.recommendation.file.model.AppFile;
+
+import java.util.List;
 
 /**
  * Created by taesu on 2017-10-15.
@@ -10,5 +13,11 @@ import sch.pl.graduate.recommendation.file.model.File;
 @Repository
 @Mapper
 public interface FileMapper {
-    Integer addFile(File file);
+    Long addFile(AppFile appFile);
+
+    Long addFiles(List<AppFile> appFiles);
+
+    AppFile getFileByFileKey(Long fileKey);
+
+    List<AppFile> getFilesWhereFileKeyIsBiggerThan(Long fileKey);
 }

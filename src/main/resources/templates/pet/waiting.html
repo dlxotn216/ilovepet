@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 	<div th:replace="fragments/header :: header-css"/>
 </head>
@@ -10,7 +12,7 @@
 <div class="page-wrap">
 	<div class="container">
 		<div class="starter-template">
-			<h1>Consigner page (Spring Security protected)</h1>
+			<h3 sec:authorize="hasRole('ROLE_CARETAKER')">위탁 대기중인 반려 동물</h3>
 		</div>
 	</div>
 </div>

@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by Lee Tae Su on 2017-10-13.
  */
 public enum GenderType {
-    MAN(0, "MEN"),
+    MEN(0, "MEN"),
     WOMEN(1, "WOMEN");
 
     private static final Map<Integer, GenderType> lookup = new HashMap<>(HashMapUtil.getCapacity(3));

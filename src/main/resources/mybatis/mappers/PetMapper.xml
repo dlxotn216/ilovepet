@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.pet.mapper.PetMapper">
+
+    <resultMap id="PetMap" type="Pet">
+        <id property="petKey" column="PET_KEY"/>
+        <result property="petName" column="PET_NAME"/>
+        <result property="petTypeKey" column="PET_TYPE_KEY"/>
+        <result property="birth" column="BIRTH"/>
+        <result property="age" column="AGE"/>
+        <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
+        <result property="neutralizing" column="NEUTRALIZING"/>
+        <result property="barking" column="BARKING"/>
+        <result property="marking" column="MARKING"/>
+        <result property="mounting" column="MOUNTING"/>
+        <result property="aggression" column="AGGRESSION"/>
+        <result property="size" column="SIZE"/>
+        <result property="ownerKey" column="OWNER_KEY"/>
+        <result property="caretakerKey" column="CARETAKER_KEY"/>
+        <association property="petType" javaType="PetType">
+            <result property="petTypeKey" column="PET_TYPE_KEY"/>
+            <result property="petTypeName" column="PET_TYPE_NAME"/>
+        </association>
+        <collection property="profileFiles" javaType="java.util.List" ofType="AppFile">
+            <id property="fileKey" column="FILE_KEY"/>
+            <result property="fileName" column="FILE_NAME"/>
+            <result property="filePath" column="FILE_PATH"/>
+            <result property="fileType" column="FILE_TYPE" typeHandler="FileTypeHandler"/>
+            <result property="format" column="FORMAT"/>
+        </collection>
+    </resultMap>
+
+    <insert id="addPet">
+        INSERT INTO PET(PET_NAME, PET_TYPE_KEY, BIRTH, GENDER, NEUTRALIZING, BARKING, MARKING, MOUNTING, AGGRESSION, SIZE, OWNER_KEY, CARETAKER_KEY)
+         VALUE (
+            #{petName},
+            #{petTypeKey},
+            #{birth},
+            #{gender},
+            #{neutralizing},
+            #{barking},
+            #{marking},
+            #{mounting},
+            #{aggression},
+            #{size},
+            #{ownerKey},
+            #{caretakerKey}
+         )
+        <selectKey resultType="Long" keyProperty="petKey" order="AFTER" keyColumn="PET_KEY">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="getPet" resultMap="PetMap">
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+        FROM PET A
+        LEFT JOIN PET_TYPE B
+        ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+        LEFT JOIN PET_FILE C
+        ON A.PET_KEY = C.PET_KEY
+        WHERE
+        A.PET_KEY = #{petKey}
+        <if test="petName != null">
+            AND A.PET_NAME = #{petName}
+        </if>
+    </select>
+
+    <select id="getPetByPetKey" resultMap="PetMap">
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+            FROM PET A
+            LEFT JOIN PET_TYPE B
+                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN PET_FILE C
+                ON A.PET_KEY = C.PET_KEY
+            LEFT JOIN FILE D
+		        ON C.FILE_KEY = D.FILE_KEY
+        WHERE
+            A.PET_KEY  = #{petKey}
+    </select>
+
+    <select id="getPetByPetName" resultMap="PetMap">
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+            FROM PET A
+            LEFT JOIN PET_TYPE B
+                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN PET_FILE C
+                ON A.PET_KEY = C.PET_KEY
+            LEFT JOIN FILE D
+		        ON C.FILE_KEY = D.FILE_KEY
+        WHERE
+            A.PET_NAME = #{petName}
+    </select>
+
+    <select id="getPets" resultMap="PetMap">
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+            FROM PET A
+            LEFT JOIN PET_TYPE B
+                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN PET_FILE C
+                ON A.PET_KEY = C.PET_KEY
+            LEFT JOIN FILE D
+		        ON C.FILE_KEY = D.FILE_KEY
+    </select>
+
+    <select id="getPetsForCaretaker" resultMap="PetMap">
+        SELECT *
+        FROM PET A
+            LEFT JOIN PET_TYPE B
+                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN PET_FILE C
+                ON A.PET_KEY = C.PET_KEY
+            LEFT JOIN FILE D
+		        ON C.FILE_KEY = D.FILE_KEY
+        WHERE A.CARETAKER_KEY = #{caretakerKey}
+    </select>
+
+    <select id="getPetsForConsigner" resultMap="PetMap">
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+            FROM PET A
+            LEFT JOIN PET_TYPE B
+                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN PET_FILE C
+                ON A.PET_KEY = C.PET_KEY
+            LEFT JOIN FILE D
+		        ON C.FILE_KEY = D.FILE_KEY
+        WHERE A.OWNER_KEY = #{ownerKey}
+    </select>
+
+    <update id="updatePet">
+        UPDATE
+        PET A
+        <set>
+            <if test="petName != null">
+                A.PET_NAME = #{petName},
+            </if>
+            <if test="petType != null">
+                A.PET_TYPE_KEY = #{petTypeKey},
+            </if>
+            <if test="gender != null">
+                A.GENDER = #{gender},
+            </if>
+            <if test="neutralizing != null">
+                A.NEUTRALIZING = #{neutralizing},
+            </if>
+            <if test="barking != null">
+                A.BARKING = #{barking},
+            </if>
+            <if test="marking != null">
+                A.MARKING = #{marking},
+            </if>
+            <if test="mounting != null">
+                A.MOUNTING = #{mounting},
+            </if>
+            <if test="aggression != null">
+                A.AGGRESSION = #{aggression},
+            </if>
+            <if test="size != null">
+                A.SIZE = #{size},
+            </if>
+            <if test="ownerKey != null">
+                A.OWNER_KEY = #{ownerKey},
+            </if>
+            <if test="caretakerKey != null">
+                A.CARETAKER_KEY = #{caretakerKey},
+            </if>
+        </set>
+        WHERE
+        A.PET_KEY = #{petKey}
+    </update>
+
+    <delete id="deletePet">
+        DELETE FROM PET
+        WHERE PET_KEY = #{petKey};
+    </delete>
+
+    <resultMap id="PetTypeMap" type="PetType">
+        <id property="petTypeKey" column="PET_TYPE_KEY"/>
+        <result property="petTypeName" column="PET_TYPE_NAME"/>
+    </resultMap>
+
+    <select id="getPetTypes" resultMap="PetTypeMap">
+        SELECT *
+        FROM PET_TYPE
+    </select>
+
+    <insert id="addPetProfileFiles">
+        INSERT INTO PET_FILE(PET_KEY, FILE_KEY)
+        VALUES
+        <foreach collection="list" item="item" separator="," close=";">
+            (
+                #{item.petKey},
+                #{item.fileKey}
+            )
+        </foreach>
+    </insert>
+</mapper>

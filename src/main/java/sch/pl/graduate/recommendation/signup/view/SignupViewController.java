@@ -27,7 +27,6 @@ public class SignupViewController {
     public String getDefaultSignupView(Model model, @RequestParam(required = false) String target) {
         SignupValue signupValue = signupService.getSignupValue(target);
         model.addAttribute("signupValue", signupValue);
-        model.addAttribute("isSignupView", true);
 
         return "signup/signup";
     }

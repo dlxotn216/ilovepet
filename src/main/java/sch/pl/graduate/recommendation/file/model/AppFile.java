@@ -13,7 +13,7 @@ import sch.pl.graduate.recommendation.common.model.AbstractModel;
  * Created by Lee Tae Su on 2017-10-13.
  */
 @Data
-public class File extends AbstractModel{
+public class AppFile extends AbstractModel{
     private Long fileKey;
     private String fileName;
     private String filePath;

@@ -21,10 +21,4 @@ public class HomeServiceImpl implements HomeService{
     private static final Logger log = LoggerFactory.getLogger(HomeServiceImpl.class);
     @Autowired
     private AdminMapper adminMapper;
-
-    @Override
-    public Integer test() {
-        log.info(adminMapper.test()+" is test result ");
-        return adminMapper.test();
-    }
 }

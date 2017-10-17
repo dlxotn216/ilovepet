@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/css/signup/signup.css" th:href="@{/css/signup/signup.css}"/>
+	<link rel="stylesheet" href="/css/pet/petAdd.css" th:href="@{/css/pet/petAdd.css}"/>
+	<link rel="stylesheet" href="/css/nouislider.min.css" th:href="@{/css/nouislider.min.css}"/>
+
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<div class="login-signup">
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="home">
+					<div class="row">
+						<div class="col-sm-12">
+							<article role="login">
+								<h3 class="text-center">반려 동물 등록</h3>
+								<form class="signup">
+									<div class="form-group">
+										<input id="petName" type="text" class="form-control" placeholder="반려동물 이름" autocomplete="true" required="true"/>
+									</div>
+									<div class="form-group">
+										<input id="birth" type="number" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"/>
+									</div>
+									<div class="form-group">
+										<select id="petType" class="form-control">
+											<option value="null" disabled="disabled" selected="selected">반려 동물의 유형을 선택해 주세요</option>
+											<option th:each="petType : ${petTypes}"
+													th:value="${petType.petTypeKey}" th:text="${petType.petTypeName}"></option>
+										</select>
+									</div>
+									<div class="form-group funkyradio">
+										<div class="funkyradio-primary">
+											<input type="radio" name="gender" class="form-control" id="true" value="true"
+												   checked="checked"/>
+											<label for="true">남성</label>
+										</div>
+										<div class="funkyradio-primary">
+											<input type="radio" name="gender" class="form-control" id="false" value="false"/>
+											<label for="false">여성</label>
+										</div>
+									</div>
+									<div class="form-group funkyradio">
+										<div class="funkyradio-warning">
+											<input type="radio" name="neutralizings" class="form-control" id="neu-true" value="true"
+												   checked="checked"/>
+											<label for="neu-true">중성화 했습니다</label>
+										</div>
+										<div class="funkyradio-warning">
+											<input type="radio" name="neutralizings" class="form-control" id="neu-false" value="false"/>
+											<label for="neu-false">중성화를 하지 않았습니다</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label>짖음 정도를 설정 해주세요</label>
+										<div id="slider-barking" class="pet-slider slider-barking"></div>
+									</div>
+
+									<div class="form-group">
+										<label>마킹 정도를 설정 해주세요</label>
+										<div id="slider-marking" class="pet-slider slider-marking"></div>
+									</div>
+
+									<div class="form-group">
+										<label>마운팅 정도를 설정 해주세요</label>
+										<div id="slider-mounting" class="pet-slider slider-mounting"></div>
+									</div>
+
+									<div class="form-group">
+										<label>공격성 정도를 설정 해주세요</label>
+										<div id="slider-aggression" class="pet-slider slider-aggression"></div>
+									</div>
+
+									<div class="form-group">
+										<label>크기를 설정 해주세요</label>
+										<div id="slider-size" class="pet-slider slider-size"></div>
+									</div>
+
+									<div id="image-form-wrap">
+										<input type="hidden" id="imageFormId" value="1" />
+										<div class="form-group row">
+											<label class="col-md-2">Upload Image</label>
+											<div class="col-md-6">
+												<div class="input-group">
+												<span class="input-group-btn">
+													<span class="btn btn-default btn-file">
+														Browse… <input type="file"
+																	   id="imageInput1"
+																	   class="files"
+																	   onchange="onChange('1')"/>
+													</span>
+												</span>
+													<input type="text" id="fileName1" class="form-control" readonly="readonly"/>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="thumbnail">
+													<img id="image1" style="width: 100%"/>
+												</div>
+											</div>
+											<div class="col-md-1">
+												<button id="1" type="button" onclick="onImageFormAddClick(this)" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<input id="btn-add" type="button" class="btn btn-success btn-block" onclick="onAddPetButtonClick()" value="등록"/>
+									</div>
+								</form>
+							</article>
+						</div>
+					</div>
+					<!-- end of row -->
+				</div>
+				<!-- end of home -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"
+		src="/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript"
+		src="/js/pet/petAdd.js" th:src="@{/js/pet/petAdd.js}"></script>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/css/signup/signup.css" th:href="@{/css/signup/signup.css}"/>
+	<link rel="stylesheet" href="/css/pet/petAdd.css" th:href="@{/css/pet/petAdd.css}"/>
+	<link rel="stylesheet" href="/css/nouislider.min.css" th:href="@{/css/nouislider.min.css}"/>
+
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<div class="login-signup">
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="home">
+					<div class="row">
+						<div class="col-sm-12">
+							<article role="login">
+								<h3 class="text-center">반려 동물 수정</h3>
+								<form class="signup">
+									<div class="form-group">
+										<input id="petName" type="text" class="form-control"
+											   placeholder="반려동물 이름"
+											   required="true"
+											   th:value="${pet.petName}"/>
+									</div>
+									<div class="form-group">
+										<input id="birth" type="number" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"
+											   th:value="${pet.age}"/>
+									</div>
+									<div class="form-group">
+										<select id="petType" class="form-control">
+											<option th:each="petType : ${petTypes}"
+													th:selected="${petType.petTypeKey == pet.petTypeKey}"
+													th:value="${petType.petTypeKey}" th:text="${petType.petTypeName}"></option>
+										</select>
+									</div>
+									<div class="form-group funkyradio">
+										<div class="funkyradio-primary">
+											<input type="radio" name="gender" class="form-control" id="gender-true" value="true"
+												   th:checked="${pet.gender.getValue()}=='MEN'"/>
+											<label for="gender-true">남성</label>
+										</div>
+										<div class="funkyradio-primary">
+											<input type="radio" name="gender" class="form-control" id="gender-false" value="false"
+												   th:checked="${pet.gender.getValue()}=='WOMEN'"/>
+											<label for="gender-false">여성</label>
+										</div>
+									</div>
+									<div class="form-group funkyradio">
+										<div class="funkyradio-warning">
+											<input type="radio" name="neutralizings" class="form-control" id="neu-true" value="true"
+												   th:checked="${pet.neutralizing == true}"/>
+											<label for="neu-true">중성화 했습니다</label>
+										</div>
+										<div class="funkyradio-warning">
+											<input type="radio" name="neutralizings" class="form-control" id="neu-false" value="false"
+												   th:checked="${pet.neutralizing == false}"/>
+											<label for="neu-false">중성화를 하지 않았습니다</label>
+										</div>
+									</div>
+
+									<input type="hidden" th:value="${pet.barking}" id="barking"/>
+									<input type="hidden" th:value="${pet.marking}" id="marking"/>
+									<input type="hidden" th:value="${pet.mounting}" id="mounting"/>
+									<input type="hidden" th:value="${pet.aggression}" id="aggression"/>
+									<input type="hidden" th:value="${pet.size}" id="size"/>
+
+									<div class="form-group">
+										<label>짖음 정도를 설정 해주세요</label>
+										<div id="slider-barking" class="pet-slider slider-barking"></div>
+									</div>
+
+									<div class="form-group">
+										<label>마킹 정도를 설정 해주세요</label>
+										<div id="slider-marking" class="pet-slider slider-marking"></div>
+									</div>
+
+									<div class="form-group">
+										<label>마운팅 정도를 설정 해주세요</label>
+										<div id="slider-mounting" class="pet-slider slider-mounting"></div>
+									</div>
+
+									<div class="form-group">
+										<label>공격성 정도를 설정 해주세요</label>
+										<div id="slider-aggression" class="pet-slider slider-aggression"></div>
+									</div>
+
+									<div class="form-group">
+										<label>크기를 설정 해주세요</label>
+										<div id="slider-size" class="pet-slider slider-size"></div>
+									</div>
+									<div th:if="${pet.profileFiles != null and pet.profileFiles.size() > 0}" class="form-group uploaded-profiles">
+										<label>업로드 된 프로필 파일</label>
+										<div class="col-md-12">
+											<div class="col-md-3">
+												<img th:each="file : ${pet.profileFiles}"
+													 th:if="${file.fileKey != null}"
+													 th:src="@{'/files/'+ ${file.fileKey} + '/downloads'}"/>
+											</div>
+										</div>
+									</div>
+
+									<div id="image-form-wrap">
+										<input type="hidden" id="imageFormId" value="1"/>
+										<div class="form-group row">
+											<label class="col-md-2">Upload Image</label>
+											<div class="col-md-6">
+												<div class="input-group">
+												<span class="input-group-btn">
+													<span class="btn btn-default btn-file">
+														Browse… <input type="file"
+																	   id="imageInput1"
+																	   class="files"
+																	   onchange="onChange('1')"/>
+													</span>
+												</span>
+													<input type="text" id="fileName1" class="form-control" readonly="readonly"/>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="thumbnail">
+													<img id="image1" style="width: 100%"/>
+												</div>
+											</div>
+											<div class="col-md-1">
+												<button id="1" type="button" onclick="onImageFormAddClick(this)" class="btn btn-primary"><span
+														class="glyphicon glyphicon-plus"></span>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<input id="btn-add" type="button" class="btn btn-success btn-block" onclick="onAddPetButtonClick()" value="수정"/>
+									</div>
+								</form>
+							</article>
+						</div>
+					</div>
+					<!-- end of row -->
+				</div>
+				<!-- end of home -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"
+		src="/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript"
+		src="/js/pet/petUpdate.js" th:src="@{/js/pet/petUpdate.js}"></script>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

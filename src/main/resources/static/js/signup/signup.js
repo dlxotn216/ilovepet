@@ -50,7 +50,7 @@ signupButton.onclick = function () {
             document.getElementById('birth').focus();
             return false;
         }
-        if (!genders || genders.length == 0) {
+        if (!genders || genders.length === 0) {
             console.log("genders: ", genders, '_',genders.length);
             return false;
         }
@@ -62,14 +62,20 @@ signupButton.onclick = function () {
         return false;
     }
 
-    var gender;
-    for (var i = 0; i < genders.length; i++) {
+    let gender;
+    for (let i = 0; i < genders.length; i++) {
         if (genders[i].checked) {
             gender = genders[i].getAttribute('id');
         }
     }
 
-    var age;
+	if(gender){
+		gender = 'MEN';
+	} else {
+		gender = 'WOMEN';
+	}
+
+    let age;
     if (birth) {
         const birthYear = birth.substr(0, 4);
         const nowYear = new Date().getFullYear();
@@ -81,36 +87,41 @@ signupButton.onclick = function () {
         console.log("DEBUG CHECK PROFIL EFILE :", file);
 
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('files', file);
         formData.append('fileType', 'USER_PROFILE');
 
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         // xhr.setRequestHeader()
         xhr.open("POST", "/files");
         xhr.onreadystatechange = function(){
             if (xhr.readyState === 4 && xhr.status === 200)
             {
-                addUser(xhr.responseText); // Another callback here
+                addUser(JSON.parse(xhr.responseText)); // Another callback here
             }
         };
         xhr.send(formData);
     };
 
-    const addUser = function(file){
-        if(file){
-            console.log("FIEL:", file);
+    const addUser = function(response){
+        let fileKey = null;
+        if(response){
+			let addedFiles = response.result;
+			console.log("addedFile:", addedFiles[0]);
+			console.log("addedFileKey:", addedFiles[0].fileKey);
+			fileKey = addedFiles[0].fileKey;
         }
         const requestBody = {
             'roleName': userType,
             'userId': userId,
             'password': password,
             'userName': userName,
+            'profileFileKey': fileKey,
             'email': email,
             'phone': phone,
             'age': age,
             'gender': gender
         };
-        console.log("DEBUG CHECK REQU BODY :", requestBody);
+
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "/users");
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -121,15 +132,6 @@ signupButton.onclick = function () {
             }
         };
         xhr.send(JSON.stringify(requestBody));
-        // $.ajax({
-        //     type: 'POST',
-        //     uri: '/users',
-        //     data: requestBody,
-        //     dataType: 'application/json',
-        //     success: function(res){
-        //         console.log(res);
-        //     }
-        // });
     };
 
     if(profileFileValue){

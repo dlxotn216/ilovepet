@@ -56,6 +56,7 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .permitAll();
 //                .and()
 //                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
@@ -63,7 +64,7 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
     // create two users, admin and user
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+//        auth.userDetailsService(userService);
         auth.authenticationProvider(customAuthenticationProvider);
     }
 

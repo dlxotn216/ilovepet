@@ -1,0 +1,62 @@
+/**
+ * @author Lee Tae Su
+ * @project recommendation
+ * @version 1.0
+ * @since 2017-10-16
+ */
+
+.slider-barking .noUi-connect {
+    background: #5cb85c !important;
+}
+
+.slider-marking .noUi-connect {
+    background: #5bc0de !important;
+}
+
+.slider-mounting .noUi-connect {
+    background: #f0ad4e !important;
+}
+
+.slider-aggression .noUi-connect {
+    background: #d9534f !important;
+}
+
+.slider-size .noUi-connect {
+    background: #995cb3 !important;
+}
+
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+#img-upload{
+    width: 100%;
+}
+
+.pet-slider {
+    margin : 40px 0px;
+}
+
+.uploaded-profiles img{
+    width: 120px;
+    height: 120px;
+    max-width: 120px;
+    max-height: 120px;
+}

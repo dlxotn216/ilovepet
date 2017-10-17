@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+	<style>
+		.pet-box {
+			cursor: pointer;
+		}
+
+		.pet-box:hover {
+			opacity: 0.6;
+			border: 1px solid #1aa19d;
+		}
+	</style>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<div class="starter-template view-title">
+			<h3 sec:authorize="hasRole('ROLE_CARETAKER')">위탁받은 반려동물</h3>
+			<h3 sec:authorize="hasRole('ROLE_CONSIGNER')">나의 반려동물</h3>
+		</div>
+		<div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-sm-10">
+				<ul class="pagination" style="float:left; margin: 0px !important;">
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-2" style="float: right !important;">
+				<a sec:authorize="hasRole('ROLE_CONSIGNER')" th:href="@{/pet/add}" class="btn btn-default btn-md">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div th:each="pet : ${pets}" th:onclick="'onPetDetailClick('+${pet.petKey}+')'" class="pet-box col-md-4">
+				<div class="thumbnail">
+					<a th:if="${pet.profileFiles != null and pet.profileFiles.size() > 0}" target="_blank">
+						<img th:src="${'/files/'+pet.profileFiles.get(0).fileKey}+'/downloads'"/>
+						<div class="caption">
+							<p th:text="${pet.petName}"></p>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.barking}+'% 짖음정도'"
+									 th:attrappend="style='width:'+${pet.barking}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.marking}+'% 마킹'"
+									 th:attrappend="style='width:'+${pet.marking}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.mounting}+'% 마운팅'"
+									 th:attrappend="style='width:'+${pet.mounting}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.aggression}+'% 공격성'"
+									 th:attrappend="style='width:'+${pet.aggression}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-size" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.size}+'% 크기'"
+									 th:attrappend="style='width:'+${pet.size}+'%'">
+								</div>
+							</div>
+						</div>
+					</a>
+					<a th:if="${pet.profileFiles == null or pet.profileFiles.size() == 0}">
+						<img th:if="${pet.petKey % 3 == 0}" th:src="@{/images/price_2.png}"/>
+						<img th:if="${pet.petKey % 3 == 1}" th:src="@{/images/play.png}"/>
+						<img th:if="${pet.petKey % 3 == 2}" th:src="@{/images/price_3.png}"/>
+						<div class="caption">
+							<p th:text="${pet.petName}"></p>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.barking}+'% 짖음정도'"
+									 th:attrappend="style='width:'+${pet.barking}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.marking}+'% 마킹'"
+									 th:attrappend="style='width:'+${pet.marking}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.mounting}+'% 마운팅'"
+									 th:attrappend="style='width:'+${pet.mounting}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.aggression}+'% 공격성'"
+									 th:attrappend="style='width:'+${pet.aggression}+'%'">
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+									 aria-valuemin="0" aria-valuemax="100"
+									 th:text="${pet.size}+'% 크기'"
+									 th:attrappend="style='width:'+${pet.size}+'%'">
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"
+		src="/js/pet/pet.js" th:src="@{/js/pet/pet.js}"></script>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

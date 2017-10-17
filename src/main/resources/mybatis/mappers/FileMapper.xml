@@ -4,37 +4,56 @@
 
 <mapper namespace="sch.pl.graduate.recommendation.file.mapper.FileMapper">
 
-    <resultMap id="FileMap" type="File">
-        <id property="FileKey" column="File_KEY"/>
-        <result property="FileId" column="File_ID"/>
-        <result property="FileName" column="File_NAME"/>
-        <result property="FileEmail" column="File_EMAIL"/>
-        <result property="phone" column="PHONE"/>
-        <result property="mobile" column="MOBILE"/>
-        <result property="fax" column="FAX"/>
-        <result property="timezone" column="TIMEZONE"/>
-        <result property="language" column="LANG"/>
-        <result property="active" column="ACTIVE" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
-        <result property="deleted" column="DELETED" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
-        <result property="reason" column="REASON"/>
-        <result property="createdAt" column="CREATED_AT"/>
-        <result property="createdBy" column="CREATED_BY"/>
-        <result property="updatedAt" column="UPDATED_AT"/>
-        <result property="updatedBy" column="UPDATED_BY"/>
-        <result property="companyKey" column="COMP_KEY"/>
-        <result property="FileNameCreate" column="File_NAME_CREATE"/>
-        <result property="FileNameUpdate" column="File_NAME_UPDATE"/>
+    <resultMap id="FileMap" type="AppFile">
+        <id property="fileKey" column="FILE_KEY"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileType" column="FILE_TYPE" typeHandler="FileTypeHandler"/>
+        <result property="size" column="SIZE"/>
+        <result property="format" column="FORMAT"/>
     </resultMap>
 
-    <insert id="addFile">
+    <insert id="addFile" parameterType="AppFile">
         INSERT INTO FILE(FILE_NAME, FILE_PATH, FILE_TYPE, SIZE, FORMAT)
         VALUES
         (
-        #{fileName},
-        #{filePath},
-        #{fileType},
-        #{size},
-        #{format}
+            #{fileName},
+            #{filePath},
+            #{fileType},
+            #{size},
+            #{format}
         )
+        <selectKey resultType="Long" keyProperty="fileKey" order="AFTER" keyColumn="FILE_KEY">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
+
+    <insert id="addFiles" parameterType="AppFile">
+        <selectKey resultType="Long" keyProperty="fileKey" order="BEFORE" keyColumn="FILE_KEY">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO FILE(FILE_NAME, FILE_PATH, FILE_TYPE, SIZE, FORMAT)
+        VALUES
+        <foreach collection="list" item="item" separator="," close=";">
+            (
+                #{item.fileName},
+                #{item.filePath},
+                #{item.fileType},
+                #{item.size},
+                #{item.format}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getFileByFileKey" resultMap="FileMap">
+        SELECT * FROM FILE
+        WHERE FILE_KEY = #{fileKey}
+    </select>
+
+    <select id="getFilesWhereFileKeyIsBiggerThan" resultMap="FileMap">
+        <![CDATA[
+            SELECT * FROM FILE
+            WHERE FILE_KEY >= #{fileKey}
+         ]]>
+    </select>
 </mapper>

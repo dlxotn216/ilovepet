@@ -10,10 +10,10 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import sch.pl.graduate.recommendation.common.model.AbstractModel;
-import sch.pl.graduate.recommendation.file.model.File;
+import sch.pl.graduate.recommendation.file.model.AppFile;
+import sch.pl.graduate.recommendation.file.model.AppFile;
 import sch.pl.graduate.recommendation.role.model.Role;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,14 +26,14 @@ public class User extends AbstractModel implements UserDetails {
     private String userName;
     private String password;
     private Integer age;
-    private Boolean gender;
+    private GenderType gender;
     private String email;
     private String phone;
     private Long roleKey;
     private String roleName;
     private Long profileFileKey;
     private Role role;
-    private File profileFile;
+    private AppFile profileFile;
 
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;

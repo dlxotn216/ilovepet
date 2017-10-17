@@ -1,94 +1,96 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/header :: header-css"/>
-    <link rel="stylesheet" href="/css/signup/signup.css" th:href="@{/css/signup/signup.css}"/>
+	<div th:replace="fragments/header :: header-css"/>
+	<link rel="stylesheet" href="/css/signup/signup.css" th:href="@{/css/signup/signup.css}"/>
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"/>
 
-<div class="wrap container">
-    <div class="login-signup">
-        <div class="row">
-            <div class="col-sm-12 nav-tab-holder">
-                <ul class="nav nav-tabs row" role="tablist">
-                    <li role="presentation" class="col-sm-6"
-                        th:classappend="${#strings.equals('ROLE_CARETAKER', signupValue.value) ? 'active' : ''}"><a
-                            th:href="@{/signup(target='ROLE_CARETAKER')}" aria-controls="home" role="tab" data-toggle="tab">돌보미</a>
-                    </li>
-                    <li role="presentation" class="col-sm-6"
-                        th:classappend="${#strings.equals('CONSIGNER', signupValue.value) ? 'active' : ''}"><a
-                            th:href="@{/signup(target='CONSIGNER')}" aria-controls="profile" role="tab"
-                            data-toggle="tab">맡기미</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="home">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <article role="login">
-                            <input id="userType" type="hidden" th:value="${signupValue.value}"/>
-                            <h3 class="text-center" th:text="${signupValue.name}"><i class="fa fa-lock"></i></h3>
-                            <form class="signup">
-                                <div class="form-group">
-                                    <input id="userId" type="text" class="form-control" placeholder="아이디"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="password" type="password" class="form-control" placeholder="비밀번호"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="password2" type="password" class="form-control" placeholder="비밀번호 재입력"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="userName" type="text" class="form-control" placeholder="이름"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="email" type="email" class="form-control" placeholder="이메일"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="phone" type="text" class="form-control" placeholder="전화번호"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="birth" type="number" class="form-control" placeholder="생년월일 (ex 19950215)"/>
-                                </div>
-                                <div class="form-group funkyradio">
-                                    <div class="funkyradio-primary">
-                                        <input type="radio" name="gender" class="form-control" id="true"
-                                               checked="checked"/>
-                                        <label for="true">남성</label>
-                                    </div>
-                                    <div class="funkyradio-primary">
-                                        <input type="radio" name="gender" class="form-control" id="false"/>
-                                        <label for="false">여성</label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input id="profileFile" type="file" class="form-control" placeholder="프로필 이미지"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="btn-signup" type="button" class="btn btn-success btn-block" value="가입"/>
-                                </div>
-                            </form>
-                            <footer role="signup" class="text-center">
-                                <ul>
-                                    <li>
-                                        <a href="#">Terms of Use</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Privacy Statement</a>
-                                    </li>
-                                </ul>
-                            </footer>
-                        </article>
-                    </div>
-                </div>
-                <!-- end of row -->
-            </div>
-            <!-- end of home -->
-        </div>
-    </div>
+<div class="page-wrap">
+	<div class="container">
+		<div class="login-signup">
+			<div class="row">
+				<div class="col-sm-12 nav-tab-holder">
+					<ul class="nav nav-tabs row" role="tablist">
+						<li role="presentation" class="col-sm-6"
+							th:classappend="${#strings.equals('ROLE_CARETAKER', signupValue.value) ? 'active' : ''}"><a
+								th:href="@{/signup(target='ROLE_CARETAKER')}" aria-controls="home" role="tab" data-toggle="tab">돌보미</a>
+						</li>
+						<li role="presentation" class="col-sm-6"
+							th:classappend="${#strings.equals('ROLE_CONSIGNER', signupValue.value) ? 'active' : ''}"><a
+								th:href="@{/signup(target='ROLE_CONSIGNER')}" aria-controls="profile" role="tab"
+								data-toggle="tab">맡기미</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="home">
+					<div class="row">
+						<div class="col-sm-12">
+							<article role="login">
+								<input id="userType" type="hidden" th:value="${signupValue.value}"/>
+								<h3 class="text-center" th:text="${signupValue.name}"><i class="fa fa-lock"></i></h3>
+								<form class="signup">
+									<div class="form-group">
+										<input id="userId" type="text" class="form-control" placeholder="아이디" autocomplete="true" required="true"/>
+									</div>
+									<div class="form-group">
+										<input id="password" type="password" class="form-control" placeholder="비밀번호" required="true"/>
+									</div>
+									<div class="form-group">
+										<input id="password2" type="password" class="form-control" placeholder="비밀번호 재입력" required="true"/>
+									</div>
+									<div class="form-group">
+										<input id="userName" type="text" class="form-control" placeholder="이름" required="true"/>
+									</div>
+									<div class="form-group">
+										<input id="email" type="email" class="form-control" placeholder="이메일" required="true"/>
+									</div>
+									<div class="form-group">
+										<input id="phone" type="text" class="form-control" placeholder="전화번호" required="true"/>
+									</div>
+									<div class="form-group">
+										<input id="birth" type="number" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"/>
+									</div>
+									<div class="form-group funkyradio">
+										<div class="funkyradio-primary">
+											<input type="radio" name="gender" class="form-control" id="true"
+												   checked="checked"/>
+											<label for="true">남성</label>
+										</div>
+										<div class="funkyradio-primary">
+											<input type="radio" name="gender" class="form-control" id="false"/>
+											<label for="false">여성</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<input id="profileFile" type="file" class="form-control" placeholder="프로필 이미지"/>
+									</div>
+									<div class="form-group">
+										<input id="btn-signup" type="button" class="btn btn-success btn-block" value="가입"/>
+									</div>
+								</form>
+								<footer role="signup" class="text-center">
+									<ul>
+										<li>
+											<a href="#">Terms of Use</a>
+										</li>
+										<li>
+											<a href="#">Privacy Statement</a>
+										</li>
+									</ul>
+								</footer>
+							</article>
+						</div>
+					</div>
+					<!-- end of row -->
+				</div>
+				<!-- end of home -->
+			</div>
+		</div>
+	</div>
 </div>
 <script th:src="@{/js/signup/signup.js}"></script>
 <!-- /.container -->

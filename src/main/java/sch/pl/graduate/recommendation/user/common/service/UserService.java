@@ -8,6 +8,8 @@ import sch.pl.graduate.recommendation.user.common.model.User;
 /**
  * Created by taesu on 2017-10-14.
  */
-public interface UserService extends UserDetailsService{
+public interface UserService {
     Integer addUser(User user);
+
+    User loadUserByUsername(String username);
 }

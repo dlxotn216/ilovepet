@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+    public User loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userMapper.getUserByUserId(userId);
         if (user == null) {
             throw new UsernameNotFoundException(userId + "는 존재하지 않는 계정입니다");

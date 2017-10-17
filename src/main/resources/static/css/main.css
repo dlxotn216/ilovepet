@@ -17,6 +17,18 @@ footer{
     margin-top:60px;
 }
 
-.wrap {
-    margin-top: 60px;
+.page-wrap {
+    margin-top: 80px;
+}
+
+.view-title{
+    color: #23bab5;
+}
+
+.no-border{
+    border: 0px !important;
+}
+
+.progress-bar-size{
+    background-color: #995cb3;
 }

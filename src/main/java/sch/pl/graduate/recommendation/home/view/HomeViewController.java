@@ -16,13 +16,8 @@ import sch.pl.graduate.recommendation.home.service.HomeService;
  */
 @Controller
 public class HomeViewController {
-
-    @Autowired
-    private HomeService homeService;
-
     @GetMapping({"/", "/home"})
     public String home() {
-        homeService.test();
         return "home/home";
     }
 }
