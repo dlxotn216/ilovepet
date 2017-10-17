@@ -9,18 +9,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sch.pl.graduate.recommendation.common.exception.SystemException;
 import sch.pl.graduate.recommendation.common.service.AbstractService;
 import sch.pl.graduate.recommendation.file.mapper.FileMapper;
 import sch.pl.graduate.recommendation.file.model.AppFile;
-import sch.pl.graduate.recommendation.file.model.AppFile;
 import sch.pl.graduate.recommendation.file.model.FileType;
 import sch.pl.graduate.recommendation.file.service.FileService;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -28,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by taesu on 2017-10-15.
@@ -62,7 +62,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
     @Transactional
     public List<AppFile> addFiles(List<MultipartFile> multipartFiles, FileType fileType) {
         List<AppFile> appFiles = new ArrayList<>();
-        for(MultipartFile multipartFile : multipartFiles) {
+        for (MultipartFile multipartFile : multipartFiles) {
             final String originalFilename = multipartFile.getOriginalFilename();
             final String uploadFilePath = System.getProperty("catalina.home") + "/" + originalFilename;
             final String format = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -108,15 +108,20 @@ public class FileServiceImpl extends AbstractService implements FileService {
 
         File fileForDownload = new File(filePath);
 
-        if (!fileForDownload.exists()){
-            throw new SystemException("file with path: " + filePath + " was not found.");
+        if (!fileForDownload.exists()) {
+            return getFileResponse(new byte[0], fileName);
         }
+
         byte[] bytes;
         try {
             bytes = FileCopyUtils.copyToByteArray(fileForDownload);
         } catch (IOException e) {
-            throw new SystemException("file with path: " + filePath + " was not found.");
+            return getFileResponse(new byte[0], fileName);
         }
+        return getFileResponse(bytes, fileName);
+    }
+
+    private ResponseEntity<byte[]> getFileResponse(byte[] bytes, String fileName) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
@@ -125,5 +130,27 @@ public class FileServiceImpl extends AbstractService implements FileService {
         httpHeaders.setContentDispositionFormData("attachment", fileName, Charset.forName("UTF-8"));
 
         return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public Integer deleteFiles(List<? extends AppFile> appFiles) {
+        List<AppFile> deletedFiles = fileMapper.getFileByFileKeys(appFiles);
+        deleteRealFile(deletedFiles);
+
+        return fileMapper.deleteFiles(appFiles);
+    }
+
+    private void deleteRealFile(List<AppFile> deletedFiles) {
+        if (CollectionUtils.isEmpty(deletedFiles)) {
+            return;
+        }
+
+        for (AppFile appFile : deletedFiles) {
+            File file = new File(appFile.getFilePath());
+            if (file.exists()) {
+                file.delete();
+            }
+        }
     }
 }

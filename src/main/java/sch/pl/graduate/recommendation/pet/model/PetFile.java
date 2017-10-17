@@ -7,12 +7,13 @@
 package sch.pl.graduate.recommendation.pet.model;
 
 import lombok.Data;
+import sch.pl.graduate.recommendation.file.model.AppFile;
 
 /**
  * Created by Lee Tae Su on 2017-10-16.
  */
 @Data
-public class PetFile {
+public class PetFile extends AppFile{
     private Long petKey;
     private Long fileKey;
 }

@@ -39,4 +39,5 @@ public class Pet extends AbstractModel {
     private List<AppFile> profileFiles;
 
     private List<PetFile> addedFiles;
+    private List<PetFile> deletedFiles;
 }

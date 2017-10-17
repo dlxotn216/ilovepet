@@ -3,7 +3,6 @@ package sch.pl.graduate.recommendation.file.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import sch.pl.graduate.recommendation.file.model.AppFile;
-import sch.pl.graduate.recommendation.file.model.AppFile;
 
 import java.util.List;
 
@@ -20,4 +19,8 @@ public interface FileMapper {
     AppFile getFileByFileKey(Long fileKey);
 
     List<AppFile> getFilesWhereFileKeyIsBiggerThan(Long fileKey);
+
+    List<AppFile> getFileByFileKeys(List<? extends AppFile> files);
+
+    Integer deleteFiles(List<? extends AppFile> files);
 }

@@ -33,21 +33,22 @@
     </resultMap>
 
     <insert id="addPet">
-        INSERT INTO PET(PET_NAME, PET_TYPE_KEY, BIRTH, GENDER, NEUTRALIZING, BARKING, MARKING, MOUNTING, AGGRESSION, SIZE, OWNER_KEY, CARETAKER_KEY)
-         VALUE (
-            #{petName},
-            #{petTypeKey},
-            #{birth},
-            #{gender},
-            #{neutralizing},
-            #{barking},
-            #{marking},
-            #{mounting},
-            #{aggression},
-            #{size},
-            #{ownerKey},
-            #{caretakerKey}
-         )
+        INSERT INTO PET(PET_NAME, PET_TYPE_KEY, BIRTH, GENDER, NEUTRALIZING, BARKING, MARKING, MOUNTING, AGGRESSION,
+        SIZE, OWNER_KEY, CARETAKER_KEY)
+        VALUE (
+        #{petName},
+        #{petTypeKey},
+        #{birth},
+        #{gender},
+        #{neutralizing},
+        #{barking},
+        #{marking},
+        #{mounting},
+        #{aggression},
+        #{size},
+        #{ownerKey},
+        #{caretakerKey}
+        )
         <selectKey resultType="Long" keyProperty="petKey" order="AFTER" keyColumn="PET_KEY">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -135,8 +136,11 @@
             <if test="petName != null">
                 A.PET_NAME = #{petName},
             </if>
-            <if test="petType != null">
+            <if test="petTypeKey != null">
                 A.PET_TYPE_KEY = #{petTypeKey},
+            </if>
+            <if test="birth != null">
+                A.BIRTH = #{birth},
             </if>
             <if test="gender != null">
                 A.GENDER = #{gender},
@@ -190,9 +194,18 @@
         VALUES
         <foreach collection="list" item="item" separator="," close=";">
             (
-                #{item.petKey},
-                #{item.fileKey}
+            #{item.petKey},
+            #{item.fileKey}
             )
         </foreach>
     </insert>
+
+    <delete id="deletePetProfileFiles">
+        DELETE FROM PET_FILE
+        <where>
+            <foreach collection="list" item="item" separator="OR" close=";">
+                (PET_KEY = #{item.petKey} AND FILE_KEY = #{item.fileKey})
+            </foreach>
+        </where>
+    </delete>
 </mapper>

@@ -19,4 +19,6 @@ public interface FileService {
     AppFile getFileByFileKey(Long fileKey);
 
     ResponseEntity<byte[]> downloadFile(AppFile appFile);
+
+    Integer deleteFiles(List<? extends AppFile> appFiles);
 }

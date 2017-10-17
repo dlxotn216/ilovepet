@@ -6,13 +6,13 @@
  */
 package sch.pl.graduate.recommendation.pet.service.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import sch.pl.graduate.recommendation.common.exception.SystemException;
 import sch.pl.graduate.recommendation.common.service.AbstractService;
+import sch.pl.graduate.recommendation.file.service.FileService;
 import sch.pl.graduate.recommendation.pet.mapper.PetMapper;
 import sch.pl.graduate.recommendation.pet.model.Pet;
 import sch.pl.graduate.recommendation.pet.model.PetCriteria;
@@ -32,6 +32,9 @@ public class PetServiceImpl extends AbstractService implements PetService {
     @Autowired
     private PetMapper petMapper;
 
+    @Autowired
+    private FileService fileService;
+
     @Override
     @Transactional
     public Integer addPet(Pet pet) {
@@ -42,7 +45,7 @@ public class PetServiceImpl extends AbstractService implements PetService {
         Integer result = petMapper.addPet(pet);
 
         List<PetFile> addedFiles = pet.getAddedFiles();
-        if(!CollectionUtils.isEmpty(addedFiles)) {
+        if (!CollectionUtils.isEmpty(addedFiles)) {
             addedFiles.stream().forEach(item -> item.setPetKey(pet.getPetKey()));
             petMapper.addPetProfileFiles(addedFiles);
         }
@@ -54,11 +57,11 @@ public class PetServiceImpl extends AbstractService implements PetService {
     public List<Pet> getPets(PetCriteria petCriteria) {
         User currentUser = getCurrentUser();
         petCriteria.setOwnerKey(currentUser.getUserKey());
-        if(hasRole("ROLE_CARETAKER")) {
+        if (hasRole("ROLE_CARETAKER")) {
             return petMapper.getPetsForCaretaker(petCriteria);
-        } else if(hasRole("ROLE_CONSIGNER")) {
+        } else if (hasRole("ROLE_CONSIGNER")) {
             return petMapper.getPetsForConsigner(petCriteria);
-        } else if(hasRole("ROLE_ADMIN")) {
+        } else if (hasRole("ROLE_ADMIN")) {
             return petMapper.getPets(petCriteria);
         } else {
             throw new SystemException();
@@ -71,7 +74,25 @@ public class PetServiceImpl extends AbstractService implements PetService {
     }
 
     @Override
-    public Boolean currentUserIsOwner(Pet pet){
+    @Transactional
+    public Integer updatePet(Pet pet) {
+        List<PetFile> addedFiles = pet.getAddedFiles();
+        if (!CollectionUtils.isEmpty(addedFiles)) {
+            addedFiles.stream().forEach(item -> item.setPetKey(pet.getPetKey()));
+            petMapper.addPetProfileFiles(addedFiles);
+        }
+
+        List<PetFile> deletedFiles = pet.getDeletedFiles();
+        if (!CollectionUtils.isEmpty(deletedFiles)) {
+            deletedFiles.forEach(item -> item.setPetKey(pet.getPetKey()));
+            petMapper.deletePetProfileFiles(deletedFiles);
+            fileService.deleteFiles(deletedFiles);
+        }
+        return petMapper.updatePet(pet);
+    }
+
+    @Override
+    public Boolean currentUserIsOwner(Pet pet) {
         User currentUser = getCurrentUser();
         return currentUser.getUserKey().equals(pet.getOwnerKey());
     }

@@ -50,10 +50,28 @@
         WHERE FILE_KEY = #{fileKey}
     </select>
 
+    <select id="getFileByFileKeys" resultMap="FileMap">
+         SELECT * FROM FILE
+        <where>
+            <foreach collection="list" item="item" separator="OR" close=";">
+                FILE_KEY = #{item.fileKey}
+            </foreach>
+        </where>
+    </select>
+
     <select id="getFilesWhereFileKeyIsBiggerThan" resultMap="FileMap">
         <![CDATA[
             SELECT * FROM FILE
             WHERE FILE_KEY >= #{fileKey}
          ]]>
     </select>
+
+    <delete id="deleteFiles">
+        DELETE FROM FILE
+        <where>
+            <foreach collection="list" item="item" separator="OR" close=";">
+                FILE_KEY = #{item.fileKey}
+            </foreach>
+        </where>
+    </delete>
 </mapper>

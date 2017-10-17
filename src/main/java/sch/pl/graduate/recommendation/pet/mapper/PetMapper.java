@@ -46,4 +46,6 @@ public interface PetMapper {
     List<PetType> getPetTypes(PetCriteria petTypeCriteria);
 
     Integer addPetProfileFiles(List<PetFile> files);
+
+    Integer deletePetProfileFiles(List<PetFile> files);
 }
