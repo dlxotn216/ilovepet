@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link rel="stylesheet" th:href="@{/css/user/user.css}" href="/css/user/user.css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+    <div class="container">
+        <div class="starter-template view-title">
+            <h3 sec:authorize="hasRole('ROLE_CARETAKER')">맡기미 목록</h3>
+            <h3 sec:authorize="hasRole('ROLE_CONSIGNER')">돌보미 목록</h3>
+            <h3 sec:authorize="hasRole('ROLE_ADMIN')">사용자 목록</h3>
+        </div>
+        <div class="row" style="margin-top: 40px;">
+            <section class="content">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success btn-filter" data-target="pagado">
+                                        Pagado
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-filter" data-target="pendiente">
+                                        Pendiente
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-filter" data-target="cancelado">
+                                        Cancelado
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-filter" data-target="all">Todos
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="table table-filter">
+                                    <tbody>
+                                    <tr data-status="pagado" th:each="user : ${users}">
+                                        <td>
+                                            <div class="ckbox">
+                                                <input type="checkbox" id="checkbox1"/>
+                                                <label for="checkbox1"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:;" class="star">
+                                                <i class="glyphicon glyphicon-star"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <div class="media">
+                                                <a href="#" class="pull-left">
+                                                    <img th:if="${user.profileFileKey != null}"
+                                                         th:src="@{'/files/'+${user.profileFileKey}+'/downloads'}"
+                                                         class="media-photo"/>
+                                                    <img th:unless="${user.profileFileKey != null}"
+                                                         src="/images/profile.jpg"
+                                                         class="media-photo"/>
+                                                </a>
+                                                <div class="media-body">
+                                                    <span class="media-meta pull-right">Febrero 13, 2016</span>
+                                                    <h4 class="title">
+                                                        <span th:text="${user.userName}"></span>
+                                                        <span class="pull-right pagado" th:text="${user.userId}">awefaw</span>
+                                                    </h4>
+                                                    <p class="summary">
+                                                        Ut enim ad minim veniam, quis nostrud
+                                                        exercitation...</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr data-status="pagado" class="selected">
+                                        <td>
+                                            <div class="ckbox">
+                                                <input type="checkbox" id="checkbox4" checked="checked"/>
+                                                <label for="checkbox4"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:;" class="star star-checked">
+                                                <i class="glyphicon glyphicon-star"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <div class="media">
+                                                <a href="#" class="pull-left">
+                                                    <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg"
+                                                         class="media-photo"/>
+                                                </a>
+                                                <div class="media-body">
+                                                    <span class="media-meta pull-right">Febrero 13, 2016</span>
+                                                    <h4 class="title">
+                                                        Lorem Impsum
+                                                        <span class="pull-right pagado">(Pagado)</span>
+                                                    </h4>
+                                                    <p class="summary">Ut enim ad minim veniam, quis nostrud
+                                                        exercitation...</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-footer">
+                        <div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
+                            <div class="col-sm-10">
+                                <ul class="pagination" style="float:left; margin: 0px !important;">
+                                    <li>
+                                        <a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
+                                    </li>
+                                    <li th:each="i : ${#numbers.sequence( 0, totalPage)}"
+                                        th:classappend="${(i+1) == currentPage} ? 'active'">
+                                        <a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
+                                        <a th:unless="${(i+1) == currentPage}" th:href="@{/user(page=${i+1},limit=12)}" th:text="${i}+1"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

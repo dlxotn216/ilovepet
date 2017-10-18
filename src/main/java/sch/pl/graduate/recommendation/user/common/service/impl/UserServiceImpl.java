@@ -15,6 +15,7 @@ import sch.pl.graduate.recommendation.role.model.Role;
 import sch.pl.graduate.recommendation.role.service.RoleService;
 import sch.pl.graduate.recommendation.user.common.mapper.UserMapper;
 import sch.pl.graduate.recommendation.user.common.model.User;
+import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.common.service.UserService;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
         String roleName = user.getRoleName();
         Role role = roleService.getRoleByRoleName(roleName);
-        if(role == null) {
+        if (role == null) {
             throw new SystemException("Role이 존재하지 않습니다");
         }
 
@@ -61,17 +62,74 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return userMapper.getUserByUserKey(userKey);
     }
 
+    @Override
+    public User getUser(User user) {
+        return userMapper.getUser(user);
+    }
+
+    @Override
+    public User getUserByUserId(String userId) {
+        return userMapper.getUserByUserId(userId);
+    }
+
+    @Override
+    public List<User> getUsers(UserCriteria userCriteria) {
+        if (hasRole("ROLE_CARETAKER")) {
+            return getUsersForCaretaker(userCriteria);
+        } else if (hasRole("ROLE_CONSIGNER")) {
+            return getUsersForConsigner(userCriteria);
+        } else if (hasRole("ROLE_ADMIN")) {
+            return userMapper.getUsers(userCriteria);
+        } else {
+            throw new SystemException();
+        }
+    }
+
+    @Override
+    public Integer getUsersTotalCount(UserCriteria userCriteria) {
+        if (hasRole("ROLE_CARETAKER")) {
+            return getUsersForCaretakerTotalCount(userCriteria);
+        } else if (hasRole("ROLE_CONSIGNER")) {
+            return getUsersForConsignerTotalCount(userCriteria);
+        } else if (hasRole("ROLE_ADMIN")) {
+            return userMapper.getUsersTotalCount(userCriteria);
+        } else {
+            throw new SystemException();
+        }
+    }
+
+    private List<User> getUsersForCaretaker(UserCriteria userCriteria) {
+        return userMapper.getUsersForCaretaker(userCriteria);
+    }
+
+    private Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria) {
+        return userMapper.getUsersForCaretakerTotalCount(userCriteria);
+    }
+
+    private List<User> getUsersForConsigner(UserCriteria userCriteria) {
+        return userMapper.getUsersForConsigner(userCriteria);
+    }
+
+    private Integer getUsersForConsignerTotalCount(UserCriteria userCriteria) {
+        return userMapper.getUsersForConsignerTotalCount(userCriteria);
+    }
+
+    @Override
+    public Integer deleteUser(User user) {
+        return userMapper.deleteUser(user);
+    }
+
     @Transactional
     @Override
-    public Integer updateUser(User user){
+    public Integer updateUser(User user) {
         String password = user.getPassword();
-        if(!StringUtils.isEmpty(password)){
+        if (!StringUtils.isEmpty(password)) {
             String encodedPassword = passwordEncoder.encode(password);
             user.setPassword(encodedPassword);
         }
 
         Long updatedFileKey = user.getUpdatedProfileFileKey();
-        if(updatedFileKey != null){
+        if (updatedFileKey != null) {
             deleteUserProfileFile(user);
             user.setProfileFileKey(updatedFileKey);
         }
@@ -79,9 +137,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return userMapper.updateUser(user);
     }
 
-    private void deleteUserProfileFile(User user){
+    private void deleteUserProfileFile(User user) {
         Long originFileKey = user.getProfileFileKey();
-        if(originFileKey != null){
+        if (originFileKey != null) {
             List<AppFile> appFiles = new ArrayList<>();
             AppFile profileFile = new AppFile();
             profileFile.setFileKey(originFileKey);
@@ -94,7 +152,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     @Override
     public User loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userMapper.getUserByUserId(userId);
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException(userId + "는 존재하지 않는 계정입니다");
         }
 

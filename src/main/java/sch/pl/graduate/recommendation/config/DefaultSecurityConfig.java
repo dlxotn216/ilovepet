@@ -45,6 +45,7 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
                 .antMatchers("/caretakers/**").hasAnyRole("CARETAKER")
                 .antMatchers("/pet/**").hasAnyRole("ADMIN", "CONSIGNER", "CARETAKER")
                 .antMatchers("/pets/**").hasAnyRole("ADMIN", "CONSIGNER", "CARETAKER")
+                .antMatchers("/user/**").hasAnyRole("ADMIN", "CONSIGNER", "CARETAKER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
