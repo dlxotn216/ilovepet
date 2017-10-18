@@ -36,4 +36,13 @@ public class PetController extends AbstractController {
 
         return getSuccessResponse(result, "수정 완료하였습니다");
     }
+
+    @DeleteMapping("/pets/{petKey}")
+    public ResponseEntity deletePet(@PathVariable Long petKey){
+        Pet pet = new Pet();
+        pet.setPetKey(petKey);
+        Integer result = petService.deletePet(pet);
+
+        return getSuccessResponse(result, "삭제 완료하였습니다");
+    }
 }

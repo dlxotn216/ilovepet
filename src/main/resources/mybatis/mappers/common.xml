@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sch.pl.graduate.recommendation.common.mapper">
+
+    <sql id="orderBy">
+        <if test="arrSort.length > 0 and arrOrder.length > 0 and arrSort.length == arrOrder.length">
+            ORDER BY
+            <foreach collection="arrSort" index="index" item="colName" separator=" , ">
+                ${colName} ${arrOrder[index]}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="pagingMysqlClosing">
+        <if test="limit != null and offset != null and limit > 0 and offset >= 0">
+            LIMIT #{limit} OFFSET #{offset}
+        </if>
+    </sql>
+
+    <sql id="pagingOracleOpening">
+        <if test="limit != null and offset != null and limit > 0 and offset >= 0">
+            <![CDATA[
+            SELECT * FROM (
+                SELECT ROWNUM AS RNUM, X.* FROM (
+            ]]>
+        </if>
+    </sql>
+
+    <sql id="pagingOracleClosing">
+        <if test="limit != null and offset != null and limit > 0 and offset >= 0">
+            <![CDATA[
+                ) X WHERE ROWNUM <= #{offset} + #{limit}
+            ) WHERE RNUM > #{offset}
+            ]]>
+        </if>
+    </sql>
+
+    <sql id="keywordFilter">
+        <if test="keyword != null and arrTarget.length > 0">
+            AND
+            <foreach collection="arrTarget" item="colName" open="(" separator=" OR " close=")">
+                upper(A.${colName}) LIKE '%'|| upper(#{keyword}) || '%'
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="commonTimeFilter">
+        <if test="createdStart">
+            <![CDATA[
+            AND A.created_at >= #{createdStart}
+            ]]>
+        </if>
+        <if test="createdEnd">
+            <![CDATA[
+            AND A.created_at <= #{createdEnd}
+            ]]>
+        </if>
+        <if test="updatedStart">
+            <![CDATA[
+            AND A.updated_at >= #{updatedStart}
+            ]]>
+        </if>
+        <if test="updatedEnd">
+            <![CDATA[
+            AND A.updated_at <= #{updatedEnd}
+            ]]>
+        </if>
+    </sql>
+
+</mapper>

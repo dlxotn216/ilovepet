@@ -5,6 +5,38 @@
  * @since 2017-10-17
  */
 
+const onProfileToggleClick = function () {
+	const targetElement = document.getElementById('image-wrap');
+	if (targetElement.classList.contains('hidden')) {
+		targetElement.classList.remove('hidden');
+	} else {
+		targetElement.classList.add('hidden');
+	}
+};
+
+
+const onPetDeleteButtonClick = function (petKey) {
+	const okCallback = function(){
+		const xhr = new XMLHttpRequest();
+		xhr.open("DELETE", "/pets/"+petKey);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onreadystatechange = function () {
+			closeDeleteConfirmModal();
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				let response = JSON.parse(xhr.responseText);
+				if(response.status){
+					displayAlertModal(true, '요청 성공하였습니다');
+					afterSuccess();
+				} else {
+					displayAlertModal(false, '에러가 발생했습니다');
+				}
+			}
+		};
+		xhr.send();
+	};
+	displayDeleteConfirmModal(okCallback);
+};
+
 const slider_barking = document.getElementById('slider-barking');
 noUiSlider.create(slider_barking, {
 	start: 10,
@@ -96,29 +128,29 @@ const onChange = function (id) {
 };
 
 
-onTabClick = function(btn, tabId){
+onTabClick = function (btn, tabId) {
 	let buttons = document.getElementsByClassName('tab-btn ');
-	if(buttons && buttons.length > 0){
-		for(let i=0; i<buttons.length; i++){
+	if (buttons && buttons.length > 0) {
+		for (let i = 0; i < buttons.length; i++) {
 			buttons[i].classList.remove('btn-primary');
 			buttons[i].classList.add('btn-default');
 		}
 	}
-	btn.classList.remove( 'btn-default' );
-	btn.classList.add( 'btn-primary' );
+	btn.classList.remove('btn-default');
+	btn.classList.add('btn-primary');
 
 	let tab = document.getElementById(tabId);
 	let tabs = document.getElementsByClassName('tab-pane');
 
-	if(tabs && tabs.length > 0){
-		for(let i=0; i<tabs.length; i++){
+	if (tabs && tabs.length > 0) {
+		for (let i = 0; i < tabs.length; i++) {
 			tabs[i].classList.remove('active');
 		}
 	}
 
-	tab.classList.add( 'active' );
+	tab.classList.add('active');
 };
 
-const onPetUpdateButtonClick = function(petKey){
-	window.location.href='/pet/'+petKey+'/update';
+const onPetUpdateButtonClick = function (petKey) {
+	window.location.href = '/pet/' + petKey + '/update';
 };

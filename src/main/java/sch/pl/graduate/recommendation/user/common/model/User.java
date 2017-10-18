@@ -25,6 +25,7 @@ public class User extends AbstractModel implements UserDetails {
     private String userId;
     private String userName;
     private String password;
+    private String birth;
     private Integer age;
     private GenderType gender;
     private String email;
@@ -35,11 +36,18 @@ public class User extends AbstractModel implements UserDetails {
     private Role role;
     private AppFile profileFile;
 
+    private Long updatedProfileFileKey;
+
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
     private List<GrantedAuthority> authorities;
+
+    //Lombok에서 getUsername과 겹침
+    public String getUserName(){
+        return userName;
+    }
 
     @Override
     public String getUsername() {

@@ -33,7 +33,14 @@ public class PetViewController extends AbstractController {
     @GetMapping({"", "/"})
     public String getPetsView(Model model, PetCriteria petCriteria) {
         List<Pet> pets = petService.getPets(petCriteria);
+        final Integer totalCount = petService.getPetsTotalCount(petCriteria);
+        final Integer totalPage = totalCount / petCriteria.getLimit();
+        final Integer currentPage = petCriteria.getPage();
+
         model.addAttribute("pets", pets);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("currentPage", currentPage);
 
         return "pet/pet";
     }

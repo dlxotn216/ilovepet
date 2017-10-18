@@ -11,5 +11,11 @@ import sch.pl.graduate.recommendation.user.common.model.User;
 public interface UserService {
     Integer addUser(User user);
 
+    User getUserByUserKey(Long userKey);
+
+    Integer updateUser(User user);
+
     User loadUserByUsername(String username);
+
+    User getUserFromCurrentSession();
 }

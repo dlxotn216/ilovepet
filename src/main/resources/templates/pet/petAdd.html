@@ -84,7 +84,7 @@
 									</div>
 
 									<div id="image-form-wrap">
-										<input type="hidden" id="imageFormId" value="1" />
+										<input type="hidden" id="imageFormId" value="1"/>
 										<div class="form-group row">
 											<label class="col-md-2">Upload Image</label>
 											<div class="col-md-6">
@@ -106,7 +106,8 @@
 												</div>
 											</div>
 											<div class="col-md-1">
-												<button id="1" type="button" onclick="onImageFormAddClick(this)" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>
+												<button id="1" type="button" onclick="onImageFormAddClick(this)" class="btn btn-primary"><span
+														class="glyphicon glyphicon-plus"></span>
 												</button>
 											</div>
 										</div>
@@ -128,9 +129,11 @@
 
 <script type="text/javascript"
 		src="/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
 <script type="text/javascript"
 		src="/js/pet/petAdd.js" th:src="@{/js/pet/petAdd.js}"></script>
-<div th:replace="fragments/footer :: footer"/>
 
+<div th:replace="fragments/footer :: footer"/>
+<div th:replace="common/common :: alertModal"/>
 </body>
 </html>

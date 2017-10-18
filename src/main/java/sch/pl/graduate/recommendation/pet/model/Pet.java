@@ -23,7 +23,7 @@ public class Pet extends AbstractModel {
     private Long petKey;
     private String petName;
     private Long petTypeKey;
-    private Integer birth;
+    private String birth;
     private Integer age;
     private List<Epidemic> epidemic;        //전염병
     private GenderType gender;

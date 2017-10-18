@@ -2,31 +2,38 @@ package sch.pl.graduate.recommendation.user.common.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import sch.pl.graduate.recommendation.common.exception.SystemException;
+import sch.pl.graduate.recommendation.common.service.AbstractService;
+import sch.pl.graduate.recommendation.file.model.AppFile;
+import sch.pl.graduate.recommendation.file.service.FileService;
 import sch.pl.graduate.recommendation.role.model.Role;
 import sch.pl.graduate.recommendation.role.service.RoleService;
 import sch.pl.graduate.recommendation.user.common.mapper.UserMapper;
 import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by taesu on 2017-10-14.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractService implements UserService {
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -40,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         String roleName = user.getRoleName();
         Role role = roleService.getRoleByRoleName(roleName);
-        if(role == null){
+        if(role == null) {
             throw new SystemException("Role이 존재하지 않습니다");
         }
 
@@ -50,15 +57,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByUserKey(Long userKey) {
+        return userMapper.getUserByUserKey(userKey);
+    }
+
+    @Transactional
+    @Override
+    public Integer updateUser(User user){
+        String password = user.getPassword();
+        if(!StringUtils.isEmpty(password)){
+            String encodedPassword = passwordEncoder.encode(password);
+            user.setPassword(encodedPassword);
+        }
+
+        Long updatedFileKey = user.getUpdatedProfileFileKey();
+        if(updatedFileKey != null){
+            deleteUserProfileFile(user);
+            user.setProfileFileKey(updatedFileKey);
+        }
+
+        return userMapper.updateUser(user);
+    }
+
+    private void deleteUserProfileFile(User user){
+        Long originFileKey = user.getProfileFileKey();
+        if(originFileKey != null){
+            List<AppFile> appFiles = new ArrayList<>();
+            AppFile profileFile = new AppFile();
+            profileFile.setFileKey(originFileKey);
+            appFiles.add(profileFile);
+
+            fileService.deleteFiles(appFiles);
+        }
+    }
+
+    @Override
     public User loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userMapper.getUserByUserId(userId);
-        if (user == null) {
+        if(user == null) {
             throw new UsernameNotFoundException(userId + "는 존재하지 않는 계정입니다");
         }
 
         user.setUserName(user.getUserId());
         user.setAuthorities(getUserAuthorities(userId));
         return user;
+    }
+
+    @Override
+    public User getUserFromCurrentSession() {
+        User currentUser = getCurrentUser();
+
+        return getUserByUserKey(currentUser.getUserKey());
     }
 
     private List<GrantedAuthority> getUserAuthorities(String userId) {

@@ -283,7 +283,12 @@ const onUpdatePetButtonClick = function (petKey) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 let response = JSON.parse(xhr.responseText);
-                console.log(response);
+				if(response.status){
+					displayAlertModal(true, '요청 성공하였습니다');
+					afterSuccess();
+				} else {
+					displayAlertModal(false, '요청 실패하였습니다');
+                }
             }
         };
         xhr.send(JSON.stringify(requestBody));

@@ -65,21 +65,8 @@ signupButton.onclick = function () {
     let gender;
     for (let i = 0; i < genders.length; i++) {
         if (genders[i].checked) {
-            gender = genders[i].getAttribute('id');
+            gender = genders[i].value
         }
-    }
-
-	if(gender){
-		gender = 'MEN';
-	} else {
-		gender = 'WOMEN';
-	}
-
-    let age;
-    if (birth) {
-        const birthYear = birth.substr(0, 4);
-        const nowYear = new Date().getFullYear();
-        age = nowYear - birthYear;
     }
 
     const uploadFile = function(){
@@ -118,7 +105,7 @@ signupButton.onclick = function () {
             'profileFileKey': fileKey,
             'email': email,
             'phone': phone,
-            'age': age,
+            'birth': birth,
             'gender': gender
         };
 
@@ -128,7 +115,13 @@ signupButton.onclick = function () {
         xhr.onreadystatechange = function(){
             if (xhr.readyState === 4 && xhr.status === 200)
             {
-                console.log(xhr.responseText);
+				let response = JSON.parse(xhr.responseText);
+				if (response.status) {
+					displayAlertModal(true, '요청 성공하였습니다');
+					afterSuccess();
+				} else {
+					displayAlertModal(false, '요청 실패하였습니다');
+				}
             }
         };
         xhr.send(JSON.stringify(requestBody));

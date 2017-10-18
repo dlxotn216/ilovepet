@@ -32,12 +32,13 @@ public interface PetMapper {
     Pet getPetByPetName(String petName);
 
     List<Pet> getPets(PetCriteria petCriteria);
+    Integer getPetsTotalCount(PetCriteria petCriteria);
 
-    //위탁받은 반려동물
     List<Pet> getPetsForCaretaker(PetCriteria petCriteria);
+    Integer getPetsForCaretakerTotalCount(PetCriteria petCriteria);
 
-    //나의 반려동물
     List<Pet> getPetsForConsigner(PetCriteria petCriteria);
+    Integer getPetsForConsignerTotalCount(PetCriteria petCriteria);
 
     Integer updatePet(Pet pet);
 
@@ -47,5 +48,9 @@ public interface PetMapper {
 
     Integer addPetProfileFiles(List<PetFile> files);
 
-    Integer deletePetProfileFiles(List<PetFile> files);
+    List<AppFile> getPetProfileFiles(Long petKey);
+
+    Integer deletePetProfileFilesAsList(List<PetFile> files);
+
+    Integer deletePetProfileFilesByPetKey(Long petKey);
 }

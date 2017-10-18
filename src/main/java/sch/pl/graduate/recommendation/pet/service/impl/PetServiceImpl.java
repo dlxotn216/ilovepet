@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import sch.pl.graduate.recommendation.common.exception.SystemException;
 import sch.pl.graduate.recommendation.common.service.AbstractService;
+import sch.pl.graduate.recommendation.file.model.AppFile;
 import sch.pl.graduate.recommendation.file.service.FileService;
 import sch.pl.graduate.recommendation.pet.mapper.PetMapper;
 import sch.pl.graduate.recommendation.pet.model.Pet;
@@ -69,6 +70,21 @@ public class PetServiceImpl extends AbstractService implements PetService {
     }
 
     @Override
+    public Integer getPetsTotalCount(PetCriteria petCriteria) {
+        User currentUser = getCurrentUser();
+        petCriteria.setOwnerKey(currentUser.getUserKey());
+        if (hasRole("ROLE_CARETAKER")) {
+            return petMapper.getPetsForCaretakerTotalCount(petCriteria);
+        } else if (hasRole("ROLE_CONSIGNER")) {
+            return petMapper.getPetsForConsignerTotalCount(petCriteria);
+        } else if (hasRole("ROLE_ADMIN")) {
+            return petMapper.getPetsTotalCount(petCriteria);
+        } else {
+            throw new SystemException();
+        }
+    }
+
+    @Override
     public Pet getPetByPetKey(Long petKey) {
         return petMapper.getPetByPetKey(petKey);
     }
@@ -85,10 +101,21 @@ public class PetServiceImpl extends AbstractService implements PetService {
         List<PetFile> deletedFiles = pet.getDeletedFiles();
         if (!CollectionUtils.isEmpty(deletedFiles)) {
             deletedFiles.forEach(item -> item.setPetKey(pet.getPetKey()));
-            petMapper.deletePetProfileFiles(deletedFiles);
+            petMapper.deletePetProfileFilesAsList(deletedFiles);
             fileService.deleteFiles(deletedFiles);
         }
         return petMapper.updatePet(pet);
+    }
+
+    @Override
+    @Transactional
+    public Integer deletePet(Pet pet){
+        final Long petKey = pet.getPetKey();
+        List<AppFile> petProfileFiles = petMapper.getPetProfileFiles(petKey);
+        fileService.deleteFiles(petProfileFiles);
+        petMapper.deletePetProfileFilesByPetKey(petKey);
+
+        return petMapper.deletePet(pet);
     }
 
     @Override
@@ -101,4 +128,5 @@ public class PetServiceImpl extends AbstractService implements PetService {
     public List<PetType> getPetTypes(PetCriteria petTypeCriteria) {
         return petMapper.getPetTypes(petTypeCriteria);
     }
+
 }

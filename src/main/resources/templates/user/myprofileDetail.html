@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+	<link rel="stylesheet" href="/css/signup/signup.css" th:href="@{/css/signup/signup.css}"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+<div class="page-wrap">
+	<div class="container">
+		<div class="starter-template view-title">
+			<h3>사용자 프로필</h3>
+		</div>
+		<div class="container" style="margin-top: 40px;">
+			<div class="row">
+				<div class="col-md-10 ">
+					<form class="form-horizontal">
+						<fieldset>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="userId">아이디</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<input id="userId" name="userId" type="text"
+											   placeholder="아이디"
+											   th:value="${profile.userId}"
+											   class="form-control input-md un-changeable" disabled="disabled"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="password">비밀번호</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<input id="password" name="password" type="text"
+											   placeholder="비밀번호"
+											   class="form-control input-md" disabled="disabled"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="userName">이름</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<input id="userName" name="userName" type="text"
+											   placeholder="이름"
+											   th:value="${profile.userName}"
+											   class="form-control input-md" disabled="disabled"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="email">이메일</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<input id="email" name="email" type="text"
+											   placeholder="이메일"
+											   th:value="${profile.email}"
+											   class="form-control input-md" disabled="disabled"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="phone">전화번호</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<input id="phone" name="phone" type="text"
+											   placeholder="전화번호"
+											   th:value="${profile.phone}"
+											   class="form-control input-md" disabled="disabled"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="birth">생년월일</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<input id="birth" name="birth" type="text"
+											   placeholder="생년월일 (ex 19950215)"
+											   th:value="${profile.birth}"
+											   class="form-control input-md" disabled="disabled"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="birth">성별</label>
+								<div class="col-md-8 funkyradio">
+									<div class="funkyradio-primary">
+										<input type="radio" name="gender" class="form-control" id="true"
+											   th:checked="${profile.gender.getValue() == 'MEN'}" disabled="disabled"/>
+										<label for="true">남성</label>
+									</div>
+									<div class="funkyradio-primary">
+										<input type="radio" name="gender" class="form-control" id="false"
+											   th:checked="${profile.gender.getValue() == 'WOMEN'}" disabled="disabled"/>
+										<label for="false">여성</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4 control-label"></label>
+								<div class="col-md-8">
+									<a th:href="@{/myprofile/update}" class="btn btn-warning"><span class="glyphicon glyphicon-thumbs-up"></span> 수정</a>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="col-md-2 hidden-xs">
+					<img th:if="${profile.profileFileKey != null}" th:src="@{'/files/'+${profile.profileFileKey}+'/downloads'}" class="img-responsive img-thumbnail "/>
+					<img th:unless="${profile.profileFileKey != null}" th:src="@{/images/profile.jpg}" class="img-responsive img-thumbnail "/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.container -->
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

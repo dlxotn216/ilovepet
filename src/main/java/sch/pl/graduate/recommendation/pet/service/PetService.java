@@ -22,7 +22,11 @@ public interface PetService {
 
     List<Pet> getPets(PetCriteria petCriteria);
 
+    Integer getPetsTotalCount(PetCriteria petCriteria);
+
     Integer updatePet(Pet pet);
+
+    Integer deletePet(Pet pet);
 
     Boolean currentUserIsOwner(Pet pet);
 

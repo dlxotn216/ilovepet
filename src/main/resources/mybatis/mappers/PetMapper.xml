@@ -32,6 +32,14 @@
         </collection>
     </resultMap>
 
+    <resultMap id="ProfileFileMap" type="AppFile">
+        <id property="fileKey" column="FILE_KEY"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileType" column="FILE_TYPE" typeHandler="FileTypeHandler"/>
+        <result property="format" column="FORMAT"/>
+    </resultMap>
+
     <insert id="addPet">
         INSERT INTO PET(PET_NAME, PET_TYPE_KEY, BIRTH, GENDER, NEUTRALIZING, BARKING, MARKING, MOUNTING, AGGRESSION,
         SIZE, OWNER_KEY, CARETAKER_KEY)
@@ -103,6 +111,13 @@
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
 		        ON C.FILE_KEY = D.FILE_KEY
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <select id="getPetsTotalCount" resultType="Integer">
+        SELECT COUNT(*)
+        FROM PET A
     </select>
 
     <select id="getPetsForCaretaker" resultMap="PetMap">
@@ -115,6 +130,14 @@
             LEFT JOIN FILE D
 		        ON C.FILE_KEY = D.FILE_KEY
         WHERE A.CARETAKER_KEY = #{caretakerKey}
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <select id="getPetsForCaretakerTotalCount" resultType="Integer">
+        SELECT COUNT(*)
+        FROM PET A
+        WHERE A.CARETAKER_KEY = #{caretakerKey}
     </select>
 
     <select id="getPetsForConsigner" resultMap="PetMap">
@@ -126,6 +149,14 @@
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
 		        ON C.FILE_KEY = D.FILE_KEY
+        WHERE A.OWNER_KEY = #{ownerKey}
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <select id="getPetsForConsignerTotalCount" resultType="Integer">
+        SELECT COUNT(*)
+        FROM PET A
         WHERE A.OWNER_KEY = #{ownerKey}
     </select>
 
@@ -200,12 +231,26 @@
         </foreach>
     </insert>
 
-    <delete id="deletePetProfileFiles">
+    <select id="getPetProfileFiles" resultMap="ProfileFileMap">
+        SELECT *
+        FROM PET_FILE A
+        INNER JOIN FILE B
+            ON A.FILE_KEY = B.FILE_KEY
+        WHERE A.PET_KEY = #{petKey}
+    </select>
+
+    <delete id="deletePetProfileFilesAsList">
         DELETE FROM PET_FILE
         <where>
             <foreach collection="list" item="item" separator="OR" close=";">
                 (PET_KEY = #{item.petKey} AND FILE_KEY = #{item.fileKey})
             </foreach>
         </where>
+    </delete>
+
+    <delete id="deletePetProfileFilesByPetKey">
+        DELETE
+        FROM PET_FILE
+        WHERE PET_KEY = #{petKey}
     </delete>
 </mapper>

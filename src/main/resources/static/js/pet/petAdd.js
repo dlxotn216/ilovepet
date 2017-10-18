@@ -10,7 +10,7 @@ noUiSlider.create(slider_barking, {
 	start: 10,
 	behaviour: 'snap',
 	connect: [true, false],
-	tooltips: [ true ],
+	tooltips: [true],
 	range: {
 		'min': 0,
 		'max': 100
@@ -22,7 +22,7 @@ noUiSlider.create(slider_marking, {
 	start: 10,
 	behaviour: 'snap',
 	connect: [true, false],
-	tooltips: [ true ],
+	tooltips: [true],
 	range: {
 		'min': 0,
 		'max': 100
@@ -34,7 +34,7 @@ noUiSlider.create(slider_mounting, {
 	start: 10,
 	behaviour: 'snap',
 	connect: [true, false],
-	tooltips: [ true ],
+	tooltips: [true],
 	range: {
 		'min': 0,
 		'max': 100
@@ -46,7 +46,7 @@ noUiSlider.create(slider_aggression, {
 	start: 10,
 	behaviour: 'snap',
 	connect: [true, false],
-	tooltips: [ true ],
+	tooltips: [true],
 	range: {
 		'min': 0,
 		'max': 100
@@ -57,7 +57,7 @@ noUiSlider.create(slider_size, {
 	start: 10,
 	behaviour: 'snap',
 	connect: [true, false],
-	tooltips: [ true ],
+	tooltips: [true],
 	range: {
 		'min': 0,
 		'max': 100
@@ -179,7 +179,7 @@ const onAddPetButtonClick = function () {
 			gender = genders[i].value;
 		}
 	}
-	if(gender === 'true'){
+	if (gender === 'true') {
 		gender = 'MEN';
 	} else {
 		gender = 'WOMEN';
@@ -206,13 +206,13 @@ const onAddPetButtonClick = function () {
 		let count = 0;
 		for (let i = 0; i < profileFiles.length; i++) {
 			const file = profileFiles[i].files[0];
-			if(file){
+			if (file) {
 				count++;
 				formData.append('files', file);
 			}
 		}
 
-		if(!count){
+		if (!count) {
 			addPet(null);
 			return;
 		}
@@ -254,7 +254,6 @@ const onAddPetButtonClick = function () {
 			'addedFiles': addedFiles,
 		};
 
-		console.log("DEBUG CHECK REQU BODY :", requestBody);
 		const xhr = new XMLHttpRequest();
 		// xhr.setRequestHeader()
 		xhr.open("POST", "/pets");
@@ -262,7 +261,12 @@ const onAddPetButtonClick = function () {
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4 && xhr.status === 200) {
 				let response = JSON.parse(xhr.responseText);
-				console.log(response);
+				if (response.status) {
+					displayAlertModal(true, '요청 성공하였습니다');
+					afterSuccess();
+				} else {
+					displayAlertModal(false, '요청 실패하였습니다');
+				}
 			}
 		};
 		xhr.send(JSON.stringify(requestBody));

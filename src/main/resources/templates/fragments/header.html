@@ -49,7 +49,7 @@
 				<li class="active"><a th:href="@{/signup}">아직 회원이 아니세요?</a></li>
 			</ul>
 			<ul sec:authorize="!isAnonymous()" class="nav navbar-nav navbar-right">
-				<li><a>안녕하세요 <span sec:authentication="name"></span> 님</a></li>
+				<li class="active"><a th:href="@{/myprofile}">안녕하세요 <span sec:authentication="name"></span> 님</a></li>
 				<li class="active"><a th:href="@{/logout}">로그아웃</a></li>
 			</ul>
 		</div>

@@ -28,11 +28,14 @@
 		<div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
 			<div class="col-sm-10">
 				<ul class="pagination" style="float:left; margin: 0px !important;">
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
+					<li>
+						<a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
+					</li>
+					<li th:each="i : ${#numbers.sequence( 0, totalPage)}"
+						th:classappend="${(i+1) == currentPage} ? 'active'">
+						<a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
+						<a th:unless="${(i+1) == currentPage}" th:href="@{/pet(page=${i+1},limit=12)}" th:text="${i}+1"></a>
+					</li>
 				</ul>
 			</div>
 			<div class="col-sm-2" style="float: right !important;">
@@ -42,10 +45,10 @@
 			</div>
 		</div>
 		<div class="row">
-			<div th:each="pet : ${pets}" th:onclick="'onPetDetailClick('+${pet.petKey}+')'" class="pet-box col-md-4">
+			<div th:each="pet : ${pets}" th:onclick="'onPetDetailClick('+${pet.petKey}+')'" class="pet-box col-md-3">
 				<div class="thumbnail">
 					<a th:if="${pet.profileFiles != null and pet.profileFiles.size() > 0}" target="_blank">
-						<img th:src="${'/files/'+pet.profileFiles.get(0).fileKey}+'/downloads'"/>
+						<img th:src="${'/files/'+pet.profileFiles.get(0).fileKey}+'/downloads'" style="height: 300px !important;"/>
 						<div class="caption">
 							<p th:text="${pet.petName}"></p>
 							<div class="progress">
@@ -86,9 +89,9 @@
 						</div>
 					</a>
 					<a th:if="${pet.profileFiles == null or pet.profileFiles.size() == 0}">
-						<img th:if="${pet.petKey % 3 == 0}" th:src="@{/images/price_2.png}"/>
-						<img th:if="${pet.petKey % 3 == 1}" th:src="@{/images/play.png}"/>
-						<img th:if="${pet.petKey % 3 == 2}" th:src="@{/images/price_3.png}"/>
+						<img th:if="${pet.petKey % 3 == 0}" th:src="@{/images/price_2.png}" style="height: 300px !important;"/>
+						<img th:if="${pet.petKey % 3 == 1}" th:src="@{/images/play.png}" style="height: 300px !important;"/>
+						<img th:if="${pet.petKey % 3 == 2}" th:src="@{/images/price_3.png}" style="height: 300px !important;"/>
 						<div class="caption">
 							<p th:text="${pet.petName}"></p>
 							<div class="progress">

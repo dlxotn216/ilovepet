@@ -9,6 +9,7 @@
         <result property="userId" column="USER_ID"/>
         <result property="userName" column="USER_NAME"/>
         <result property="age" column="AGE"/>
+        <result property="birth" column="BIRTH"/>
         <result property="email" column="EMAIL"/>
         <result property="phone" column="PHONE"/>
         <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
@@ -22,7 +23,7 @@
         (
             USER_ID,
             PASSWORD,
-            AGE,
+            BIRTH,
             GENDER,
             EMAIL,
             PHONE,
@@ -38,7 +39,7 @@
         (
             #{userId},
             #{password},
-            #{age},
+            #{birth},
             #{gender},
             #{email},
             #{phone},
@@ -52,31 +53,41 @@
         )
     </insert>
 
-    <select id="getUser">
-        SELECT *
-        FROM USER
+    <select id="getUser" resultMap="UserMap">
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+        FROM USER A
+        LEFT JOIN FILE B
+            ON A.PROFILE_FILE_KEY = B.FILE_KEY
         WHERE
-        USER_KEY = #{userKey}
+        A.USER_KEY = #{userKey}
         <if test="userId != null">
-            AND USER_ID = #{userId}
+            AND A.USER_ID = #{userId}
         </if>
     </select>
 
-    <select id="getUserByUserKey">
-        SELECT *
-          FROM USER
-        WHERE USER_KEY = #{userKey}
+    <select id="getUserByUserKey" resultMap="UserMap">
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+          FROM USER A
+          LEFT JOIN FILE B
+            ON A.PROFILE_FILE_KEY = B.FILE_KEY
+        WHERE A.USER_KEY = #{userKey}
     </select>
 
     <select id="getUserByUserId" resultMap="UserMap">
-        SELECT *
-          FROM USER
-        WHERE USER_ID = #{userId}
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+          FROM USER A
+          LEFT JOIN FILE B
+            ON A.PROFILE_FILE_KEY = B.FILE_KEY
+        WHERE A.USER_ID = #{userId}
     </select>
 
     <select id="getUsers" resultMap="UserMap">
-        SELECT *
-          FROM USER
+        SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
+          FROM USER A
+          LEFT JOIN FILE B
+            ON A.PROFILE_FILE_KEY = B.FILE_KEY
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
 
     <select id="getUsersTotalCount">
@@ -88,19 +99,19 @@
         UPDATE
         USER
         <set>
-            <if test="password != null">
+            <if test="password != null and !password.trim().equals('') ">
                 PASSWORD = #{password},
             </if>
-            <if test="age != null">
-                AGE = #{age},
+            <if test="birth != null and !birth.trim().equals('') ">
+                BIRTH = #{birth},
             </if>
             <if test="gender != null">
                 GENDER = #{gender},
             </if>
-            <if test="email != null">
+            <if test="email != null and !email.trim().equals('') ">
                 EMAIL = #{email},
             </if>
-            <if test="phone != null">
+            <if test="phone != null and !phone.trim().equals('') ">
                 PHONE = #{phone},
             </if>
             <if test="profileFileKey != null">
@@ -109,7 +120,7 @@
             <if test="roleKey != null">
                 ROLE_KEY = #{roleKey},
             </if>
-            <if test="userName != null">
+            <if test="userName != null and !userName.trim().equals('') ">
                 USER_NAME = #{userName},
             </if>
             <if test="isAccountNonExpired != null">
