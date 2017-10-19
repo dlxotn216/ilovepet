@@ -13,51 +13,81 @@
         <result property="email" column="EMAIL"/>
         <result property="phone" column="PHONE"/>
         <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
-        <result property="profileFileKey" column="PROFILE_FILE_KEY" />
-        <result property="roleKey" column="ROLE_KEY" />
+        <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
+        <result property="roleKey" column="ROLE_KEY"/>
+    </resultMap>
 
+    <resultMap id="CaretakerMap" type="Caretaker">
+        <id property="userKey" column="USER_KEY"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="age" column="AGE"/>
+        <result property="birth" column="BIRTH"/>
+        <result property="email" column="EMAIL"/>
+        <result property="phone" column="PHONE"/>
+        <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
+        <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
+        <result property="roleKey" column="ROLE_KEY"/>
+
+        <result property="petCount" column="PET_COUNT"/>
+        <result property="title" column="TITLE"/>
+        <result property="summary" column="SUMMARY"/>
+        <result property="feePerNight" column="FEE_PER_NIGHT"/>
+        <result property="additionalFee" column="ADDITIONAL_FEE"/>
+        <result property="liveWithFamily" column="LIVE_WITH_FAMILY" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="hasYoungChildren" column="HAS_YOUNG_CHILDREN" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="yard" column="YARD" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="pickup" column="PICKUP" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="checkIn" column="CHECK_IN"/>
+        <result property="checkOut" column="CHECK_IN"/>
+        <collection property="introductionFiles" javaType="java.util.List" ofType="CaretakerFile">
+            <id property="fileKey" column="FILE_KEY"/>
+        </collection>
     </resultMap>
 
     <insert id="addUser">
         INSERT INTO USER
         (
-            USER_ID,
-            PASSWORD,
-            BIRTH,
-            GENDER,
-            EMAIL,
-            PHONE,
-            PROFILE_FILE_KEY,
-            ROLE_KEY,
-            USER_NAME,
-            IS_ACCOUNT_NON_EXPIRED,
-            IS_ACCOUNT_NON_LOCKED,
-            IS_CREDENTIALS_NON_EXPIRED,
-            IS_ENABLED
+        USER_ID,
+        PASSWORD,
+        BIRTH,
+        GENDER,
+        EMAIL,
+        PHONE,
+        PROFILE_FILE_KEY,
+        ROLE_KEY,
+        USER_NAME,
+        IS_ACCOUNT_NON_EXPIRED,
+        IS_ACCOUNT_NON_LOCKED,
+        IS_CREDENTIALS_NON_EXPIRED,
+        IS_ENABLED
         )
         VALUES
         (
-            #{userId},
-            #{password},
-            #{birth},
-            #{gender},
-            #{email},
-            #{phone},
-            #{profileFileKey},
-            #{roleKey},
-            #{userName},
-            1,
-            1,
-            1,
-            1
+        #{userId},
+        #{password},
+        #{birth},
+        #{gender},
+        #{email},
+        #{phone},
+        #{profileFileKey},
+        #{roleKey},
+        #{userName},
+        1,
+        1,
+        1,
+        1
         )
+        <selectKey resultType="Long" keyProperty="userKey" order="AFTER" keyColumn="USER_KRY">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
     <select id="getUser" resultMap="UserMap">
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
         FROM USER A
         LEFT JOIN FILE B
-            ON A.PROFILE_FILE_KEY = B.FILE_KEY
+        ON A.PROFILE_FILE_KEY = B.FILE_KEY
         WHERE
         A.USER_KEY = #{userKey}
         <if test="userId != null">
@@ -83,9 +113,9 @@
 
     <select id="getUsers" resultMap="UserMap">
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
-          FROM USER A
-          LEFT JOIN FILE B
-            ON A.PROFILE_FILE_KEY = B.FILE_KEY
+        FROM USER A
+        LEFT JOIN FILE B
+        ON A.PROFILE_FILE_KEY = B.FILE_KEY
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
@@ -100,7 +130,7 @@
         FROM USER A
         LEFT JOIN ROLE B
         ON A.ROLE_KEY = B.ROLE_KEY
-        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+        WHERE B.ROLE_NAME LIKE '%CONSIGNER'
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
@@ -110,15 +140,19 @@
         FROM USER A
         LEFT JOIN ROLE B
         ON A.ROLE_KEY = B.ROLE_KEY
-        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+        WHERE B.ROLE_NAME LIKE '%CONSIGNER'
     </select>
 
-    <select id="getUsersForConsigner" resultMap="UserMap">
+    <select id="getUsersForConsigner" resultMap="CaretakerMap">
         SELECT *
         FROM USER A
         LEFT JOIN ROLE B
         ON A.ROLE_KEY = B.ROLE_KEY
-        WHERE B.ROLE_NAME LIKE '%CONSIGNER'
+        LEFT JOIN CARETAKER C
+        ON A.USER_KEY = C.USER_KEY
+        LEFT JOIN CARETAKER_FILE D
+        ON A.USER_KEY = D.USER_KEY
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
@@ -128,11 +162,11 @@
         FROM USER A
         LEFT JOIN ROLE B
         ON A.ROLE_KEY = B.ROLE_KEY
-        WHERE B.ROLE_NAME LIKE '%CONSIGNER'
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
     </select>
 
 
-    <update id="updateUser">
+    <update id="updateUser" parameterType="User">
         UPDATE
         USER
         <set>

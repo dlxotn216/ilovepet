@@ -21,7 +21,7 @@ public class UserController extends AbstractController {
 
     @PostMapping("/users")
     public ResponseEntity addUser(@RequestBody User user) {
-        Integer result = userService.addUser(user);
+        Long result = userService.addUser(user);
 
         return getSuccessResponse(result, "성공하였습니다");
     }

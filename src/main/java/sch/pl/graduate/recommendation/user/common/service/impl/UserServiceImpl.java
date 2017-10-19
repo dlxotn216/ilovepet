@@ -13,10 +13,13 @@ import sch.pl.graduate.recommendation.file.model.AppFile;
 import sch.pl.graduate.recommendation.file.service.FileService;
 import sch.pl.graduate.recommendation.role.model.Role;
 import sch.pl.graduate.recommendation.role.service.RoleService;
+import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
+import sch.pl.graduate.recommendation.user.caretaker.service.CaretakerService;
 import sch.pl.graduate.recommendation.user.common.mapper.UserMapper;
 import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.common.service.UserService;
+import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +40,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
     private FileService fileService;
 
     @Autowired
+
+    private CaretakerService caretakerService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public Integer addUser(User user) {
+    public Long addUser(User user) {
         String password = user.getPassword();
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
@@ -53,8 +60,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
         }
 
         user.setRoleKey(role.getRoleKey());
-
-        return userMapper.addUser(user);
+        userMapper.addUser(user);
+        return user.getUserKey();
     }
 
     @Override
@@ -73,7 +80,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
-    public List<User> getUsers(UserCriteria userCriteria) {
+    public List<? extends User> getUsers(UserCriteria userCriteria) {
         if (hasRole("ROLE_CARETAKER")) {
             return getUsersForCaretaker(userCriteria);
         } else if (hasRole("ROLE_CONSIGNER")) {
@@ -98,19 +105,23 @@ public class UserServiceImpl extends AbstractService implements UserService {
         }
     }
 
-    private List<User> getUsersForCaretaker(UserCriteria userCriteria) {
+    @Override
+    public List<Consigner> getUsersForCaretaker(UserCriteria userCriteria) {
         return userMapper.getUsersForCaretaker(userCriteria);
     }
 
-    private Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria) {
+    @Override
+    public Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria) {
         return userMapper.getUsersForCaretakerTotalCount(userCriteria);
     }
 
-    private List<User> getUsersForConsigner(UserCriteria userCriteria) {
+    @Override
+    public List<Caretaker> getUsersForConsigner(UserCriteria userCriteria) {
         return userMapper.getUsersForConsigner(userCriteria);
     }
 
-    private Integer getUsersForConsignerTotalCount(UserCriteria userCriteria) {
+    @Override
+    public Integer getUsersForConsignerTotalCount(UserCriteria userCriteria) {
         return userMapper.getUsersForConsignerTotalCount(userCriteria);
     }
 
@@ -167,6 +178,14 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
         return getUserByUserKey(currentUser.getUserKey());
     }
+
+    @Override
+    public Caretaker getCaretakerFromCurrentSession() {
+        User currentUser = getCurrentUser();
+
+        return caretakerService.getCaretakerByUserKey(currentUser.getUserKey());
+    }
+
 
     private List<GrantedAuthority> getUserAuthorities(String userId) {
         return roleService.getUserRolesByUserId(userId);

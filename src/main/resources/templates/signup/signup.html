@@ -33,40 +33,187 @@
 								<input id="userType" type="hidden" th:value="${signupValue.value}"/>
 								<h3 class="text-center" th:text="${signupValue.name}"><i class="fa fa-lock"></i></h3>
 								<form class="signup">
-									<div class="form-group">
-										<input id="userId" type="text" class="form-control" placeholder="아이디" autocomplete="true" required="true"/>
-									</div>
-									<div class="form-group">
-										<input id="password" type="password" class="form-control" placeholder="비밀번호" required="true"/>
-									</div>
-									<div class="form-group">
-										<input id="password2" type="password" class="form-control" placeholder="비밀번호 재입력" required="true"/>
-									</div>
-									<div class="form-group">
-										<input id="userName" type="text" class="form-control" placeholder="이름" required="true"/>
-									</div>
-									<div class="form-group">
-										<input id="email" type="email" class="form-control" placeholder="이메일" required="true"/>
-									</div>
-									<div class="form-group">
-										<input id="phone" type="text" class="form-control" placeholder="전화번호" required="true"/>
-									</div>
-									<div class="form-group">
-										<input id="birth" type="birth" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"/>
-									</div>
-									<div class="form-group funkyradio">
-										<div class="funkyradio-primary">
-											<input type="radio" name="gender" class="form-control" id="true" value="MEN"
-												   checked="checked"/>
-											<label for="true">남성</label>
+									<fieldset>
+										<legend>사용자 프로필 입력</legend>
+										<div class="form-group">
+											<input id="userId" type="text" class="form-control" placeholder="아이디" autocomplete="true" required="true"/>
 										</div>
-										<div class="funkyradio-primary">
-											<input type="radio" name="gender" class="form-control" id="false" value="WOMEN"/>
-											<label for="false">여성</label>
+										<div class="form-group">
+											<input id="password" type="password" class="form-control" placeholder="비밀번호" required="true"/>
 										</div>
-									</div>
-									<div class="form-group">
-										<input id="profileFile" type="file" class="form-control" placeholder="프로필 이미지"/>
+										<div class="form-group">
+											<input id="password2" type="password" class="form-control" placeholder="비밀번호 재입력" required="true"/>
+										</div>
+										<div class="form-group">
+											<input id="userName" type="text" class="form-control" placeholder="이름" required="true"/>
+										</div>
+										<div class="form-group">
+											<input id="email" type="email" class="form-control" placeholder="이메일" required="true"/>
+										</div>
+										<div class="form-group">
+											<input id="phone" type="text" class="form-control" placeholder="전화번호" required="true"/>
+										</div>
+										<div class="form-group">
+											<input id="birth" type="birth" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"/>
+										</div>
+										<div class="form-group funkyradio">
+											<div class="funkyradio-primary">
+												<input type="radio" name="gender" class="form-control" id="true" value="MEN"
+													   checked="checked"/>
+												<label for="true">남성</label>
+											</div>
+											<div class="funkyradio-primary">
+												<input type="radio" name="gender" class="form-control" id="false" value="WOMEN"/>
+												<label for="false">여성</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<input id="profileFile" type="file" class="form-control" placeholder="프로필 이미지"/>
+										</div>
+									</fieldset>
+
+									<div th:if="${#strings.equals('ROLE_CARETAKER', signupValue.value)}" style="margin-top: 40px;">
+										<fieldset>
+											<legend>돌보미 프로필 입력</legend>
+
+											<div class="form-group">
+												<input type="number" placeholder="보유 중 반려 동물 수" name="petCount" class="form-control" id="petCount"/>
+											</div>
+											<div class="form-group">
+												<input type="text" placeholder="프로필 제목" name="title" class="form-control" id="title"/>
+											</div>
+											<div class="form-group">
+												<textarea placeholder="프로필 상세" name="summary" class="form-control"
+														  id="summary"></textarea>
+											</div>
+											<div class="form-group">
+												<input type="number" placeholder="1박 당 요금 (단위: 원)" name="feePerNight" class="form-control" id="feePerNight"/>
+											</div>
+											<div class="form-group">
+												<input type="number" placeholder="추가 반려 동물 당 요금 (단위: 원)" name="additionalFee" class="form-control"
+													   id="additionalFee"/>
+											</div>
+
+											<div class="form-group row">
+												<div class="col-md-6" style="padding-left: 0px;">
+													<div class="col-md-6">
+														<select id="checkInTime" name="checkInTime" class="form-control">
+															<option value="-1" disabled="disabled" selected="selected">
+																체크인 (시간)
+															</option>
+															<option th:each="i : ${#numbers.sequence( 0, 23)}"
+																	th:value="${i}"
+																	th:text="${i}+'시'"></option>
+														</select>
+													</div>
+													<div class="col-md-6">
+														<select id="checkInMinute" name="checkInMinute" class="form-control">
+															<option value="-1" disabled="disabled" selected="selected">
+																체크인 (분)
+															</option>
+															<option value="0">00분</option>
+															<option value="30">30분</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-md-6" style="padding-right:0px;">
+													<div class="col-md-6">
+														<select id="checkOutTime" name="checkOutTime" class="form-control">
+															<option value="-1" disabled="disabled" selected="selected">
+																체크아웃 (시간)
+															</option>
+															<option th:each="i : ${#numbers.sequence( 0, 23)}"
+																	th:value="${i}"
+																	th:text="${i}+'시'"></option>
+														</select>
+													</div>
+													<div class="col-md-6">
+														<select id="checkOutMinute" name="checkOutMinute" class="form-control">
+															<option value="-1" disabled="disabled" selected="selected">
+																체크아웃 (분)
+															</option>
+															<option value="0">00분</option>
+															<option value="30">30분</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group funkyradio">
+												<div class="funkyradio-primary">
+													<input type="radio" name="yard" class="form-control" id="yard-true" value="true"
+														   checked="checked"/>
+													<label for="yard-true">마당이 있습니다</label>
+												</div>
+												<div class="funkyradio-primary">
+													<input type="radio" name="yard" class="form-control" id="yard-false" value="false"/>
+													<label for="yard-false">마당이 없습니다</label>
+												</div>
+											</div>
+											<div class="form-group funkyradio">
+												<div class="funkyradio-success">
+													<input type="radio" name="liveWithFamily" class="form-control" id="liveWithFamily-true" value="true"
+														   checked="checked"/>
+													<label for="liveWithFamily-true">가족과 함께 삽니다</label>
+												</div>
+												<div class="funkyradio-success">
+													<input type="radio" name="liveWithFamily" class="form-control" id="liveWithFamily-false" value="false"/>
+													<label for="liveWithFamily-false">가족과 함께 살고있지 않습니다</label>
+												</div>
+											</div>
+											<div class="form-group funkyradio">
+												<div class="funkyradio-danger">
+													<input type="radio" name="hasYoungChildren" class="form-control" id="hasYoungChildren-true" value="true"
+														   checked="checked"/>
+													<label for="hasYoungChildren-true">12세 미만 어린 아이가 있습니다</label>
+												</div>
+												<div class="funkyradio-danger">
+													<input type="radio" name="hasYoungChildren" class="form-control" id="hasYoungChildren-false" value="false"/>
+													<label for="hasYoungChildren-false">12세 미만 어린 아이가 없습니다</label>
+												</div>
+											</div>
+											<div class="form-group funkyradio">
+												<div class="funkyradio-warning">
+													<input type="radio" name="pickup" class="form-control" id="pickup-true" value="true"
+														   checked="checked"/>
+													<label for="pickup-true">픽업 가능합니다</label>
+												</div>
+												<div class="funkyradio-warning">
+													<input type="radio" name="pickup" class="form-control" id="pickup-false" value="false"/>
+													<label for="pickup-false">픽업 가능하지 않습니다</label>
+												</div>
+											</div>
+
+											<div id="image-form-wrap">
+												<input type="hidden" id="imageFormId" value="1"/>
+												<div class="form-group row">
+													<label class="col-md-2">Upload Image</label>
+													<div class="col-md-6">
+														<div class="input-group">
+												<span class="input-group-btn">
+													<span class="btn btn-default btn-file">
+														Browse… <input type="file"
+																	   id="imageInput1"
+																	   class="files"
+																	   onchange="onChange('1')"/>
+													</span>
+												</span>
+															<input type="text" id="fileName1" class="form-control" readonly="readonly"/>
+														</div>
+													</div>
+													<div class="col-md-3">
+														<div class="thumbnail">
+															<img id="image1" style="width: 100%"/>
+														</div>
+													</div>
+													<div class="col-md-1">
+														<button id="1" type="button" onclick="onImageFormAddClick(this)" class="btn btn-primary"><span
+																class="glyphicon glyphicon-plus"></span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</fieldset>
 									</div>
 									<div class="form-group">
 										<input id="btn-signup" type="button" class="btn btn-success btn-block" value="가입"/>

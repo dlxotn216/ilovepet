@@ -123,9 +123,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
     private ResponseEntity<byte[]> getFileResponse(byte[] bytes, String fileName) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-
         httpHeaders.setContentLength(bytes.length);
-
         httpHeaders.setContentDispositionFormData("attachment", fileName, Charset.forName("UTF-8"));
 
         return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
@@ -148,6 +146,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
         for (AppFile appFile : deletedFiles) {
             File file = new File(appFile.getFilePath());
             if (file.exists()) {
+                log.info("Real file deleted :" +appFile.getFileName());
                 file.delete();
             }
         }

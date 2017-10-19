@@ -36,13 +36,13 @@
 			<ul sec:authorize="hasRole('ROLE_CARETAKER')" class="nav navbar-nav">
 				<li class="active"><a th:href="@{/caretaker}">대시보드</a></li>
 				<li class="active"><a th:href="@{/pet}">위탁 대기 중 반려동물</a></li>
-				<li class="active"><a th:href="@{/user}">맡기미 목록</a></li>
+				<li class="active"><a th:href="@{/caretaker/user}">맡기미 목록</a></li>
 			</ul>
 			<!-- 맡기미 (위탁자)-->
 			<ul sec:authorize="hasRole('ROLE_CONSIGNER')" class="nav navbar-nav">
 				<li class="active"><a th:href="@{/consigner}">대시보드</a></li>
 				<li class="active"><a th:href="@{/pet}">나의 반려동물</a></li>
-				<li class="active"><a th:href="@{/user}">돌보미 목록</a></li>
+				<li class="active"><a th:href="@{/consigner/user}">돌보미 목록</a></li>
 			</ul>
 			<ul sec:authorize="isAnonymous()" class="nav navbar-nav navbar-right">
 				<li class="active"><a th:href="@{/login}">로그인</a></li>

@@ -20,8 +20,9 @@ import java.util.Map;
 public enum FileType {
     USER_PROFILE(0),
     PET_PROFILE(1),
-    LOGO(2),
-    SYSTEM(3);
+    CARETAKER_INTRO(2),
+    LOGO(3),
+    SYSTEM(4);
 
     private static final Map<Integer, FileType> lookup = new HashMap<>(HashMapUtil.getCapacity(4));
 

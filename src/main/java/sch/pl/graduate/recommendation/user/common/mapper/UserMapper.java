@@ -2,8 +2,10 @@ package sch.pl.graduate.recommendation.user.common.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
 
 import java.util.List;
 
@@ -25,11 +27,11 @@ public interface UserMapper {
 
     Integer getUsersTotalCount(UserCriteria userCriteria);
 
-    List<User> getUsersForCaretaker(UserCriteria userCriteria);
+    List<Consigner> getUsersForCaretaker(UserCriteria userCriteria);
 
     Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria);
 
-    List<User> getUsersForConsigner(UserCriteria userCriteria);
+    List<Caretaker> getUsersForConsigner(UserCriteria userCriteria);
 
     Integer getUsersForConsignerTotalCount(UserCriteria userCriteria);
 

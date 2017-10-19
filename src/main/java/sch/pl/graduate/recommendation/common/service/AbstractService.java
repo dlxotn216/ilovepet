@@ -13,8 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import sch.pl.graduate.recommendation.common.exception.SystemException;
 import sch.pl.graduate.recommendation.user.common.model.User;
+import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
  * Created by Lee Tae Su on 2017-10-16.
  */
 @Service
-public class AbstractService {
+public abstract class AbstractService {
     protected Set<String> getCurrentUserRoles() {
         SecurityContext context = SecurityContextHolder.getContext();
         if(context == null)

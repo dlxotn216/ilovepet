@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 	<div th:replace="fragments/header :: header-css"/>
 	<link rel="stylesheet" href="/css/signup/signup.css" th:href="@{/css/signup/signup.css}"/>
@@ -127,6 +128,9 @@
 								<label class="col-md-4 control-label"></label>
 								<div class="col-md-8">
 									<a th:href="@{/myprofile/update}" class="btn btn-warning"><span class="glyphicon glyphicon-thumbs-up"></span> 수정</a>
+									<a sec:authorize="hasRole('ROLE_CARETAKER')" th:href="@{/myprofile/caretaker}"
+									   class="btn btn-success" style="float: right">
+										<span class="glyphicon glyphicon-thumbs-up"></span> 돌보미 프로필 보기</a>
 								</div>
 							</div>
 						</fieldset>

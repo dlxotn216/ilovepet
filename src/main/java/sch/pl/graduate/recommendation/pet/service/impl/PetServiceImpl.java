@@ -47,7 +47,7 @@ public class PetServiceImpl extends AbstractService implements PetService {
 
         List<PetFile> addedFiles = pet.getAddedFiles();
         if (!CollectionUtils.isEmpty(addedFiles)) {
-            addedFiles.stream().forEach(item -> item.setPetKey(pet.getPetKey()));
+            addedFiles.forEach(item -> item.setPetKey(pet.getPetKey()));
             petMapper.addPetProfileFiles(addedFiles);
         }
 
@@ -94,7 +94,7 @@ public class PetServiceImpl extends AbstractService implements PetService {
     public Integer updatePet(Pet pet) {
         List<PetFile> addedFiles = pet.getAddedFiles();
         if (!CollectionUtils.isEmpty(addedFiles)) {
-            addedFiles.stream().forEach(item -> item.setPetKey(pet.getPetKey()));
+            addedFiles.forEach(item -> item.setPetKey(pet.getPetKey()));
             petMapper.addPetProfileFiles(addedFiles);
         }
 

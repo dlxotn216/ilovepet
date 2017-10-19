@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper">
+    <resultMap id="CaretakerMap" type="Caretaker">
+        <id property="userKey" column="USER_KEY"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="age" column="AGE"/>
+        <result property="birth" column="BIRTH"/>
+        <result property="email" column="EMAIL"/>
+        <result property="phone" column="PHONE"/>
+        <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
+        <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
+        <result property="roleKey" column="ROLE_KEY"/>
+
+        <result property="petCount" column="PET_COUNT"/>
+        <result property="title" column="TITLE"/>
+        <result property="summary" column="SUMMARY"/>
+        <result property="feePerNight" column="FEE_PER_NIGHT"/>
+        <result property="additionalFee" column="ADDITIONAL_FEE"/>
+        <result property="liveWithFamily" column="LIVE_WITH_FAMILY" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="hasYoungChildren" column="HAS_YOUNG_CHILDREN" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="yard" column="YARD" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="pickup" column="PICKUP" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="checkIn" column="CHECK_IN"/>
+        <result property="checkInHour" column="CHECK_IN_HOUR"/>
+        <result property="checkInMin" column="CHECK_IN_MIN"/>
+        <result property="checkOut" column="CHECK_OUT"/>
+        <result property="checkOutHour" column="CHECK_OUT_HOUR"/>
+        <result property="checkOutMin" column="CHECK_OUT_MIN"/>
+        <collection property="introductionFiles" javaType="java.util.List" ofType="AppFile">
+            <id property="fileKey" column="FILE_KEY"/>
+            <result property="fileName" column="FILE_NAME"/>
+            <result property="filePath" column="FILE_PATH"/>
+            <result property="fileType" column="FILE_TYPE" typeHandler="FileTypeHandler"/>
+            <result property="format" column="FORMAT"/>
+        </collection>
+    </resultMap>
+
+    <insert id="addCaretaker" parameterType="Caretaker">
+        INSERT INTO CARETAKER
+        (
+            USER_KEY,
+            PET_COUNT,
+            TITLE,
+            FEE_PER_NIGHT,
+            ADDITIONAL_FEE,
+            LIVE_WITH_FAMILY,
+            HAS_YOUNG_CHILDREN,
+            SUMMARY,
+            YARD,
+            PICKUP,
+            CHECK_IN,
+            CHECK_OUT
+        )
+        VALUES
+        (
+            #{userKey},
+            #{petCount},
+            #{title},
+            #{feePerNight},
+            #{additionalFee},
+            #{liveWithFamily},
+            #{hasYoungChildren},
+            #{summary},
+            #{yard},
+            #{pickup},
+            #{checkIn},
+            #{checkOut}
+        )
+    </insert>
+
+    <update id="updateCaretaker" parameterType="Caretaker">
+        UPDATE
+        CARETAKER
+        <set>
+            <if test="petCount != null">
+                PET_COUNT = #{petCount},
+            </if>
+            <if test="title != null and !title.trim().equals('') ">
+                TITLE = #{title},
+            </if>
+            <if test="feePerNight != null">
+                FEE_PER_NIGHT = #{feePerNight},
+            </if>
+            <if test="additionalFee != null">
+                ADDITIONAL_FEE = #{additionalFee},
+            </if>
+            <if test="liveWithFamily != null">
+                LIVE_WITH_FAMILY = #{liveWithFamily},
+            </if>
+            <if test="hasYoungChildren != null">
+                HAS_YOUNG_CHILDREN = #{hasYoungChildren},
+            </if>
+            <if test="summary != null and !summary.trim().equals('') ">
+                SUMMARY = #{summary},
+            </if>
+            <if test="yard != null">
+                YARD = #{yard},
+            </if>
+            <if test="pickup != null">
+                PICKUP = #{pickup},
+            </if>
+            <if test="checkIn != null">
+                CHECK_IN = #{checkIn},
+            </if>
+            <if test="checkOut != null">
+                CHECK_OUT = #{checkOut},
+            </if>
+        </set>
+        WHERE
+        USER_KEY = #{userKey}
+    </update>
+
+    <insert id="addCaretakerIntroFiles" parameterType="CaretakerFile">
+        INSERT INTO CARETAKER_FILE(USER_KEY, FILE_KEY)
+        VALUES
+        <foreach collection="list" item="item" separator="," close=";">
+            (
+            #{item.userKey},
+            #{item.fileKey}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteCaretakerIntroFilesAsList">
+        DELETE FROM CARETAKER_FILE
+        <where>
+            <foreach collection="list" item="item" separator="OR" close=";">
+                (USER_KEY = #{item.userKey} AND FILE_KEY = #{item.fileKey})
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="getCaretakerByUserKey" resultMap="CaretakerMap">
+        SELECT *
+        	, SUBSTRING_INDEX(CHECK_IN, ':', 1) AS CHECK_IN_HOUR
+            , SUBSTRING_INDEX(SUBSTRING_INDEX(CHECK_IN, ':', 2),':', -1) AS CHECK_IN_MIN
+            , SUBSTRING_INDEX(CHECK_OUT, ':', 1) AS CHECK_OUT_HOUR
+            , SUBSTRING_INDEX(SUBSTRING_INDEX(CHECK_OUT, ':', 2),':', -1) CHECK_OUT_MIN
+        FROM USER A
+        LEFT JOIN ROLE B
+            ON A.ROLE_KEY = B.ROLE_KEY
+        LEFT JOIN CARETAKER C
+            ON A.USER_KEY = C.USER_KEY
+        LEFT JOIN CARETAKER_FILE D
+            ON A.USER_KEY = D.USER_KEY
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+            AND A.USER_KEY = #{userKey}
+    </select>
+</mapper>

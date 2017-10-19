@@ -36,7 +36,7 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/files", "/users", "/about", "/signup", "/consigner/signup", "/caretaker/signup").permitAll()
+                .antMatchers("/", "/home", "/files", "/users", "/users/**/caretakers", "/signup", "/consigner/signup", "/caretaker/signup").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/admins/**").hasAnyRole("ADMIN")
                 .antMatchers("/consigner/**").hasAnyRole("CONSIGNER")
@@ -46,6 +46,8 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
                 .antMatchers("/pet/**").hasAnyRole("ADMIN", "CONSIGNER", "CARETAKER")
                 .antMatchers("/pets/**").hasAnyRole("ADMIN", "CONSIGNER", "CARETAKER")
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "CONSIGNER", "CARETAKER")
+                .antMatchers("/myprofile/caretaker").hasAnyRole( "CARETAKER")
+                .antMatchers("/myprofile/**").hasAnyRole("ADMIN", "CONSIGNER", "CARETAKER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

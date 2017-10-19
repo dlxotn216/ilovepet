@@ -1,136 +1,88 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <div th:replace="fragments/header :: header-css"/>
-    <link rel="stylesheet" th:href="@{/css/user/user.css}" href="/css/user/user.css"/>
+	<div th:replace="fragments/header :: header-css"/>
+	<link rel="stylesheet" th:href="@{/css/user/user.css}" href="/css/user/user.css"/>
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"/>
 
 <div class="page-wrap">
-    <div class="container">
-        <div class="starter-template view-title">
-            <h3 sec:authorize="hasRole('ROLE_CARETAKER')">맡기미 목록</h3>
-            <h3 sec:authorize="hasRole('ROLE_CONSIGNER')">돌보미 목록</h3>
-            <h3 sec:authorize="hasRole('ROLE_ADMIN')">사용자 목록</h3>
-        </div>
-        <div class="row" style="margin-top: 40px;">
-            <section class="content">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success btn-filter" data-target="pagado">
-                                        Pagado
-                                    </button>
-                                    <button type="button" class="btn btn-warning btn-filter" data-target="pendiente">
-                                        Pendiente
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-filter" data-target="cancelado">
-                                        Cancelado
-                                    </button>
-                                    <button type="button" class="btn btn-default btn-filter" data-target="all">Todos
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="table-container">
-                                <table class="table table-filter">
-                                    <tbody>
-                                    <tr data-status="pagado" th:each="user : ${users}">
-                                        <td>
-                                            <div class="ckbox">
-                                                <input type="checkbox" id="checkbox1"/>
-                                                <label for="checkbox1"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;" class="star">
-                                                <i class="glyphicon glyphicon-star"></i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <div class="media">
-                                                <a href="#" class="pull-left">
-                                                    <img th:if="${user.profileFileKey != null}"
-                                                         th:src="@{'/files/'+${user.profileFileKey}+'/downloads'}"
-                                                         class="media-photo"/>
-                                                    <img th:unless="${user.profileFileKey != null}"
-                                                         src="/images/profile.jpg"
-                                                         class="media-photo"/>
-                                                </a>
-                                                <div class="media-body">
-                                                    <span class="media-meta pull-right">Febrero 13, 2016</span>
-                                                    <h4 class="title">
-                                                        <span th:text="${user.userName}"></span>
-                                                        <span class="pull-right pagado" th:text="${user.userId}">awefaw</span>
-                                                    </h4>
-                                                    <p class="summary">
-                                                        Ut enim ad minim veniam, quis nostrud
-                                                        exercitation...</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+	<div class="container">
+		<div class="starter-template view-title">
+			<h3 sec:authorize="hasRole('ROLE_CARETAKER')">맡기미 목록</h3>
+			<h3 sec:authorize="hasRole('ROLE_CONSIGNER')">돌보미 목록</h3>
+			<h3 sec:authorize="hasRole('ROLE_ADMIN')">사용자 목록</h3>
+		</div>
 
-                                    <tr data-status="pagado" class="selected">
-                                        <td>
-                                            <div class="ckbox">
-                                                <input type="checkbox" id="checkbox4" checked="checked"/>
-                                                <label for="checkbox4"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;" class="star star-checked">
-                                                <i class="glyphicon glyphicon-star"></i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <div class="media">
-                                                <a href="#" class="pull-left">
-                                                    <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg"
-                                                         class="media-photo"/>
-                                                </a>
-                                                <div class="media-body">
-                                                    <span class="media-meta pull-right">Febrero 13, 2016</span>
-                                                    <h4 class="title">
-                                                        Lorem Impsum
-                                                        <span class="pull-right pagado">(Pagado)</span>
-                                                    </h4>
-                                                    <p class="summary">Ut enim ad minim veniam, quis nostrud
-                                                        exercitation...</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-footer">
-                        <div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
-                            <div class="col-sm-10">
-                                <ul class="pagination" style="float:left; margin: 0px !important;">
-                                    <li>
-                                        <a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
-                                    </li>
-                                    <li th:each="i : ${#numbers.sequence( 0, totalPage)}"
-                                        th:classappend="${(i+1) == currentPage} ? 'active'">
-                                        <a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
-                                        <a th:unless="${(i+1) == currentPage}" th:href="@{/user(page=${i+1},limit=12)}" th:text="${i}+1"></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
+		<div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-sm-10">
+				<ul class="pagination" style="float:left; margin: 0px !important;">
+					<li>
+						<a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
+					</li>
+					<li th:each="i : ${#numbers.sequence( 0, totalPage)}"
+						th:classappend="${(i+1) == currentPage} ? 'active'">
+						<a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
+						<a th:unless="${(i+1) == currentPage}" th:href="@{/user(page=${i+1},limit=12)}" th:text="${i}+1"></a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-2" style="float: right !important;">
+				<a sec:authorize="hasRole('ROLE_CONSIGNER')" class="btn btn-success btn-md">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"> 추천받기</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="row" style="margin-top: 40px;">
+			<div th:each="user : ${users}" class="col-md-12">
+				<div class="row list-row">
+					<div class="col-sm-3 list-header">
+						<div class="thumbnail">
+							<img height="245"
+								 width="100%"
+								 th:if="${user.introductionFiles != null and user.introductionFiles.size() > 0}"
+								 th:src="@{'/files/'+${user.introductionFiles.get(0).fileKey} + '/downloads'}"/>
+							<img height="245"
+								 width="100%"
+								 th:unless="${user.introductionFiles != null and user.introductionFiles.size() > 0}"
+								 th:src="@{/images/home.png}"/>
+						</div>
+					</div>
+					<div class="col-sm-9 list-content">
+						<div class="panel">
+							<div class="panel-heading">
+								<h4 th:text="${user.title}"></h4>
+								<div class="media">
+									<div class="media-left media-top">
+										<img th:if="${user.profileFileKey != null}" th:src="@{'/files/'+${user.profileFileKey}+'/downloads'}"
+											 class="media-object" style="width:60px"/>
+										<img th:unless="${user.profileFileKey != null}" th:src="@{/images/profile.jpg}" class="media-object"
+											 style="width:60px"/>
+									</div>
+									<div class="media-body">
+										<h4 class="media-heading" th:text="${user.userName}">Media Top</h4>
+										<p th:text="${user.userId}"></p>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<p class="panel-body-p">
+									<span class="fee-per-night">1박 / <span class="price" th:text="${user.feePerNight}+ '￦'"></span></span>
+									<span class="additional-fee">추가 반려 동물 당 / <span class="price" th:text="${user.additionalFee}+ '￦'"></span></span>
+								</p>
+							</div>
+							<div class="panel-footer"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div th:replace="fragments/footer :: footer"/>
