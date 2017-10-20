@@ -26,21 +26,6 @@ public class UserViewController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user")
-    public String getUsersView(Model model, UserCriteria userCriteria){
-        List<? extends User> users = userService.getUsers(userCriteria);
-        final Integer totalCount = userService.getUsersTotalCount(userCriteria);
-        final Integer totalPage = totalCount / userCriteria.getLimit();
-        final Integer currentPage = userCriteria.getPage();
-
-        model.addAttribute("users", users);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage);
-        model.addAttribute("currentPage", currentPage);
-
-        return "user/user";
-    }
-
     @GetMapping("/myprofile")
     public String getMyProfileDetailView(Model model){
         User user = userService.getUserFromCurrentSession();

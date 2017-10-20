@@ -29,6 +29,12 @@
         <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
         <result property="roleKey" column="ROLE_KEY"/>
 
+        <result property="barking" column="BARKING"/>
+        <result property="marking" column="MARKING"/>
+        <result property="mounting" column="MOUNTING"/>
+        <result property="aggression" column="AGGRESSION"/>
+        <result property="size" column="SIZE"/>
+
         <result property="petCount" column="PET_COUNT"/>
         <result property="title" column="TITLE"/>
         <result property="summary" column="SUMMARY"/>
@@ -153,8 +159,22 @@
         LEFT JOIN CARETAKER_FILE D
         ON A.USER_KEY = D.USER_KEY
         WHERE B.ROLE_NAME LIKE '%CARETAKER'
+        GROUP BY A.USER_KEY
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <select id="getUserForConsigner" resultMap="CaretakerMap">
+        SELECT *
+        FROM USER A
+        LEFT JOIN ROLE B
+        ON A.ROLE_KEY = B.ROLE_KEY
+        LEFT JOIN CARETAKER C
+        ON A.USER_KEY = C.USER_KEY
+        LEFT JOIN CARETAKER_FILE D
+        ON A.USER_KEY = D.USER_KEY
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+            AND A.USER_KEY = #{userKey}
     </select>
 
     <select id="getUsersForConsignerTotalCount" resultType="Integer">

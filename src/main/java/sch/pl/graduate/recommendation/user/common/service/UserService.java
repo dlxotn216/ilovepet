@@ -35,6 +35,8 @@ public interface UserService {
 
     List<Caretaker> getUsersForConsigner(UserCriteria userCriteria);
 
+    Caretaker getUserForConsigner(Long userKey);
+
     Integer getUsersForConsignerTotalCount(UserCriteria userCriteria);
 
     Integer deleteUser(User user);

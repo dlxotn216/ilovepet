@@ -5,6 +5,67 @@
  * @since 2017-10-13
  */
 
+const slider_barking = document.getElementById('slider-barking');
+noUiSlider.create(slider_barking, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+
+const slider_marking = document.getElementById('slider-marking');
+noUiSlider.create(slider_marking, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+
+const slider_mounting = document.getElementById('slider-mounting');
+noUiSlider.create(slider_mounting, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+
+const slider_aggression = document.getElementById('slider-aggression');
+noUiSlider.create(slider_aggression, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+const slider_size = document.getElementById('slider-size');
+noUiSlider.create(slider_size, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+
+
+
 const signupButton = document.getElementById('btn-signup');
 signupButton.onclick = function () {
 	const userType = document.getElementById('userType').value;
@@ -34,6 +95,11 @@ signupButton.onclick = function () {
 	const liveWithFamilys = document.getElementsByName('liveWithFamily');
 	const hasYoungChildrens = document.getElementsByName('hasYoungChildren');
 	const pickups = document.getElementsByName('pickup');
+	const barking = slider_barking.noUiSlider.get();
+	const marking = slider_marking.noUiSlider.get();
+	const mounting = slider_mounting.noUiSlider.get();
+	const aggression = slider_aggression.noUiSlider.get();
+	const size = slider_size.noUiSlider.get();
 
 	const isValidateForCaretaker = function () {
 		if (!petCount) {
@@ -176,6 +242,11 @@ signupButton.onclick = function () {
 			'hasYoungChildren': hasYoungChildren,
 			'pickup': pickup,
 			'addedFiles': addedFiles,
+			'barking': barking,
+			'marking': marking,
+			'mounting': mounting,
+			'aggression': aggression,
+			'size': size,
 		};
 		const xhr = new XMLHttpRequest();
 		// xhr.setRequestHeader()

@@ -111,6 +111,7 @@
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
 		        ON C.FILE_KEY = D.FILE_KEY
+        GROUP BY A.PET_KEY
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
@@ -130,6 +131,7 @@
             LEFT JOIN FILE D
 		        ON C.FILE_KEY = D.FILE_KEY
         WHERE A.CARETAKER_KEY = #{caretakerKey}
+        GROUP BY A.PET_KEY
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
@@ -150,6 +152,7 @@
             LEFT JOIN FILE D
 		        ON C.FILE_KEY = D.FILE_KEY
         WHERE A.OWNER_KEY = #{ownerKey}
+        GROUP BY A.PET_KEY
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>

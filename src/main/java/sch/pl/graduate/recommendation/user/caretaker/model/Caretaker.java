@@ -6,15 +6,11 @@
  */
 package sch.pl.graduate.recommendation.user.caretaker.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
-import sch.pl.graduate.recommendation.common.util.SqlTimeSerializer;
 import sch.pl.graduate.recommendation.file.model.AppFile;
 import sch.pl.graduate.recommendation.pet.model.Pet;
 import sch.pl.graduate.recommendation.user.common.model.User;
 
-import java.sql.Time;
 import java.util.List;
 
 /**
@@ -38,6 +34,14 @@ public class Caretaker extends User {
     private Boolean liveWithFamily;
     private Boolean hasYoungChildren;
     private Boolean pickup;
+    private Long introductionFileKey;
+
+    //선호 값
+    private Double barking;         //짖음
+    private Double marking;         //마킹
+    private Double mounting;        //마운팅
+    private Double aggression;      //공격성
+    private Double size;             //크기
 
     //readonly
     private List<AppFile> introductionFiles;

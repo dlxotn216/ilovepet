@@ -121,6 +121,11 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
+    public Caretaker getUserForConsigner(Long userKey) {
+        return userMapper.getUserForConsigner(userKey);
+    }
+
+    @Override
     public Integer getUsersForConsignerTotalCount(UserCriteria userCriteria) {
         return userMapper.getUsersForConsignerTotalCount(userCriteria);
     }

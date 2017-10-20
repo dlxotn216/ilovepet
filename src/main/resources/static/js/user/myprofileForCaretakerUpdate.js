@@ -5,6 +5,78 @@
  * @since 2017-10-19
  */
 
+
+const slider_barking = document.getElementById('slider-barking');
+noUiSlider.create(slider_barking, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+const barkingValue = document.getElementById('barking').value;
+slider_barking.noUiSlider.set(barkingValue);
+
+const slider_marking = document.getElementById('slider-marking');
+noUiSlider.create(slider_marking, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+const markingValue = document.getElementById('marking').value;
+slider_marking.noUiSlider.set(markingValue);
+
+const slider_mounting = document.getElementById('slider-mounting');
+noUiSlider.create(slider_mounting, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+const mountingValue = document.getElementById('mounting').value;
+slider_mounting.noUiSlider.set(mountingValue);
+
+const slider_aggression = document.getElementById('slider-aggression');
+noUiSlider.create(slider_aggression, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+const aggressionValue = document.getElementById('aggression').value;
+slider_aggression.noUiSlider.set(aggressionValue);
+
+const slider_size = document.getElementById('slider-size');
+noUiSlider.create(slider_size, {
+	start: 10,
+	behaviour: 'snap',
+	connect: [true, false],
+	tooltips: [true],
+	range: {
+		'min': 0,
+		'max': 100
+	}
+});
+const sizeValue = document.getElementById('size').value;
+slider_size.noUiSlider.set(sizeValue);
+
+
 let deletedFilesFlag = [];
 onDeleteFileClick = function (element, fileKey) {
 	if (element.classList.contains('active')) {
@@ -112,6 +184,11 @@ onUpdateCaretakerButtonClick = function (userKey) {
 	const liveWithFamilys = document.getElementsByName('liveWithFamily');
 	const hasYoungChildrens = document.getElementsByName('hasYoungChildren');
 	const pickups = document.getElementsByName('pickup');
+	const barking = slider_barking.noUiSlider.get();
+	const marking = slider_marking.noUiSlider.get();
+	const mounting = slider_mounting.noUiSlider.get();
+	const aggression = slider_aggression.noUiSlider.get();
+	const size = slider_size.noUiSlider.get();
 
 	const isValidate = function () {
 		if (!petCount) {
@@ -180,7 +257,35 @@ onUpdateCaretakerButtonClick = function (userKey) {
 		}
 	}
 
-	const updateCaretaker = function (response, deletedFiles) {
+	const uploadIntroFiles = function (introFiles) {
+		const formData = new FormData();
+		formData.append('fileType', 'CARETAKER_INTRO');
+
+		let count = 0;
+		for (let i = 0; i < introFiles.length; i++) {
+			const file = introFiles[i].files[0];
+			if (file) {
+				count++;
+				formData.append('files', file);
+			}
+		}
+
+		if (!count) {
+			updateCaretaker(null);
+			return;
+		}
+
+		const xhr = new XMLHttpRequest();
+		xhr.open("POST", "/files");
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				updateCaretaker(JSON.parse(xhr.responseText)); // Another callback here
+			}
+		};
+		xhr.send(formData);
+	};
+
+	const updateCaretaker = function (response) {
 		addedFiles = [];
 		if (response) {
 			let files = response.result;
@@ -189,7 +294,18 @@ onUpdateCaretakerButtonClick = function (userKey) {
 				addedFiles[i] = {fileKey: files[i].fileKey};
 			}
 		}
-
+		let keys = Object.keys(deletedFilesFlag);
+		let deletedFiles = [];
+		if (keys && keys.length > 0) {
+			for (let i = 0; i < keys.length; i++) {
+				let key = keys[i];
+				if(deletedFilesFlag[key] === true){
+					deletedFiles.push({
+						fileKey: keys[i]
+					})
+				}
+			}
+		}
 		const requestBody = {
 			'userKey': userKey,
 			'petCount': petCount,
@@ -205,7 +321,13 @@ onUpdateCaretakerButtonClick = function (userKey) {
 			'pickup': pickup,
 			'addedFiles': addedFiles,
 			'deletedFiles': deletedFiles,
+			'barking': barking,
+			'marking': marking,
+			'mounting': mounting,
+			'aggression': aggression,
+			'size': size,
 		};
+
 		const xhr = new XMLHttpRequest();
 		xhr.open("PUT", "/users/"+userKey+"/caretakers");
 		xhr.setRequestHeader('Content-Type', 'application/json');
@@ -223,52 +345,10 @@ onUpdateCaretakerButtonClick = function (userKey) {
 		xhr.send(JSON.stringify(requestBody));
 	};
 
-	const uploadIntroFiles = function (introFiles, deletedFiles) {
-		const formData = new FormData();
-		formData.append('fileType', 'CARETAKER_INTRO');
-
-		let count = 0;
-		for (let i = 0; i < introFiles.length; i++) {
-			const file = introFiles[i].files[0];
-			if (file) {
-				count++;
-				formData.append('files', file);
-			}
-		}
-
-		if (!count) {
-			updateCaretaker(null, deletedFiles);
-			return;
-		}
-
-		const xhr = new XMLHttpRequest();
-		// xhr.setRequestHeader()
-		xhr.open("POST", "/files");
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				updateCaretaker(JSON.parse(xhr.responseText, deletedFiles)); // Another callback here
-			}
-		};
-		xhr.send(formData);
-	};
-
-	let keys = Object.keys(deletedFilesFlag);
-	let deletedFiles = [];
-	if (keys && keys.length > 0) {
-		for (let i = 0; i < keys.length; i++) {
-			let key = keys[i];
-			if(deletedFilesFlag[key] === true){
-				deletedFiles.push({
-					fileKey: keys[i]
-				})
-			}
-		}
-	}
-
 	const introFiles = document.getElementsByClassName('files');
 	if (introFiles && introFiles.length > 0) {
-		uploadIntroFiles(introFiles, deletedFiles);
+		uploadIntroFiles(introFiles);
 	} else {
-		updateCaretaker(null, deletedFiles);
+		updateCaretaker(null);
 	}
 };

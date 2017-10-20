@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
@@ -34,7 +35,7 @@ public class ConsignerViewController {
     }
 
     @GetMapping("/user")
-    public String getUsersForCaretakerView(Model model, UserCriteria userCriteria){
+    public String getUsersForConsignerView(Model model, UserCriteria userCriteria){
         List<Caretaker> users = userService.getUsersForConsigner(userCriteria);
         final Integer totalCount = userService.getUsersForConsignerTotalCount(userCriteria);
         final Integer totalPage = totalCount / userCriteria.getLimit();
@@ -45,6 +46,15 @@ public class ConsignerViewController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
 
-        return "user/user";
+        return "consigner/user";
     }
+
+    @GetMapping("/user/{userKey}/detail")
+    public String getUserDetailForConsignerView(Model model, @PathVariable Long userKey){
+        Caretaker user = userService.getUserForConsigner(userKey);
+
+        model.addAttribute("user", user);
+        return "consigner/userDetail";
+    }
+
 }

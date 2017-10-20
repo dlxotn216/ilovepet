@@ -303,3 +303,7 @@ article[role="manufacturer"] ul li i {
     cursor: inherit;
     display: block;
 }
+
+.pet-slider {
+    margin : 40px 0px;
+}

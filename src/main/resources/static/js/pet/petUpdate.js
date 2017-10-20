@@ -222,7 +222,7 @@ const onUpdatePetButtonClick = function (petKey) {
         age = nowYear - birthYear;
     }
 
-    const uploadFiles = function (profileFiles, deletedFiles) {
+    const uploadFiles = function (profileFiles) {
         const formData = new FormData();
         formData.append('fileType', 'PET_PROFILE');
 
@@ -236,7 +236,7 @@ const onUpdatePetButtonClick = function (petKey) {
         }
 
         if (!count) {
-            updatePet(null, deletedFiles);
+            updatePet(null);
             return;
         }
 
@@ -244,14 +244,14 @@ const onUpdatePetButtonClick = function (petKey) {
         xhr.open("POST", "/files");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                updatePet(JSON.parse(xhr.responseText), deletedFiles); // Another callback here
+                updatePet(JSON.parse(xhr.responseText)); // Another callback here
             }
         };
         xhr.send(formData);
 
     };
 
-    const updatePet = function (response, deletedFiles) {
+    const updatePet = function (response) {
         addedFiles = [];
         if (response) {
             let files = response.result;
@@ -260,6 +260,19 @@ const onUpdatePetButtonClick = function (petKey) {
                 addedFiles[i] = {fileKey: files[i].fileKey};
             }
         }
+
+		let keys = Object.keys(deletedFilesFlag);
+		let deletedFiles = [];
+		if (keys && keys.length > 0) {
+			for (let i = 0; i < keys.length; i++) {
+				let key = keys[i];
+				if(deletedFilesFlag[key] === true){
+					deletedFiles.push({
+						fileKey: keys[i]
+					})
+				}
+			}
+		}
 
         const requestBody = {
             'petName': petName,
@@ -294,23 +307,10 @@ const onUpdatePetButtonClick = function (petKey) {
         xhr.send(JSON.stringify(requestBody));
     };
 
-    let keys = Object.keys(deletedFilesFlag);
-    let deletedFiles = [];
-    if (keys && keys.length > 0) {
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
-            if(deletedFilesFlag[key] === true){
-                deletedFiles.push({
-                    fileKey: keys[i]
-                })
-            }
-        }
-    }
-
     const profileFiles = document.getElementsByClassName('files');
     if (profileFiles && profileFiles.length > 0) {
-    	uploadFiles(profileFiles, deletedFiles);
+    	uploadFiles(profileFiles);
     } else {
-        updatePet(null, deletedFiles);
+        updatePet(null);
     }
 };

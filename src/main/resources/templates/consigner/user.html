@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+	<link rel="stylesheet" th:href="@{/css/user/user.css}" href="/css/user/user.css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<div class="starter-template view-title">
+			<h3 sec:authorize="hasRole('ROLE_CARETAKER')">맡기미 목록</h3>
+			<h3 sec:authorize="hasRole('ROLE_CONSIGNER')">돌보미 목록</h3>
+			<h3 sec:authorize="hasRole('ROLE_ADMIN')">사용자 목록</h3>
+		</div>
+
+		<div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-sm-10">
+				<ul class="pagination" style="float:left; margin: 0px !important;">
+					<li>
+						<a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
+					</li>
+					<li th:each="i : ${#numbers.sequence( 0, totalPage)}"
+						th:classappend="${(i+1) == currentPage} ? 'active'">
+						<a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
+						<a th:unless="${(i+1) == currentPage}" th:href="@{/consigner/user(page=${i+1},limit=12)}" th:text="${i}+1"></a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-2" style="float: right !important;">
+				<a sec:authorize="hasRole('ROLE_CONSIGNER')" class="btn btn-success btn-md">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"> 추천받기</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="row" style="margin-top: 40px;">
+			<div th:each="user : ${users}" class="col-md-12" th:onclick="'onUserDetailClick('+${user.userKey}+')'">
+				<div class="row list-row">
+					<div class="list-header"
+						 th:if="${user.introductionFiles != null and user.introductionFiles.size() > 0}"
+						 th:style="'background : url(' +@{'/files/'+${user.introductionFiles.get(0).fileKey} + '/downloads'} +') no-repeat;'">
+					</div>
+					<div class="list-header"
+						 th:unless="${user.introductionFiles != null and user.introductionFiles.size() > 0}"
+						 th:style="'background : url(' +@{/images/home.png} +') no-repeat'">
+					</div>
+					<div style="margin-left: 300px;">
+						<div class="col-sm-12 list-content">
+							<div class="panel">
+								<div class="panel-heading">
+									<h4 th:text="${user.title}"></h4>
+									<div class="media">
+										<div class="media-left media-top">
+											<img th:if="${user.profileFileKey != null}" th:src="@{'/files/'+${user.profileFileKey}+'/downloads'}"
+												 class="media-object" style="width:60px"/>
+											<img th:unless="${user.profileFileKey != null}" th:src="@{/images/profile.jpg}" class="media-object"
+												 style="width:60px"/>
+										</div>
+										<div class="media-body">
+											<h4 class="media-heading" th:text="${user.userName}">Media Top</h4>
+											<p th:text="${user.userId}"></p>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<p class="panel-body-left-p">
+									<span th:if="${user.yard != null and user.yard==true}" class="option-true">
+										<span class="glyphicon glyphicon-ok-sign"></span>
+										마당이 있음
+									</span>
+
+										<span th:unless="${user.yard != null and user.yard==true}" class="option-false">
+										<span class="glyphicon glyphicon-remove-sign"></span>
+										마당이 없음
+									</span>
+
+										<span th:if="${user.liveWithFamily != null and user.liveWithFamily==true}" class="option-true">
+										<span class="glyphicon glyphicon-ok-sign"></span>
+										가족이 있음
+									</span>
+										<span th:unless="${user.liveWithFamily != null and user.liveWithFamily==true}" class="option-false">
+										<span class="glyphicon glyphicon-remove-sign"></span>
+										가족이 없음
+									</span>
+
+										<span th:if="${user.hasYoungChildren != null and user.hasYoungChildren==true}" class="option-true">
+										<span class="glyphicon glyphicon-ok-sign"></span>
+										12세 이하 어린이 없음
+									</span>
+										<span th:unless="${user.hasYoungChildren != null and user.hasYoungChildren==true}" class="option-false">
+										<span class="glyphicon glyphicon-remove-sign"></span>
+										12세 이하 어린이 있음
+									</span>
+
+										<span th:if="${user.pickup != null and user.pickup==true}" class="option-true">
+										<span class="glyphicon glyphicon-ok-sign"></span>
+										픽업 가능
+									</span>
+										<span th:unless="${user.pickup != null and user.pickup==true}" class="option-false">
+										<span class="glyphicon glyphicon-remove-sign"></span>
+										픽업 불가
+									</span>
+									</p>
+									<p class="panel-body-right-p">
+										<span class="fee-per-night">1박 &nbsp;&nbsp;/&nbsp;&nbsp;
+											<span class="price" th:text="${user.feePerNight}+ '￦'"></span>
+										</span>
+										<span class="additional-fee">추가 반려 동물 당 &nbsp;&nbsp;/&nbsp;&nbsp;
+											<span class="price" th:text="${user.additionalFee}+ '￦'"></span>
+										</span>
+									</p>
+								</div>
+								<div class="panel-footer">
+									<span class="comment glyphicon glyphicon-heart-empty">고객 후기 14개</span>
+									<span class="check" th:text="'체크인 : '+ ${user.checkIn}"></span>
+									<span class="check" th:text="'체크아웃 : '+ ${user.checkOut}"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	const onUserDetailClick = function(userKey){
+		window.location.href = '/consigner/user/'+userKey+'/detail';
+	}
+
+</script>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

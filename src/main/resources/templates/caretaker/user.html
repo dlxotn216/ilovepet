@@ -27,7 +27,7 @@
 					<li th:each="i : ${#numbers.sequence( 0, totalPage)}"
 						th:classappend="${(i+1) == currentPage} ? 'active'">
 						<a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
-						<a th:unless="${(i+1) == currentPage}" th:href="@{/user(page=${i+1},limit=12)}" th:text="${i}+1"></a>
+						<a th:unless="${(i+1) == currentPage}" th:href="@{/caretaker/user(page=${i+1},limit=12)}" th:text="${i}+1"></a>
 					</li>
 				</ul>
 			</div>
@@ -72,8 +72,8 @@
 							</div>
 							<div class="panel-body">
 								<p class="panel-body-p">
-									<span class="fee-per-night">1박 / <span class="price" th:text="${user.feePerNight}+ '￦'"></span></span>
-									<span class="additional-fee">추가 반려 동물 당 / <span class="price" th:text="${user.additionalFee}+ '￦'"></span></span>
+									<span class="fee-per-night">1박 &nbsp;&nbsp;/&nbsp;&nbsp; <span class="price" th:text="${user.feePerNight}+ '￦'"></span></span>
+									<span class="additional-fee">추가 반려 동물 당 &nbsp;&nbsp;/&nbsp;&nbsp; <span class="price" th:text="${user.additionalFee}+ '￦'"></span></span>
 								</p>
 							</div>
 							<div class="panel-footer"></div>

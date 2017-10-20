@@ -126,3 +126,24 @@ footer{
 input[type=file] {
     z-index: 1 !important;
 }
+
+
+.slider-barking .noUi-connect {
+    background: #5cb85c !important;
+}
+
+.slider-marking .noUi-connect {
+    background: #5bc0de !important;
+}
+
+.slider-mounting .noUi-connect {
+    background: #f0ad4e !important;
+}
+
+.slider-aggression .noUi-connect {
+    background: #d9534f !important;
+}
+
+.slider-size .noUi-connect {
+    background: #995cb3 !important;
+}

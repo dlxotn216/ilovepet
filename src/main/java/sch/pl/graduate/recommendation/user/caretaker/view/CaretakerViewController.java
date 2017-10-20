@@ -45,7 +45,7 @@ public class CaretakerViewController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
 
-        return "user/user";
+        return "caretaker/user";
     }
 
 }

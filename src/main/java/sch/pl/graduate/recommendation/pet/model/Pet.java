@@ -36,6 +36,7 @@ public class Pet extends AbstractModel {
     private Long ownerKey;
     private Long caretakerKey;
     private PetType petType;
+    private Long profileFileKey;
 
     //readonly
     private List<AppFile> profileFiles;

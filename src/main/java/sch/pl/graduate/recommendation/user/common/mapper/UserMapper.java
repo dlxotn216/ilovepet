@@ -33,6 +33,8 @@ public interface UserMapper {
 
     List<Caretaker> getUsersForConsigner(UserCriteria userCriteria);
 
+    Caretaker getUserForConsigner(Long userKey);
+
     Integer getUsersForConsignerTotalCount(UserCriteria userCriteria);
 
     Integer updateUser(User user);

@@ -1,51 +1,111 @@
-.list-row{
-    margin-bottom: 30px;
-    background-color: transparent;
-    border: solid 1px #ccc;
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 970px;
+    }
 }
 
-.list-row .list-header, .list-row .list-header{
+.list-row {
+    margin-bottom: 30px;
+    background-color: #f5f5f5;
+    border: solid 1px #ccc;
+    cursor: pointer;
+}
+
+.list-row:hover{
+    border: 1px solid coral;
+    opacity: 0.7;
+}
+
+.list-row .list-header, .list-row .list-header {
     padding-left: 0px;
     padding-right: 0px;
     border: solid 1px #ccc;
 }
 
-.list-row .list-content{
-    height: 245px;
+.list-row .list-content {
+    height: 285px;
     overflow: hidden;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
-.list-header .thumbnail{
+.list-header {
     margin-bottom: 0px;
+    width: 300px;
+    float: left;
+    height: 285px;
+    background-size: cover !important;
 }
 
-.list-content .panel-heading{
+.list-content .panel-heading {
     border-bottom: 1px solid #ccc;
 }
-.fee-per-night{
+
+.fee-per-night {
     color: #fac058;
     font-size: 14px;
     display: block;
 }
 
-.fee-per-night .price{
+.fee-per-night .price {
     color: #fac058;
     font-size: 20px;
     font-weight: bolder;
 }
 
-.additional-fee{
+.additional-fee {
     color: #7d7d7d;
     font-size: 14px;
     display: block;
 }
 
-.additional-fee .price{
+.additional-fee .price {
     color: #7d7d7d;
     font-weight: bolder;
     font-size: 20px;
 }
 
-.panel-body-p{
+.panel-body-left-p {
+    width: 600px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.panel-body-right-p {
     text-align: right;
+    float: right;
+}
+
+.option-true {
+    display: inline-block;
+    color: #23bab5;
+    font-weight: bolder;
+    margin-right: 10px;
+}
+
+.option-false {
+    display: inline-block;
+    color: coral;
+    font-weight: bolder;
+    margin-right: 10px;
+}
+
+.panel-body {
+    padding: 15px 15px 0px 15px;
+}
+.panel-footer{
+    padding: 8px 15px;
+}
+.panel-footer span{
+    display: inline-block;
+    padding: 4px;
+    border-radius: 10px;
+}
+.panel-footer .comment, .panel-footer .check{
+    border: 1px solid #1aa19d;
+    color:  #1aa19d;
+}
+.panel-footer .check{
+    float: right;
 }
