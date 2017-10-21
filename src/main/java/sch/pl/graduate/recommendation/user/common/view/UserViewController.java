@@ -40,24 +40,4 @@ public class UserViewController {
         return "user/myprofileUpdate";
     }
 
-    @GetMapping("/myprofile/caretaker")
-    public String getMyProfileDetailForCaretakerView(Model model){
-        Caretaker user = userService.getCaretakerFromCurrentSession();
-        model.addAttribute("profile", user);
-        return "user/myprofileDetailForCaretaker";
-    }
-
-    @GetMapping("/myprofile/caretaker/add")
-    public String getMyProfileAddForCaretakerView(Model model){
-        Caretaker user = userService.getCaretakerFromCurrentSession();
-        model.addAttribute("profile", user);
-        return "user/myprofileAddForCaretaker";
-    }
-
-    @GetMapping("/myprofile/caretaker/update")
-    public String getMyProfileUpdateForCaretakerView(Model model){
-        Caretaker user = userService.getCaretakerFromCurrentSession();
-        model.addAttribute("profile", user);
-        return "user/myprofileUpdateForCaretaker";
-    }
 }

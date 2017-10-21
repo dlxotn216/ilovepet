@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
+import sch.pl.graduate.recommendation.user.caretaker.service.CaretakerService;
 import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.common.service.UserService;
@@ -22,21 +24,20 @@ import java.util.List;
  * Created by Lee Tae Su on 2017-10-13.
  */
 @Controller
-@RequestMapping("/caretaker")
 public class CaretakerViewController {
 
     @Autowired
-    private UserService userService;
+    private CaretakerService caretakerService;
 
-    @GetMapping({"", "/"})
+    @GetMapping({"/caretaker", "/caretaker/"})
     public String getCaretakerView(){
-        return "caretaker/caretaker";
+        return "caretaker/dashboard";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/caretaker/user")
     public String getUsersForCaretakerView(Model model, UserCriteria userCriteria){
-        List<Consigner> users = userService.getUsersForCaretaker(userCriteria);
-        final Integer totalCount = userService.getUsersForCaretakerTotalCount(userCriteria);
+        List<Consigner> users = caretakerService.getUsersForCaretaker(userCriteria);
+        final Integer totalCount = caretakerService.getUsersForCaretakerTotalCount(userCriteria);
         final Integer totalPage = totalCount / userCriteria.getLimit();
         final Integer currentPage = userCriteria.getPage();
 
@@ -45,7 +46,28 @@ public class CaretakerViewController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
 
-        return "caretaker/user";
+        return "caretaker/consignerList";
     }
 
+
+    @GetMapping("/myprofile/caretaker")
+    public String getMyProfileDetailForCaretakerView(Model model){
+        Caretaker user = caretakerService.getCaretakerFromCurrentSession();
+        model.addAttribute("profile", user);
+        return "user/myprofileDetailForCaretaker";
+    }
+
+    @GetMapping("/myprofile/caretaker/add")
+    public String getMyProfileAddForCaretakerView(Model model){
+        Caretaker user = caretakerService.getCaretakerFromCurrentSession();
+        model.addAttribute("profile", user);
+        return "user/myprofileAddForCaretaker";
+    }
+
+    @GetMapping("/myprofile/caretaker/update")
+    public String getMyProfileUpdateForCaretakerView(Model model){
+        Caretaker user = caretakerService.getCaretakerFromCurrentSession();
+        model.addAttribute("profile", user);
+        return "user/myprofileUpdateForCaretaker";
+    }
 }

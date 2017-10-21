@@ -20,6 +20,7 @@ import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.common.service.UserService;
 import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
+import sch.pl.graduate.recommendation.user.consigner.service.ConsignerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +41,13 @@ public class UserServiceImpl extends AbstractService implements UserService {
     private FileService fileService;
 
     @Autowired
-
-    private CaretakerService caretakerService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private ConsignerService consignerService;
+
+    @Autowired
+    private CaretakerService caretakerService;
 
     @Override
     @Transactional
@@ -82,9 +85,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
     @Override
     public List<? extends User> getUsers(UserCriteria userCriteria) {
         if (hasRole("ROLE_CARETAKER")) {
-            return getUsersForCaretaker(userCriteria);
+            return caretakerService.getUsersForCaretaker(userCriteria);
         } else if (hasRole("ROLE_CONSIGNER")) {
-            return getUsersForConsigner(userCriteria);
+            return consignerService.getUsersForConsigner(userCriteria);
         } else if (hasRole("ROLE_ADMIN")) {
             return userMapper.getUsers(userCriteria);
         } else {
@@ -95,7 +98,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     @Override
     public Integer getUsersTotalCount(UserCriteria userCriteria) {
         if (hasRole("ROLE_CARETAKER")) {
-            return getUsersForCaretakerTotalCount(userCriteria);
+            return caretakerService.getUsersForCaretakerTotalCount(userCriteria);
         } else if (hasRole("ROLE_CONSIGNER")) {
             return getUsersForConsignerTotalCount(userCriteria);
         } else if (hasRole("ROLE_ADMIN")) {
@@ -106,28 +109,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
-    public List<Consigner> getUsersForCaretaker(UserCriteria userCriteria) {
-        return userMapper.getUsersForCaretaker(userCriteria);
-    }
-
-    @Override
-    public Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria) {
-        return userMapper.getUsersForCaretakerTotalCount(userCriteria);
-    }
-
-    @Override
-    public List<Caretaker> getUsersForConsigner(UserCriteria userCriteria) {
-        return userMapper.getUsersForConsigner(userCriteria);
-    }
-
-    @Override
-    public Caretaker getUserForConsigner(Long userKey) {
-        return userMapper.getUserForConsigner(userKey);
-    }
-
-    @Override
     public Integer getUsersForConsignerTotalCount(UserCriteria userCriteria) {
-        return userMapper.getUsersForConsignerTotalCount(userCriteria);
+        return consignerService.getUsersForConsignerTotalCount(userCriteria);
     }
 
     @Override
@@ -180,17 +163,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
     @Override
     public User getUserFromCurrentSession() {
         User currentUser = getCurrentUser();
-
         return getUserByUserKey(currentUser.getUserKey());
     }
-
-    @Override
-    public Caretaker getCaretakerFromCurrentSession() {
-        User currentUser = getCurrentUser();
-
-        return caretakerService.getCaretakerByUserKey(currentUser.getUserKey());
-    }
-
 
     private List<GrantedAuthority> getUserAuthorities(String userId) {
         return roleService.getUserRolesByUserId(userId);

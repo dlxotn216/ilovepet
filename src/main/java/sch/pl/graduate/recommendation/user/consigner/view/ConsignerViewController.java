@@ -16,6 +16,7 @@ import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.common.service.UserService;
 import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
+import sch.pl.graduate.recommendation.user.consigner.service.ConsignerService;
 
 import java.util.List;
 
@@ -27,17 +28,17 @@ import java.util.List;
 public class ConsignerViewController {
 
     @Autowired
-    private UserService userService;
+    private ConsignerService consignerService;
 
     @GetMapping({"", "/"})
     public String getConsignerView(){
-        return "consigner/consigner";
+        return "consigner/dashboard";
     }
 
     @GetMapping("/user")
     public String getUsersForConsignerView(Model model, UserCriteria userCriteria){
-        List<Caretaker> users = userService.getUsersForConsigner(userCriteria);
-        final Integer totalCount = userService.getUsersForConsignerTotalCount(userCriteria);
+        List<Caretaker> users = consignerService.getUsersForConsigner(userCriteria);
+        final Integer totalCount = consignerService.getUsersForConsignerTotalCount(userCriteria);
         final Integer totalPage = totalCount / userCriteria.getLimit();
         final Integer currentPage = userCriteria.getPage();
 
@@ -46,15 +47,15 @@ public class ConsignerViewController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
 
-        return "consigner/user";
+        return "consigner/caretakerList";
     }
 
     @GetMapping("/user/{userKey}/detail")
     public String getUserDetailForConsignerView(Model model, @PathVariable Long userKey){
-        Caretaker user = userService.getUserForConsigner(userKey);
+        Caretaker user = consignerService.getUserForConsigner(userKey);
 
         model.addAttribute("user", user);
-        return "consigner/userDetail";
+        return "consigner/caretakerDetail";
     }
 
 }

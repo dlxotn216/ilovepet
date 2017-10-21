@@ -10,6 +10,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.caretaker.model.CaretakerFile;
+import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
 
 import java.util.List;
 
@@ -28,4 +30,8 @@ public interface CaretakerMapper {
     Integer deleteCaretakerIntroFilesAsList(List<CaretakerFile> files);
 
     Caretaker getCaretakerByUserKey(Long userKey);
+
+    List<Consigner> getUsersForCaretaker(UserCriteria userCriteria);
+
+    Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria);
 }

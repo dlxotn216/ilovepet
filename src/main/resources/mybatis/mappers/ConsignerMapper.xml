@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.user.consigner.mapper.ConsignerMapper">
+    <resultMap id="ConsignerMap" type="Consigner">
+        <id property="userKey" column="USER_KEY"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="age" column="AGE"/>
+        <result property="birth" column="BIRTH"/>
+        <result property="email" column="EMAIL"/>
+        <result property="phone" column="PHONE"/>
+        <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
+        <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
+        <result property="roleKey" column="ROLE_KEY"/>
+    </resultMap>
+
+    <select id="getUsersForConsigner" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
+        SELECT *
+        FROM USER A
+        LEFT JOIN ROLE B
+        ON A.ROLE_KEY = B.ROLE_KEY
+        LEFT JOIN CARETAKER C
+        ON A.USER_KEY = C.USER_KEY
+        LEFT JOIN CARETAKER_FILE D
+        ON A.USER_KEY = D.USER_KEY
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+        GROUP BY A.USER_KEY
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <select id="getUserForConsigner" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
+        SELECT *
+        FROM USER A
+        LEFT JOIN ROLE B
+        ON A.ROLE_KEY = B.ROLE_KEY
+        LEFT JOIN CARETAKER C
+        ON A.USER_KEY = C.USER_KEY
+        LEFT JOIN CARETAKER_FILE D
+        ON A.USER_KEY = D.USER_KEY
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+        AND A.USER_KEY = #{userKey}
+    </select>
+
+    <select id="getUsersForConsignerTotalCount" resultType="Integer">
+        SELECT COUNT(*)
+        FROM USER A
+        LEFT JOIN ROLE B
+        ON A.ROLE_KEY = B.ROLE_KEY
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+    </select>
+
+</mapper>

@@ -16,6 +16,9 @@ import sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.caretaker.model.CaretakerFile;
 import sch.pl.graduate.recommendation.user.caretaker.service.CaretakerService;
+import sch.pl.graduate.recommendation.user.common.model.User;
+import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
 
 import java.util.List;
 
@@ -69,5 +72,21 @@ public class CaretakerServiceImpl extends AbstractService implements CaretakerSe
     @Override
     public Caretaker getCaretakerByUserKey(Long userKey) {
         return caretakerMapper.getCaretakerByUserKey(userKey);
+    }
+
+    @Override
+    public Caretaker getCaretakerFromCurrentSession() {
+        User currentUser = getCurrentUser();
+        return getCaretakerByUserKey(currentUser.getUserKey());
+    }
+
+    @Override
+    public List<Consigner> getUsersForCaretaker(UserCriteria userCriteria) {
+        return caretakerMapper.getUsersForCaretaker(userCriteria);
+    }
+
+    @Override
+    public Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria) {
+        return caretakerMapper.getUsersForCaretakerTotalCount(userCriteria);
     }
 }

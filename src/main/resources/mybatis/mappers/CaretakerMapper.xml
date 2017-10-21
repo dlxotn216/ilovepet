@@ -181,4 +181,23 @@
         WHERE B.ROLE_NAME LIKE '%CARETAKER'
             AND A.USER_KEY = #{userKey}
     </select>
+
+    <select id="getUsersForCaretaker" resultMap="sch.pl.graduate.recommendation.user.consigner.mapper.ConsignerMapper.ConsignerMap">
+        SELECT *
+        FROM USER A
+        LEFT JOIN ROLE B
+        ON A.ROLE_KEY = B.ROLE_KEY
+        WHERE B.ROLE_NAME LIKE '%CONSIGNER'
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <select id="getUsersForCaretakerTotalCount" resultType="Integer">
+        SELECT COUNT(*)
+        FROM USER A
+        LEFT JOIN ROLE B
+        ON A.ROLE_KEY = B.ROLE_KEY
+        WHERE B.ROLE_NAME LIKE '%CONSIGNER'
+    </select>
+
 </mapper>

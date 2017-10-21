@@ -28,15 +28,6 @@ public interface UserService {
 
     Integer updateUser(User user);
 
-    List<Consigner> getUsersForCaretaker(UserCriteria userCriteria);
-
-    Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria);
-
-
-    List<Caretaker> getUsersForConsigner(UserCriteria userCriteria);
-
-    Caretaker getUserForConsigner(Long userKey);
-
     Integer getUsersForConsignerTotalCount(UserCriteria userCriteria);
 
     Integer deleteUser(User user);
@@ -45,5 +36,5 @@ public interface UserService {
 
     User getUserFromCurrentSession();
 
-    Caretaker getCaretakerFromCurrentSession();
+
 }

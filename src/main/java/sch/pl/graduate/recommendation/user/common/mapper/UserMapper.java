@@ -27,16 +27,6 @@ public interface UserMapper {
 
     Integer getUsersTotalCount(UserCriteria userCriteria);
 
-    List<Consigner> getUsersForCaretaker(UserCriteria userCriteria);
-
-    Integer getUsersForCaretakerTotalCount(UserCriteria userCriteria);
-
-    List<Caretaker> getUsersForConsigner(UserCriteria userCriteria);
-
-    Caretaker getUserForConsigner(Long userKey);
-
-    Integer getUsersForConsignerTotalCount(UserCriteria userCriteria);
-
     Integer updateUser(User user);
 
     Integer deleteUser(User user);

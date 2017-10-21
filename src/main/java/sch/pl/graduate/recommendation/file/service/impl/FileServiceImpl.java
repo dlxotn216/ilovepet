@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by taesu on 2017-10-15.
@@ -63,7 +64,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
         List<AppFile> appFiles = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             final String originalFilename = multipartFile.getOriginalFilename();
-            final String uploadFilePath = System.getProperty("catalina.home") + "/" + originalFilename;
+            final String uploadFilePath = System.getProperty("catalina.home") + "/" + UUID.randomUUID();
             final String format = originalFilename.substring(originalFilename.lastIndexOf("."));
             Integer size = writeFileToUploadFilePath(multipartFile, uploadFilePath);
 
