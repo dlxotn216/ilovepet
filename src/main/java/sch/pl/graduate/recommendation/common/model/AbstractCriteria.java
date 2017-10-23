@@ -21,9 +21,9 @@ import java.util.Map;
 public abstract class AbstractCriteria {
     private static final String ORDER_ASC = "ASC";
     private static final String ORDER_DESC = "DESC";
-    private static final int DEFAULT_OFFSET = 0;
-    private static final int DEFAULT_LIMIT = 12;
-    private static final int DEFAULT_PAGE = 1;
+    public static final int DEFAULT_OFFSET = 0;
+    public static final int DEFAULT_LIMIT = 6;
+    public static final int DEFAULT_PAGE = 1;
 
     private static final Map<String, String> DEFAULT_MAPPING_FILEDS;
 
@@ -34,6 +34,8 @@ public abstract class AbstractCriteria {
     }
 
     protected static final String SPLIT_REGEX = ",";
+
+    private String redirect;
 
     private String keyword;
     private String target;

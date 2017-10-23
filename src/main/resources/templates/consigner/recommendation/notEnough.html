@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+	<link rel="stylesheet" href="/css/signup/signup.css" th:href="@{/css/signup/signup.css}"/>
+	<link rel="stylesheet" href="/css/nouislider.min.css" th:href="@{/css/nouislider.min.css}"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap" sec:authorize="hasRole('ROLE_CONSIGNER')">
+	<div class="container">
+		<div class="starter-template view-title">
+			<h3>추천을 위한 맡김 이력이 충분하지 않습니다</h3>
+			<h5>아래 화면에서 필요 절차를 진행 해주세요</h5>
+		</div>
+
+		<div class="row" style="margin-top: 40px; margin-bottom: 20px;">
+			<div class="row">
+				<div class="col-sm-10">
+					<form class="signup" id="recommendationForm" method="POST" action="/consigners/recommendation/process">
+						<fieldset>
+							<legend>추천 데이터 입력</legend>
+							<div class="form-group">
+								<select id="cityType" class="form-control" name="cityTypeKey">
+									<option value="null" disabled="disabled" selected="selected">거주지를 선택해주세요</option>
+									<option th:each="cityType : ${cityTypes}"
+											th:value="${cityType.cityTypeKey}" th:text="${cityType.cityTypeName}"></option>
+								</select>
+							</div>
+							<div class="form-group">
+								<input id="birth" type="number" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"/>
+							</div>
+							<div class="form-group funkyradio">
+								<div class="funkyradio-primary">
+									<input type="radio" name="gender" class="form-control" id="true" value="MEN"
+										   checked="checked"/>
+									<label for="true">남성</label>
+								</div>
+								<div class="funkyradio-primary">
+									<input type="radio" name="gender" class="form-control" id="false" value="WOMEN"/>
+									<label for="false">여성</label>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label>이 정도 짖음을 돌볼 수 있는 돌보미이어야 합니다</label>
+								<div id="slider-barking" class="pet-slider slider-barking"></div>
+							</div>
+
+							<div class="form-group">
+								<label>이 정도 마킹을 돌볼 수 있는 돌보미이어야 합니다. </label>
+								<div id="slider-marking" class="pet-slider slider-marking"></div>
+							</div>
+
+							<div class="form-group">
+								<label>이 정도 마운팅을 돌볼 수 있는 돌보미이어야 합니다. </label>
+								<div id="slider-mounting" class="pet-slider slider-mounting"></div>
+							</div>
+
+							<div class="form-group">
+								<label>이 정도 공격성을 돌볼 수 있는 돌보미이어야 합니다. </label>
+								<div id="slider-aggression" class="pet-slider slider-aggression"></div>
+							</div>
+
+							<div class="form-group">
+								<label>이 정도 크기를 돌볼 수 있는 돌보미이어야 합니다. </label>
+								<div id="slider-size" class="pet-slider slider-size"></div>
+							</div>
+
+							<input type="hidden" name="age" th:value="0" id="age"/>
+							<div th:if="${selectedPet != null}" th:object="${selectedPet}">
+								<input type="hidden" name="barking" th:value="*{barking}" id="barking"/>
+								<input type="hidden" name="marking" th:value="*{marking}" id="marking"/>
+								<input type="hidden" name="mounting" th:value="*{mounting}" id="mounting"/>
+								<input type="hidden" name="aggression" th:value="*{aggression}" id="aggression"/>
+								<input type="hidden" name="size" th:value="*{size}" id="size"/>
+							</div>
+							<div th:unless="${selectedPet != null}">
+								<input type="hidden" name="barking" th:value="${0}" id="barking"/>
+								<input type="hidden" name="marking" th:value="${0}" id="marking"/>
+								<input type="hidden" name="mounting" th:value="${0}" id="mounting"/>
+								<input type="hidden" name="aggression" th:value="${0}" id="aggression"/>
+								<input type="hidden" name="size" th:value="${0}" id="size"/>
+							</div>
+
+							<div class="form-group funkyradio">
+								<div class="funkyradio-primary">
+									<input type="radio" name="yard" class="form-control" id="yard-true" value="true"
+										   checked="checked"/>
+									<label for="yard-true">마당이 있었으면 좋겠습니다</label>
+								</div>
+								<div class="funkyradio-primary">
+									<input type="radio" name="yard" class="form-control" id="yard-false" value="false"/>
+									<label for="yard-false">마당이 없어도 괜찮습니다</label>
+								</div>
+							</div>
+							<div class="form-group funkyradio">
+								<div class="funkyradio-success">
+									<input type="radio" name="liveWithFamily" class="form-control" id="liveWithFamily-true" value="true"
+										   checked="checked"/>
+									<label for="liveWithFamily-true">가족과 함께 사는 돌보미를 원해요</label>
+								</div>
+								<div class="funkyradio-success">
+									<input type="radio" name="liveWithFamily" class="form-control" id="liveWithFamily-false" value="false"/>
+									<label for="liveWithFamily-false">가족과 함께 살지 않는 돌보미를 원해요</label>
+								</div>
+							</div>
+							<div class="form-group funkyradio">
+								<div class="funkyradio-danger">
+									<input type="radio" name="hasYoungChildren" class="form-control" id="hasYoungChildren-true" value="true"
+										   checked="checked"/>
+									<label for="hasYoungChildren-true">12세 미만 어린 아이가 있는 돌보미가 좋습니다</label>
+								</div>
+								<div class="funkyradio-danger">
+									<input type="radio" name="hasYoungChildren" class="form-control" id="hasYoungChildren-false" value="false"/>
+									<label for="hasYoungChildren-false">12세 미만 어린 아이가 없는 돌보미가 좋습니다</label>
+								</div>
+							</div>
+							<div class="form-group funkyradio">
+								<div class="funkyradio-warning">
+									<input type="radio" name="pickup" class="form-control" id="pickup-true" value="true"
+										   checked="checked"/>
+									<label for="pickup-true">픽업이 가능 했으면 좋겠습니다</label>
+								</div>
+								<div class="funkyradio-warning">
+									<input type="radio" name="pickup" class="form-control" id="pickup-false" value="false"/>
+									<label for="pickup-false">픽업이 가능하지 않아도 괜찮습니다</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<button type="button" class="btn btn-success btn-block"
+										onclick="onRecommendationButtonClick()">
+									<span class="glyphicon glyphicon-thumbs-up"></span> 추천 해 주세요
+								</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="col-sm-2" style="float: right !important;">
+					<a class="btn btn-warning btn-md" onclick="onSelectMyPetButtonClick()">
+						<span class="glyphicon glyphicon-floppy-open"></span>
+						<span th:if="${selectedPet == null}" th:text="'내가 등록 한 반려동물 선택'"></span>
+						<span th:unless="${selectedPet == null}" th:text="'다시 선택'">	</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+<script type="text/javascript"
+		src="/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
+<script th:src="@{/js/user/notEnough.js}"></script>
+</body>
+</html>

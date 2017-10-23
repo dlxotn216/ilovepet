@@ -7,6 +7,7 @@
     <resultMap id="UserMap" type="User">
         <id property="userKey" column="USER_KEY"/>
         <result property="userId" column="USER_ID"/>
+        <result property="password" column="PASSWORD"/>
         <result property="userName" column="USER_NAME"/>
         <result property="age" column="AGE"/>
         <result property="birth" column="BIRTH"/>
@@ -15,40 +16,47 @@
         <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
         <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
         <result property="roleKey" column="ROLE_KEY"/>
+        <result property="cityTypeKey" column="CODE_SEQ"/>
+        <association property="cityType" javaType="CityType">
+            <result property="cityTypeKey" column="CODE_SEQ"/>
+            <result property="cityTypeName" column="CODE_NAME"/>
+        </association>
     </resultMap>
 
     <insert id="addUser">
         INSERT INTO USER
         (
-        USER_ID,
-        PASSWORD,
-        BIRTH,
-        GENDER,
-        EMAIL,
-        PHONE,
-        PROFILE_FILE_KEY,
-        ROLE_KEY,
-        USER_NAME,
-        IS_ACCOUNT_NON_EXPIRED,
-        IS_ACCOUNT_NON_LOCKED,
-        IS_CREDENTIALS_NON_EXPIRED,
-        IS_ENABLED
+            USER_ID,
+            PASSWORD,
+            BIRTH,
+            GENDER,
+            EMAIL,
+            PHONE,
+            PROFILE_FILE_KEY,
+            ROLE_KEY,
+            USER_NAME,
+            IS_ACCOUNT_NON_EXPIRED,
+            IS_ACCOUNT_NON_LOCKED,
+            IS_CREDENTIALS_NON_EXPIRED,
+            IS_ENABLED,
+            CITY_TYPE_KEY
         )
         VALUES
         (
-        #{userId},
-        #{password},
-        #{birth},
-        #{gender},
-        #{email},
-        #{phone},
-        #{profileFileKey},
-        #{roleKey},
-        #{userName},
-        1,
-        1,
-        1,
-        1
+            #{userId},
+            #{password},
+            #{birth},
+            #{gender},
+            #{email},
+            #{phone},
+            #{profileFileKey},
+            #{roleKey},
+            #{userName},
+            1,
+            1,
+            1,
+            1,
+            #{cityTypeKey}
         )
         <selectKey resultType="Long" keyProperty="userKey" order="AFTER" keyColumn="USER_KRY">
             SELECT LAST_INSERT_ID()
@@ -59,7 +67,9 @@
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
         FROM USER A
         LEFT JOIN FILE B
-        ON A.PROFILE_FILE_KEY = B.FILE_KEY
+            ON A.PROFILE_FILE_KEY = B.FILE_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) C
+            ON A.CITY_TYPE_KEY = C.CODE_SEQ
         WHERE
         A.USER_KEY = #{userKey}
         <if test="userId != null">
@@ -72,6 +82,8 @@
           FROM USER A
           LEFT JOIN FILE B
             ON A.PROFILE_FILE_KEY = B.FILE_KEY
+         LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) C
+            ON A.CITY_TYPE_KEY = C.CODE_SEQ
         WHERE A.USER_KEY = #{userKey}
     </select>
 
@@ -80,6 +92,8 @@
           FROM USER A
           LEFT JOIN FILE B
             ON A.PROFILE_FILE_KEY = B.FILE_KEY
+         LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) C
+            ON A.CITY_TYPE_KEY = C.CODE_SEQ
         WHERE A.USER_ID = #{userId}
     </select>
 
@@ -87,7 +101,9 @@
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
         FROM USER A
         LEFT JOIN FILE B
-        ON A.PROFILE_FILE_KEY = B.FILE_KEY
+            ON A.PROFILE_FILE_KEY = B.FILE_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) C
+            ON A.CITY_TYPE_KEY = C.CODE_SEQ
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
@@ -96,8 +112,6 @@
         SELECT COUNT(*)
         FROM USER
     </select>
-
-
 
     <update id="updateUser" parameterType="User">
         UPDATE
@@ -137,7 +151,10 @@
                 IS_CREDENTIALS_NON_EXPIRED = #{isCredentialsNonExpired},
             </if>
             <if test="isEnabled != null">
-                IS_ENABLED = #{isEnabled}
+                IS_ENABLED = #{isEnabled},
+            </if>
+            <if test="cityTypeKey != null">
+                CITY_TYPE_KEY = #{cityTypeKey}
             </if>
         </set>
         WHERE

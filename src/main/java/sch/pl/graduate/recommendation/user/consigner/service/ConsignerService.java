@@ -2,6 +2,7 @@ package sch.pl.graduate.recommendation.user.consigner.service;
 
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.consigner.model.RecommendationDataForConsigner;
 
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface ConsignerService {
 
     Caretaker getUserForConsigner(Long userKey);
 
+    List<Caretaker> getRecommendedCaretakers();
+
+    List<Caretaker> getRecommendedCaretakersFromRequestData(RecommendationDataForConsigner recommendationDataForConsigner);
 }

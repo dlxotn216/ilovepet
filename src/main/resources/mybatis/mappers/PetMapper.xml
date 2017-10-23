@@ -20,8 +20,8 @@
         <result property="ownerKey" column="OWNER_KEY"/>
         <result property="caretakerKey" column="CARETAKER_KEY"/>
         <association property="petType" javaType="PetType">
-            <result property="petTypeKey" column="PET_TYPE_KEY"/>
-            <result property="petTypeName" column="PET_TYPE_NAME"/>
+            <result property="petTypeKey" column="CODE_SEQ"/>
+            <result property="petTypeName" column="CODE_NAME"/>
         </association>
         <collection property="profileFiles" javaType="java.util.List" ofType="AppFile">
             <id property="fileKey" column="FILE_KEY"/>
@@ -65,8 +65,8 @@
     <select id="getPet" resultMap="PetMap">
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
         FROM PET A
-        LEFT JOIN PET_TYPE B
-        ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
+        ON A.PET_TYPE_KEY = B.CODE_SEQ
         LEFT JOIN PET_FILE C
         ON A.PET_KEY = C.PET_KEY
         WHERE
@@ -79,8 +79,8 @@
     <select id="getPetByPetKey" resultMap="PetMap">
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
             FROM PET A
-            LEFT JOIN PET_TYPE B
-                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
+                ON A.PET_TYPE_KEY = B.CODE_SEQ
             LEFT JOIN PET_FILE C
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
@@ -92,8 +92,8 @@
     <select id="getPetByPetName" resultMap="PetMap">
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
             FROM PET A
-            LEFT JOIN PET_TYPE B
-                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
+                ON A.PET_TYPE_KEY = B.CODE_SEQ
             LEFT JOIN PET_FILE C
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
@@ -105,8 +105,8 @@
     <select id="getPets" resultMap="PetMap">
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
             FROM PET A
-            LEFT JOIN PET_TYPE B
-                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
+                ON A.PET_TYPE_KEY = B.CODE_SEQ
             LEFT JOIN PET_FILE C
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
@@ -124,8 +124,8 @@
     <select id="getPetsForCaretaker" resultMap="PetMap">
         SELECT *
         FROM PET A
-            LEFT JOIN PET_TYPE B
-                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
+                ON A.PET_TYPE_KEY = B.CODE_SEQ
             LEFT JOIN PET_FILE C
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
@@ -145,8 +145,8 @@
     <select id="getPetsForConsigner" resultMap="PetMap">
         SELECT *, YEAR(CURRENT_DATE) - YEAR(BIRTH) AS AGE
             FROM PET A
-            LEFT JOIN PET_TYPE B
-                ON A.PET_TYPE_KEY = B.PET_TYPE_KEY
+            LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
+                ON A.PET_TYPE_KEY = B.CODE_SEQ
             LEFT JOIN PET_FILE C
                 ON A.PET_KEY = C.PET_KEY
             LEFT JOIN FILE D
@@ -212,16 +212,6 @@
         DELETE FROM PET
         WHERE PET_KEY = #{petKey};
     </delete>
-
-    <resultMap id="PetTypeMap" type="PetType">
-        <id property="petTypeKey" column="PET_TYPE_KEY"/>
-        <result property="petTypeName" column="PET_TYPE_NAME"/>
-    </resultMap>
-
-    <select id="getPetTypes" resultMap="PetTypeMap">
-        SELECT *
-        FROM PET_TYPE
-    </select>
 
     <insert id="addPetProfileFiles">
         INSERT INTO PET_FILE(PET_KEY, FILE_KEY)

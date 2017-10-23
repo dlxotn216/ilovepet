@@ -123,10 +123,4 @@ public class PetServiceImpl extends AbstractService implements PetService {
         User currentUser = getCurrentUser();
         return currentUser.getUserKey().equals(pet.getOwnerKey());
     }
-
-    @Override
-    public List<PetType> getPetTypes(PetCriteria petTypeCriteria) {
-        return petMapper.getPetTypes(petTypeCriteria);
-    }
-
 }

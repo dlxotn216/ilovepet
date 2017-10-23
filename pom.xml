@@ -6,8 +6,7 @@
     <groupId>sch.pl.graduate</groupId>
     <artifactId>recommendation</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <!--<packaging>war</packaging>-->
+    <packaging>${packagingType}</packaging>
 
     <name>recommendation</name>
     <description>Demo project for Spring Boot</description>
@@ -64,11 +63,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>${tomcatProvideType}</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -91,6 +90,25 @@
             <version>3.3.7</version>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <start-class>sch.pl.graduate.recommendation.RecommendationApplication</start-class>
+                <packagingType>jar</packagingType>
+                <tomcatProvideType>compile</tomcatProvideType>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <start-class>sch.pl.graduate.recommendation.RecommendationApplicationForDeploy</start-class>
+                <packagingType>war</packagingType>
+                <tomcatProvideType>provided</tomcatProvideType>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>

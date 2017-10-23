@@ -5,6 +5,8 @@
  * @since 2017-10-13
  */
 
+const userType = document.getElementById('userType').value;
+
 const slider_barking = document.getElementById('slider-barking');
 noUiSlider.create(slider_barking, {
 	start: 10,
@@ -28,7 +30,6 @@ noUiSlider.create(slider_marking, {
 		'max': 100
 	}
 });
-
 const slider_mounting = document.getElementById('slider-mounting');
 noUiSlider.create(slider_mounting, {
 	start: 10,
@@ -52,6 +53,7 @@ noUiSlider.create(slider_aggression, {
 		'max': 100
 	}
 });
+
 const slider_size = document.getElementById('slider-size');
 noUiSlider.create(slider_size, {
 	start: 10,
@@ -64,16 +66,14 @@ noUiSlider.create(slider_size, {
 	}
 });
 
-
-
 const signupButton = document.getElementById('btn-signup');
 signupButton.onclick = function () {
-	const userType = document.getElementById('userType').value;
 
 	//General user profile
 	const userId = document.getElementById('userId').value;
 	const password = document.getElementById('password').value;
 	const password2 = document.getElementById('password2').value;
+	const cityType = document.getElementById('cityType').value;
 	const userName = document.getElementById('userName').value;
 	const email = document.getElementById('email').value;
 	const phone = document.getElementById('phone').value;
@@ -95,6 +95,7 @@ signupButton.onclick = function () {
 	const liveWithFamilys = document.getElementsByName('liveWithFamily');
 	const hasYoungChildrens = document.getElementsByName('hasYoungChildren');
 	const pickups = document.getElementsByName('pickup');
+
 	const barking = slider_barking.noUiSlider.get();
 	const marking = slider_marking.noUiSlider.get();
 	const mounting = slider_mounting.noUiSlider.get();
@@ -169,6 +170,10 @@ signupButton.onclick = function () {
 		}
 		if (!genders || genders.length === 0) {
 			console.log("genders: ", genders, '_', genders.length);
+			return false;
+		}
+		if(!cityType || cityType === null || cityType === 'null'){
+			document.getElementById('cityType').focus();
 			return false;
 		}
 		if (userType === 'ROLE_CARETAKER') {
@@ -250,7 +255,7 @@ signupButton.onclick = function () {
 		};
 		const xhr = new XMLHttpRequest();
 		// xhr.setRequestHeader()
-		xhr.open("POST", "/users/"+userKey+"/caretakers");
+		xhr.open("POST", "/users/" + userKey + "/caretakers");
 		xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4 && xhr.status === 200) {
@@ -330,7 +335,8 @@ signupButton.onclick = function () {
 			'email': email,
 			'phone': phone,
 			'birth': birth,
-			'gender': gender
+			'gender': gender,
+			'cityTypeKey': cityType,
 		};
 
 		const xhr = new XMLHttpRequest();

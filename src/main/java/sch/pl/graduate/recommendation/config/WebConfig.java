@@ -99,6 +99,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         templateResolver.setCacheable(false);
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setOrder(0);
 
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();

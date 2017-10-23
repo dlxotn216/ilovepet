@@ -10,6 +10,7 @@ updateButton.onclick = function () {
 	const userId = document.getElementById('userId').value;
 	const password = document.getElementById('password').value;
 	const password2 = document.getElementById('password2').value;
+	const cityType = document.getElementById('cityType').value;
 	const userName = document.getElementById('userName').value;
 	const email = document.getElementById('email').value;
 	const phone = document.getElementById('phone').value;
@@ -97,6 +98,7 @@ updateButton.onclick = function () {
 		const requestBody = {
 			'userId': userId,
 			'password': password,
+			'cityTypeKey': cityType,
 			'userName': userName,
 			'updatedProfileFileKey': fileKey,
 			'profileFileKey': profileFileKey,

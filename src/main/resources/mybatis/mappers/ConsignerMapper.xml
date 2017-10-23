@@ -20,11 +20,13 @@
         SELECT *
         FROM USER A
         LEFT JOIN ROLE B
-        ON A.ROLE_KEY = B.ROLE_KEY
+            ON A.ROLE_KEY = B.ROLE_KEY
         LEFT JOIN CARETAKER C
-        ON A.USER_KEY = C.USER_KEY
+            ON A.USER_KEY = C.USER_KEY
         LEFT JOIN CARETAKER_FILE D
-        ON A.USER_KEY = D.USER_KEY
+            ON A.USER_KEY = D.USER_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) E
+            ON A.CITY_TYPE_KEY = E.CODE_SEQ
         WHERE B.ROLE_NAME LIKE '%CARETAKER'
         GROUP BY A.USER_KEY
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
@@ -35,11 +37,13 @@
         SELECT *
         FROM USER A
         LEFT JOIN ROLE B
-        ON A.ROLE_KEY = B.ROLE_KEY
+            ON A.ROLE_KEY = B.ROLE_KEY
         LEFT JOIN CARETAKER C
-        ON A.USER_KEY = C.USER_KEY
+            ON A.USER_KEY = C.USER_KEY
         LEFT JOIN CARETAKER_FILE D
-        ON A.USER_KEY = D.USER_KEY
+            ON A.USER_KEY = D.USER_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) E
+            ON A.CITY_TYPE_KEY = E.CODE_SEQ
         WHERE B.ROLE_NAME LIKE '%CARETAKER'
         AND A.USER_KEY = #{userKey}
     </select>

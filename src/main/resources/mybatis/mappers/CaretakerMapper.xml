@@ -36,6 +36,10 @@
         <result property="checkOut" column="CHECK_OUT"/>
         <result property="checkOutHour" column="CHECK_OUT_HOUR"/>
         <result property="checkOutMin" column="CHECK_OUT_MIN"/>
+        <association property="cityType" javaType="CityType">
+            <result property="cityTypeKey" column="CODE_SEQ"/>
+            <result property="cityTypeName" column="CODE_NAME"/>
+        </association>
         <collection property="introductionFiles" javaType="java.util.List" ofType="AppFile">
             <id property="fileKey" column="FILE_KEY"/>
             <result property="fileName" column="FILE_NAME"/>
@@ -178,6 +182,8 @@
             ON A.USER_KEY = C.USER_KEY
         LEFT JOIN CARETAKER_FILE D
             ON A.USER_KEY = D.USER_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) E
+            ON A.CITY_TYPE_KEY = E.CODE_SEQ
         WHERE B.ROLE_NAME LIKE '%CARETAKER'
             AND A.USER_KEY = #{userKey}
     </select>
@@ -186,7 +192,9 @@
         SELECT *
         FROM USER A
         LEFT JOIN ROLE B
-        ON A.ROLE_KEY = B.ROLE_KEY
+            ON A.ROLE_KEY = B.ROLE_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) E
+            ON A.CITY_TYPE_KEY = E.CODE_SEQ
         WHERE B.ROLE_NAME LIKE '%CONSIGNER'
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>

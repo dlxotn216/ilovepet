@@ -35,6 +35,8 @@ public class User extends AbstractModel implements UserDetails {
     private Long profileFileKey;
     private Role role;
     private AppFile profileFile;
+    private Long cityTypeKey;
+    private CityType cityType;
 
     private Long updatedProfileFileKey;
 

@@ -10,16 +10,14 @@
 
 <div th:replace="fragments/header :: header"/>
 
-<div class="page-wrap">
+<div class="page-wrap" sec:authorize="hasRole('ROLE_CONSIGNER')">
 	<div class="container">
 		<div class="starter-template view-title">
-			<h3 sec:authorize="hasRole('ROLE_CARETAKER')">맡기미 목록</h3>
-			<h3 sec:authorize="hasRole('ROLE_CONSIGNER')">돌보미 목록</h3>
-			<h3 sec:authorize="hasRole('ROLE_ADMIN')">사용자 목록</h3>
+			<h3>돌보미 목록</h3>
 		</div>
 
 		<div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
-			<div class="col-sm-10">
+			<div class="col-sm-10 pagination-col">
 				<ul class="pagination" style="float:left; margin: 0px !important;">
 					<li>
 						<a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
@@ -27,18 +25,19 @@
 					<li th:each="i : ${#numbers.sequence( 0, totalPage)}"
 						th:classappend="${(i+1) == currentPage} ? 'active'">
 						<a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
-						<a th:unless="${(i+1) == currentPage}" th:href="@{/consigner/user(page=${i+1},limit=12)}" th:text="${i}+1"></a>
+						<a th:unless="${(i+1) == currentPage}" th:href="@{/consigner/user(page=${i+1},limit=${defaultLimit})}" th:text="${i}+1"></a>
 					</li>
 				</ul>
 			</div>
 			<div class="col-sm-2" style="float: right !important;">
-				<a sec:authorize="hasRole('ROLE_CONSIGNER')" class="btn btn-success btn-md">
+				<a sec:authorize="hasRole('ROLE_CONSIGNER')"
+				   class="btn btn-success btn-md" onclick="onRecommendationRouteButtonClick()">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"> 추천받기</span>
 				</a>
 			</div>
 		</div>
 
-		<div class="row" style="margin-top: 40px;">
+		<div id="listView" class="row"  style="margin-top: 40px; margin-left: 0px; margin-right: 0px;">
 			<div th:each="user : ${users}" class="col-md-12" th:onclick="'onUserDetailClick('+${user.userKey}+')'">
 				<div class="row list-row">
 					<div class="list-header"
@@ -128,13 +127,8 @@
 		</div>
 	</div>
 </div>
-<script>
-	const onUserDetailClick = function(userKey){
-		window.location.href = '/consigner/user/'+userKey+'/detail';
-	}
-
-</script>
 <div th:replace="fragments/footer :: footer"/>
+<script th:src="@{/js/user/caretakerList.js}"></script>
 
 </body>
 </html>

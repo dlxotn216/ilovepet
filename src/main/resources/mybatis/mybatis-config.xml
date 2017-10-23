@@ -17,6 +17,7 @@
         <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.Consigner" alias="Consigner"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.User" alias="User"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.GenderType" alias="GenderType"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.common.model.CityType" alias="CityType"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.GenderTypeHandler" alias="GenderTypeHandler"/>
     </typeAliases>
 

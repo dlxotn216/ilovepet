@@ -20,14 +20,15 @@
 
 <div th:replace="fragments/header :: header"/>
 
-<div class="page-wrap">
+<div class="page-wrap" sec:authorize="hasRole('ROLE_CONSIGNER')">
 	<div class="container">
 		<div class="starter-template view-title">
-			<h3 sec:authorize="hasRole('ROLE_CARETAKER')">위탁받은 반려동물</h3>
-			<h3 sec:authorize="hasRole('ROLE_CONSIGNER')">나의 반려동물</h3>
+			<h3>돌보미를 추천 받을 반려 동물을 선택 해주세요</h3>
 		</div>
+
+		<input type="hidden" th:value="${redirectUrl}" id="redirectUrl" />
 		<div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
-			<div class="col-sm-10 pagination-col">
+			<div class="col-sm-12 pagination-col">
 				<ul class="pagination" style="float:left; margin: 0px !important;">
 					<li>
 						<a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
@@ -35,18 +36,13 @@
 					<li th:each="i : ${#numbers.sequence( 0, totalPage)}"
 						th:classappend="${(i+1) == currentPage} ? 'active'">
 						<a th:if="${(i+1) == currentPage}" th:text="${i}+1"></a>
-						<a th:unless="${(i+1) == currentPage}" th:href="@{/pet(page=${i+1},limit=12)}" th:text="${i}+1"></a>
+						<a th:unless="${(i+1) == currentPage}" th:href="@{/consigner/recommendation/select-pet(page=${i+1},limit=${defaultLimit})}" th:text="${i}+1"></a>
 					</li>
 				</ul>
 			</div>
-			<div class="col-sm-2" style="float: right !important;">
-				<a sec:authorize="hasRole('ROLE_CONSIGNER')" th:href="@{/pet/add}" class="btn btn-success btn-md">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				</a>
-			</div>
 		</div>
 		<div class="row">
-			<div th:each="pet : ${pets}" th:onclick="'onPetDetailClick('+${pet.petKey}+')'" class="pet-box col-md-4">
+			<div th:each="pet : ${pets}" th:onclick="'onSelectPetClick('+${pet.petKey}+')'" class="pet-box col-md-4">
 				<div class="thumbnail">
 					<a th:if="${pet.profileFiles != null and pet.profileFiles.size() > 0}" target="_blank">
 						<img th:src="${'/files/'+pet.profileFiles.get(0).fileKey}+'/downloads'" style="height: 300px !important;"/>
@@ -137,10 +133,8 @@
 		</div>
 	</div>
 </div>
-
 <script type="text/javascript"
-		src="/js/pet/pet.js" th:src="@{/js/pet/pet.js}"></script>
+		src="/js/pet/pet.js" th:src="@{/js/user/selectPet.js}"></script>
 <div th:replace="fragments/footer :: footer"/>
-
 </body>
 </html>

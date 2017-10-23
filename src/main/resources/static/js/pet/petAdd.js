@@ -165,7 +165,7 @@ const onAddPetButtonClick = function () {
 			document.getElementById('birth').focus();
 			return false;
 		}
-		return !(!petType || petType === null);
+		return !(!petType || petType === null || petType === 'null');
 	}();
 
 	if (!isValidate) {

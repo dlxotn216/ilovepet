@@ -49,6 +49,37 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-md-4 control-label" for="password">비밀번호</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<input id="password" name="password" type="text"
+											   placeholder="비밀번호"
+											   class="form-control input-md" disabled="disabled"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="password">거주지</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user">
+											</i>
+										</div>
+										<select id="cityType" name="cityType" class="form-control" disabled="disabled">
+											<option th:each="cityType: ${cityTypes}"
+													th:value="${cityType.cityTypeKey}"
+													th:selected="${cityType.cityTypeKey eq profile.cityTypeKey}"
+													th:text="${cityType.cityTypeName}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-md-4 control-label" for="userName">이름</label>
 								<div class="col-md-8">
 									<div class="input-group">

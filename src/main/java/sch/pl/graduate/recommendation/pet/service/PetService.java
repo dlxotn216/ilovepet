@@ -30,5 +30,4 @@ public interface PetService {
 
     Boolean currentUserIsOwner(Pet pet);
 
-    List<PetType> getPetTypes(PetCriteria petTypeCriteria);
 }

@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sch.pl.graduate.recommendation.code.model.CodeCriteria;
+import sch.pl.graduate.recommendation.code.service.CodeService;
 import sch.pl.graduate.recommendation.common.controller.AbstractController;
 import sch.pl.graduate.recommendation.pet.model.Pet;
 import sch.pl.graduate.recommendation.pet.model.PetCriteria;
@@ -30,6 +32,9 @@ public class PetViewController extends AbstractController {
     @Autowired
     private PetService petService;
 
+    @Autowired
+    private CodeService codeService;
+
     @GetMapping({"", "/"})
     public String getPetsView(Model model, PetCriteria petCriteria) {
         List<Pet> pets = petService.getPets(petCriteria);
@@ -46,8 +51,8 @@ public class PetViewController extends AbstractController {
     }
 
     @GetMapping({"/add"})
-    public String getPetAddView(Model model, PetCriteria petCriteria) {
-        List<PetType> petTypes = petService.getPetTypes(petCriteria);
+    public String getPetAddView(Model model) {
+        List<PetType> petTypes = codeService.getPetTypes(new CodeCriteria());
         model.addAttribute("petTypes", petTypes);
 
         return "pet/petAdd";
@@ -66,7 +71,7 @@ public class PetViewController extends AbstractController {
 
     @GetMapping({"/{petKey}/update"})
     public String getPetUpdateView(Model model, @PathVariable("petKey") Long petKey) {
-        List<PetType> petTypes = petService.getPetTypes(new PetCriteria());
+        List<PetType> petTypes = codeService.getPetTypes(new CodeCriteria());
         model.addAttribute("petTypes", petTypes);
 
         Pet pet = petService.getPetByPetKey(petKey);

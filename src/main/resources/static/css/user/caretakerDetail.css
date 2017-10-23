@@ -10,13 +10,15 @@
 }
 
 .right-side {
+
+}
+
+.right-side-inner{
     border: 1px solid #cccccc;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding: 30px 10px;
     background-color: #ffffff;
     color: #7d7d7d;
 }
-
 .right-side h5 {
     color: #7d7d7d;
     font-weight: bolder;
@@ -130,7 +132,7 @@
     /*border: 1px solid #cccccc;*/
 }
 
-.sub-images .col-md-3 {
+.sub-images .col-xs-3 {
     margin-top: 10px;
 }
 
@@ -138,9 +140,10 @@
     margin: 30px 0px;
 }
 
-.border-separator .col-md-8 {
+.border-separator .main-intro-image-wrap {
     border-bottom: 1px solid #cccccc;;
     padding: 10px 0px 30px 0px;
+    width: 100%;
 }
 
 .care-env-odd, .care-env-even {
@@ -187,8 +190,7 @@
 }
 
 .calendar-wrap {
-    padding-left: 0px;
-    padding-right: 0px;
+    margin-top: 10px;
 }
 
 .main-intro-image {
@@ -204,29 +206,40 @@
 }
 
 .main-intro-image-wrap {
+    cursor: pointer;
+    height: 500px;
+    display: table;
+    width: 100%;
+}
+
+.main-intro-image-inner {
+    display: table-cell;
+    vertical-align: middle;
+    border: 1px solid #CCCCCC;
+    background: antiquewhite;
+}
+
+.sub-images .sub-image-wrap {
+    padding: 0px 15px;
+    display: table;
     border: 1px solid #CCCCCC;
     cursor: pointer;
     background: antiquewhite;
-    height: 500px;
-    display: table;
+    height: 140px;
+    width: 100%;
 }
-.main-intro-image-inner{
+
+.sub-image-inner {
     display: table-cell;
     vertical-align: middle;
 }
 
-.sub-images .col-md-3 {
-    border: 1px solid #CCCCCC;
-    cursor: pointer;
-    background: antiquewhite;
-}
-
-.main-intro-image-wrap:hover {
+.main-intro-image-inner:hover {
     opacity: 0.8;
     border: 1px solid coral;
 }
 
-.sub-images .col-md-3:hover {
+.sub-image-wrap:hover {
     opacity: 0.8;
     border: 1px solid coral;
 }

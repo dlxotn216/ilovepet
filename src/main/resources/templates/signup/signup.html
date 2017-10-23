@@ -46,6 +46,13 @@
 											<input id="password2" type="password" class="form-control" placeholder="비밀번호 재입력" required="true"/>
 										</div>
 										<div class="form-group">
+											<select id="cityType" class="form-control">
+												<option value="null" disabled="disabled" selected="selected">거주지를 선택해주세요</option>>
+												<option th:each="cityType : ${cityTypes}"
+														th:value="${cityType.cityTypeKey}" th:text="${cityType.cityTypeName}"></option>
+											</select>
+										</div>
+										<div class="form-group">
 											<input id="userName" type="text" class="form-control" placeholder="이름" required="true"/>
 										</div>
 										<div class="form-group">
@@ -55,7 +62,7 @@
 											<input id="phone" type="text" class="form-control" placeholder="전화번호" required="true"/>
 										</div>
 										<div class="form-group">
-											<input id="birth" type="birth" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"/>
+											<input id="birth" type="number" class="form-control" placeholder="생년월일 (ex 19950215)" required="true"/>
 										</div>
 										<div class="form-group funkyradio">
 											<div class="funkyradio-primary">
@@ -73,7 +80,8 @@
 										</div>
 									</fieldset>
 
-									<div th:if="${#strings.equals('ROLE_CARETAKER', signupValue.value)}" style="margin-top: 40px;">
+									<!-- fieldset for caretaker -->
+									<div th:classappend="${! #strings.equals('ROLE_CARETAKER', signupValue.value)} ? 'hidden'" style="margin-top: 40px;">
 										<fieldset>
 											<legend>돌보미 프로필 입력</legend>
 

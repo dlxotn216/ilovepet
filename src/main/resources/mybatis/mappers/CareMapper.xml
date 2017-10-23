@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.care.mapper.CareMapper">
+
+    <select id="getCaretakersFromCareLog" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
+        SELECT *
+        FROM (SELECT * FROM CARE WHERE CONSIGNER_KEY =1) A
+        INNER JOIN USER B
+            ON A.CARETAKER_KEY = B.USER_KEY
+        INNER JOIN CARETAKER C
+            ON A.CARETAKER_KEY = C.USER_KEY
+        LEFT JOIN CARETAKER_FILE D
+            ON A.CARETAKER_KEY = D.USER_KEY
+    </select>
+
+</mapper>
