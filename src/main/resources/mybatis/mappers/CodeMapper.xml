@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.code.mapper.CodeMapper">
+    <resultMap id="PetTypeMap" type="PetType">
+        <id property="petTypeKey" column="CODE_SEQ"/>
+        <result property="petTypeName" column="CODE_NAME"/>
+    </resultMap>
+
+    <select id="getPetTypes" resultMap="PetTypeMap">
+        SELECT *
+        FROM CODE
+        WHERE CODE_TYPE=0
+    </select>
+
+    <resultMap id="CityTypeMap" type="CityType">
+        <id property="cityTypeKey" column="CODE_SEQ"/>
+        <result property="cityTypeName" column="CODE_NAME"/>
+    </resultMap>
+
+    <select id="getCityTypes" resultMap="CityTypeMap">
+        SELECT *
+        FROM CODE
+        WHERE CODE_TYPE=1
+    </select>
+
+</mapper>
