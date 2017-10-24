@@ -7,6 +7,7 @@
 package sch.pl.graduate.recommendation.pet.service;
 
 import sch.pl.graduate.recommendation.pet.model.Pet;
+import sch.pl.graduate.recommendation.pet.model.PetCare;
 import sch.pl.graduate.recommendation.pet.model.PetCriteria;
 import sch.pl.graduate.recommendation.pet.model.PetType;
 
@@ -30,4 +31,5 @@ public interface PetService {
 
     Boolean currentUserIsOwner(Pet pet);
 
+    List<PetCare> getPetCareLog(Long petKey);
 }

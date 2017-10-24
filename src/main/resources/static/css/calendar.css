@@ -90,13 +90,13 @@ a, a:visited {
 }
 
 .cal__date--today {
-  background-color: #0A9297;
-  color: #fff;
+  background-color: #E7E9ED;
+  color: #333;
 }
 
 .cal__date--selected {
-  background-color: #E7E9ED;
-  color: #333;
+  background-color: #0A9297;
+  color: #fff;
 }
 
 .cal__date--disabled {

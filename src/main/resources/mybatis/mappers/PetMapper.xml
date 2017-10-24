@@ -246,4 +246,41 @@
         FROM PET_FILE
         WHERE PET_KEY = #{petKey}
     </delete>
+
+    <resultMap id="PetCareMap" type="PetCare">
+        <result property="consignerKey" column="CONSIGNER_KEY"/>
+        <result property="consignerId" column="CONSIGNER_ID"/>
+        <result property="consignerName" column="CONSIGNER_NAME"/>
+        <result property="caretakerKey" column="CARETAKER_KEY"/>
+        <result property="caretakerId" column="CARETAKER_ID"/>
+        <result property="caretakerName" column="CARETAKER_NAME"/>
+        <result property="petKey" column="PET_KEY"/>
+        <result property="careKey" column="CARE_KEY"/>
+        <result property="score" column="SCORE"/>
+        <result property="comment" column="COMMENT"/>
+        <result property="startAt" column="START_AT"/>
+        <result property="endAt" column="END_AT"/>
+    </resultMap>
+
+    <select id="getPetCareLog" resultMap="PetCareMap">
+       SELECT
+            *,
+            IFNULL(C.USER_ID, 'Unknown')   AS CONSIGNER_ID,
+            IFNULL(C.USER_KEY, NULL)  AS CONSIGNER_KEY,
+            IFNULL(C.USER_NAME, '탈퇴한 맡기미입니다') AS CONSIGNER_NAME,
+            IFNULL(D.USER_ID, 'Unknown')   AS CARETAKER_ID,
+            IFNULL(D.USER_NAME, '탈퇴한 돌보미입니다') AS CARETAKER_NAME,
+            IFNULL(D.USER_KEY, NULL)  AS CARETAKER_KEY
+        FROM CARE A
+            INNER JOIN CARE_DETAIL B
+                ON A.CARE_KEY = B.CARE_KEY
+                   AND B.PET_KEY = #{petKey}
+            LEFT JOIN CARE_REVIEW E
+                ON A.CARE_KEY = E.CARE_KEY
+            LEFT JOIN USER C
+                ON A.CONSIGNER_KEY = C.USER_KEY
+            LEFT JOIN USER D
+                ON A.CARETAKER_KEY = C.USER_KEY
+
+    </select>
 </mapper>

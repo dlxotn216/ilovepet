@@ -3,9 +3,11 @@ package sch.pl.graduate.recommendation.user.consigner.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import sch.pl.graduate.recommendation.care.model.Care;
 import sch.pl.graduate.recommendation.care.service.CareService;
 import sch.pl.graduate.recommendation.common.service.AbstractService;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
+import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.consigner.mapper.ConsignerMapper;
 import sch.pl.graduate.recommendation.user.consigner.model.RecommendationDataForConsigner;
@@ -59,12 +61,19 @@ public class ConsignerServiceImpl extends AbstractService implements ConsignerSe
 
     //계산
     private List<Caretaker> recommendByPreviousLog(List<Caretaker> previousLog){
-        return Collections.EMPTY_LIST;
+        return consignerMapper.getUsersForConsigner(new UserCriteria());
     }
 
     @Override
     public List<Caretaker> getRecommendedCaretakersFromRequestData(RecommendationDataForConsigner recommendationDataForConsigner){
         return consignerMapper.getUsersForConsigner(new UserCriteria());
+    }
+
+    @Override
+    public List<Care> getCareLogsByCaretakerKeyAndWithoutAddCareReview(Long caretakerKey){
+        User currentUser = getCurrentUser();
+        Long consignerKey = currentUser.getUserKey();
+        return careService.getCareLogsByCaretakerKeyAndWithoutAddCareReview(consignerKey, caretakerKey);
     }
 
 }

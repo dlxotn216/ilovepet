@@ -15,10 +15,7 @@ import sch.pl.graduate.recommendation.common.service.AbstractService;
 import sch.pl.graduate.recommendation.file.model.AppFile;
 import sch.pl.graduate.recommendation.file.service.FileService;
 import sch.pl.graduate.recommendation.pet.mapper.PetMapper;
-import sch.pl.graduate.recommendation.pet.model.Pet;
-import sch.pl.graduate.recommendation.pet.model.PetCriteria;
-import sch.pl.graduate.recommendation.pet.model.PetFile;
-import sch.pl.graduate.recommendation.pet.model.PetType;
+import sch.pl.graduate.recommendation.pet.model.*;
 import sch.pl.graduate.recommendation.pet.service.PetService;
 import sch.pl.graduate.recommendation.user.common.model.User;
 
@@ -122,5 +119,10 @@ public class PetServiceImpl extends AbstractService implements PetService {
     public Boolean currentUserIsOwner(Pet pet) {
         User currentUser = getCurrentUser();
         return currentUser.getUserKey().equals(pet.getOwnerKey());
+    }
+
+    @Override
+    public List<PetCare> getPetCareLog(Long petKey){
+        return petMapper.getPetCareLog(petKey);
     }
 }

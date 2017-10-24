@@ -9,10 +9,7 @@ package sch.pl.graduate.recommendation.pet.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import sch.pl.graduate.recommendation.file.model.AppFile;
-import sch.pl.graduate.recommendation.pet.model.Pet;
-import sch.pl.graduate.recommendation.pet.model.PetCriteria;
-import sch.pl.graduate.recommendation.pet.model.PetFile;
-import sch.pl.graduate.recommendation.pet.model.PetType;
+import sch.pl.graduate.recommendation.pet.model.*;
 
 import java.util.List;
 
@@ -51,4 +48,6 @@ public interface PetMapper {
     Integer deletePetProfileFilesAsList(List<PetFile> files);
 
     Integer deletePetProfileFilesByPetKey(Long petKey);
+
+    List<PetCare> getPetCareLog(Long petKey);
 }

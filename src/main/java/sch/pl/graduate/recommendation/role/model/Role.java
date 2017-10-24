@@ -13,6 +13,9 @@ import sch.pl.graduate.recommendation.common.model.AbstractModel;
 /**
  * Created by Lee Tae Su on 2017-10-13.
  */
+// 1: ADMIN
+// 2: CONSIGNER
+// 3: CARETAKER
 @Data
 public class Role extends AbstractModel implements GrantedAuthority{
     private Long roleKey;

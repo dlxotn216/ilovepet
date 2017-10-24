@@ -1,5 +1,6 @@
 package sch.pl.graduate.recommendation.user.consigner.service;
 
+import sch.pl.graduate.recommendation.care.model.Care;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.consigner.model.RecommendationDataForConsigner;
@@ -20,4 +21,6 @@ public interface ConsignerService {
     List<Caretaker> getRecommendedCaretakers();
 
     List<Caretaker> getRecommendedCaretakersFromRequestData(RecommendationDataForConsigner recommendationDataForConsigner);
+
+    List<Care> getCareLogsByCaretakerKeyAndWithoutAddCareReview(Long caretakerKey);
 }

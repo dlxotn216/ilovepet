@@ -57,3 +57,7 @@ const displayAlertModal = function (isSuccess, content){
 const afterSuccess = function(){
 	setTimeout(function(){ window.history.back(); }, 2000);
 };
+
+const afterSuccessThenRefresh = function(){
+	setTimeout(function(){ location.reload(); }, 2000);
+}

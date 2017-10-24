@@ -4,15 +4,128 @@
 
 <mapper namespace="sch.pl.graduate.recommendation.care.mapper.CareMapper">
 
+    <resultMap id="CareMap" type="Care">
+        <id property="careKey" column="CARE_KEY"/>
+        <result property="caretakerKey" column="CARETAKER_KEY"/>
+        <result property="consignerKey" column="CONSIGNER_KEY"/>
+        <result property="startAt" column="START_AT"/>
+        <result property="endAt" column="END_AT"/>
+        <result property="finishedAt" column="FINISHED_AT"/>
+        <result property="price" column="PRICE"/>
+        <collection property="careDetails" javaType="java.util.List" ofType="CareDetail">
+            <result property="careKey" column="CARE_KEY"/>
+            <result property="petKey" column="PET_KEY"/>
+        </collection>
+    </resultMap>
+    <insert id="addCare" parameterType="Care">
+        INSERT INTO CARE
+        (
+        CARETAKER_KEY,
+        CONSIGNER_KEY,
+        START_AT,
+        END_AT,
+        FINISHED_AT,
+        PRICE
+        )
+        VALUES
+        (
+        #{caretakerKey},
+        #{consignerKey},
+        #{startAt},
+        #{endAt},
+        #{finishedAt},
+        #{price}
+        )
+        <selectKey resultType="Long" keyProperty="careKey" order="AFTER" keyColumn="CARE_KEY">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="addCareReview" parameterType="CareReview">
+        INSERT INTO CARE_REVIEW
+        (
+            CARE_KEY,
+            COMMENT,
+            SCORE,
+            CREATED_AT
+        )
+        VALUES
+        (
+            #{careKey},
+            #{comment},
+            #{score},
+            #{createdAt}
+        )
+    </insert>
+
+    <insert id="addCareDetails" parameterType="CareDetail">
+        INSERT INTO CARE_DETAIL(CARE_KEY, PET_KEY)
+        VALUES
+        <foreach collection="list" item="item" separator="," close=";">
+            (
+            #{item.careKey},
+            #{item.petKey}
+            )
+        </foreach>
+    </insert>
+
     <select id="getCaretakersFromCareLog" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
         SELECT *
-        FROM (SELECT * FROM CARE WHERE CONSIGNER_KEY =1) A
+        FROM (SELECT * FROM CARE WHERE CONSIGNER_KEY =  #{userKey}) A
         INNER JOIN USER B
             ON A.CARETAKER_KEY = B.USER_KEY
         INNER JOIN CARETAKER C
             ON A.CARETAKER_KEY = C.USER_KEY
         LEFT JOIN CARETAKER_FILE D
             ON A.CARETAKER_KEY = D.USER_KEY
+    </select>
+
+    <!--
+        맡기미가 리뷰를 작성하지 않은
+        돌봄 이력을 가져온다
+     -->
+    <select id="getCareLogsByCaretakerKeyAndWithoutAddCareReview" resultMap="CareMap">
+        SELECT * FROM (
+            SELECT A.*,
+                C.CARE_KEY AS C_CARE_KEY,
+                C.COMMENT, C.SCORE, C.CREATED_AT
+            FROM CARE A
+                LEFT JOIN CARE_REVIEW C
+                    ON A.CARE_KEY = C.CARE_KEY
+            WHERE
+                A.CONSIGNER_KEY = #{consignerKey}
+                AND A.CARETAKER_KEY = #{caretakerKey}
+        ) R WHERE R.C_CARE_KEY IS NULL
+    </select>
+
+    <resultMap id="CareReviewMap" type="CareReview">
+        <id property="careKey" column="CARE_KEY"/>
+        <result property="caretakerKey" column="CARETAKER_KEY"/>
+        <result property="consignerKey" column="CONSIGNER_KEY"/>
+        <result property="writerId" column="WRITER_ID"/>
+        <result property="writerName" column="WRITER_NAME"/>
+        <result property="startAt" column="START_AT"/>
+        <result property="endAt" column="END_AT"/>
+        <result property="finishedAt" column="FINISHED_AT"/>
+        <result property="price" column="PRICE"/>
+        <result property="score" column="SCORE"/>
+        <result property="comment" column="COMMENT"/>
+        <result property="createdAt" column="CREATED_AT"/>
+
+    </resultMap>
+
+    <select id="getCaretakersCareReviews" resultMap="CareReviewMap">
+        SELECT A.*,
+            C.COMMENT, C.SCORE, C.CREATED_AT,
+            D.USER_ID AS WRITER_ID,
+            D.USER_NAME AS WRITER_NAME
+        FROM CARE A
+            INNER JOIN CARE_REVIEW C
+                ON A.CARE_KEY = C.CARE_KEY
+            LEFT JOIN USER D
+		        ON A.CONSIGNER_KEY = D.USER_KEY
+        WHERE
+            A.CARETAKER_KEY = #{caretakerKey}
     </select>
 
 </mapper>

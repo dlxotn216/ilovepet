@@ -13,12 +13,13 @@
 
 }
 
-.right-side-inner{
+.right-side-inner {
     border: 1px solid #cccccc;
     padding: 30px 10px;
     background-color: #ffffff;
     color: #7d7d7d;
 }
+
 .right-side h5 {
     color: #7d7d7d;
     font-weight: bolder;
@@ -37,8 +38,8 @@
 .right-side-detail {
     font-size: 13px;
     color: #7d7d7d;
-    margin-top: 60px;
-    margin-bottom: 40px;
+    margin-top: 50px;
+    margin-bottom: 60px;
 }
 
 .total {
@@ -132,6 +133,10 @@
     /*border: 1px solid #cccccc;*/
 }
 
+.sub-images, .care-env-wrap {
+    margin-top: 20px;
+}
+
 .sub-images .col-xs-3 {
     margin-top: 10px;
 }
@@ -191,6 +196,7 @@
 
 .calendar-wrap {
     margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .main-intro-image {
@@ -242,4 +248,77 @@
 .sub-image-wrap:hover {
     opacity: 0.8;
     border: 1px solid coral;
+}
+
+/* select pet*/
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position: absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+
+.form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.review-panel-heading{
+    overflow: hidden;
+    color: #7d7d7d !important;
+    font-weight:bolder;
+}
+
+.review-panel-heading .writer{
+    display: inline-block;
+    float: left;
+}
+.review-panel-heading .score{
+    display: inline-block;
+    float: right;
+}
+
+.review-panel-body{
+    color: #7d7d7d;
 }

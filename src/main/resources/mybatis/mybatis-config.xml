@@ -8,6 +8,7 @@
         <typeAlias type="sch.pl.graduate.recommendation.file.model.FileType" alias="FileType"/>
         <typeAlias type="sch.pl.graduate.recommendation.file.model.FileTypeHandler" alias="FileTypeHandler"/>
         <typeAlias type="sch.pl.graduate.recommendation.pet.model.Pet" alias="Pet"/>
+        <typeAlias type="sch.pl.graduate.recommendation.pet.model.PetCare" alias="PetCare"/>
         <typeAlias type="sch.pl.graduate.recommendation.pet.model.PetType" alias="PetType"/>
         <typeAlias type="sch.pl.graduate.recommendation.role.model.Role" alias="Role"/>
         <typeAlias type="org.springframework.security.core.authority.SimpleGrantedAuthority" alias="GrantedAuthority"/>
@@ -19,6 +20,9 @@
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.GenderType" alias="GenderType"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.CityType" alias="CityType"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.GenderTypeHandler" alias="GenderTypeHandler"/>
+        <typeAlias type="sch.pl.graduate.recommendation.care.model.Care" alias="Care"/>
+        <typeAlias type="sch.pl.graduate.recommendation.care.model.CareDetail" alias="CareDetail"/>
+        <typeAlias type="sch.pl.graduate.recommendation.care.model.CareReview" alias="CareReview"/>
     </typeAliases>
 
     <typeHandlers>

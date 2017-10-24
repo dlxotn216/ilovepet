@@ -145,6 +145,25 @@
 							</div>
 							<div class="tab-pane-content-wrap">
 								<div class="tab-pane-body">
+									<table class="table">
+										<tr>
+											<th>돌보미</th>
+											<th>시작일</th>
+											<th>종료일</th>
+											<th>평점</th>
+											<th>리뷰</th>
+										</tr>
+										<tr th:if="${petCares != null and petCares.size()>0}" th:each="petCare: ${petCares}">
+											<td th:text="${petCare.caretakerName}"></td>
+											<td th:text="${petCare.startAt}"></td>
+											<td th:text="${petCare.endAt}"></td>
+											<td th:text="${petCare.score}"></td>
+											<td th:text="${petCare.comment}"></td>
+										</tr>
+										<tr th:unless="${petCares != null and petCares.size()>0}">
+											<td colspan="5">이력이 존재하지 않습니다.</td>
+										</tr>
+									</table>
 								</div>
 							</div>
 							<div class="tab-pane-footer row">

@@ -19,7 +19,9 @@ import sch.pl.graduate.recommendation.file.model.AppFile;
 import sch.pl.graduate.recommendation.file.model.FileType;
 import sch.pl.graduate.recommendation.file.service.FileService;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -43,8 +45,10 @@ public class FileServiceImpl extends AbstractService implements FileService {
     @Transactional
     public AppFile addFile(MultipartFile multipartFile, FileType fileType) {
         final String originalFilename = multipartFile.getOriginalFilename();
-        final String uploadFilePath = System.getProperty("catalina.home") + "/" + originalFilename;
-        final String format = originalFilename.substring(originalFilename.lastIndexOf("."));
+        final String format = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+
+        Path resourceDirectory = Paths.get("src/main/resources/files");
+        final String uploadFilePath = resourceDirectory + "/" + UUID.randomUUID() + "." + format;
         Integer size = writeFileToUploadFilePath(multipartFile, uploadFilePath);
 
         AppFile appFile = new AppFile();
@@ -62,10 +66,12 @@ public class FileServiceImpl extends AbstractService implements FileService {
     @Transactional
     public List<AppFile> addFiles(List<MultipartFile> multipartFiles, FileType fileType) {
         List<AppFile> appFiles = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFiles) {
+        for(MultipartFile multipartFile : multipartFiles) {
             final String originalFilename = multipartFile.getOriginalFilename();
-            final String uploadFilePath = System.getProperty("catalina.home") + "/" + UUID.randomUUID();
-            final String format = originalFilename.substring(originalFilename.lastIndexOf("."));
+            final String format = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+
+            Path resourceDirectory = Paths.get("src/main/resources/files");
+            final String uploadFilePath = resourceDirectory + "/" + UUID.randomUUID() + "." + format;
             Integer size = writeFileToUploadFilePath(multipartFile, uploadFilePath);
 
             AppFile appFile = new AppFile();
@@ -86,7 +92,10 @@ public class FileServiceImpl extends AbstractService implements FileService {
             byte[] bytes = multipartFile.getBytes();
             size = bytes.length;
             Path path = Paths.get(uploadFilePath);
-            Files.write(path, bytes);
+            File file = new File(path.toString());
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
+            stream.write(bytes);
+            stream.close();
         } catch (IOException e) {
             log.error("Error occured", e);
             throw new SystemException();
@@ -106,9 +115,12 @@ public class FileServiceImpl extends AbstractService implements FileService {
         final String filePath = appFileFromRepository.getFilePath();
         final String fileName = appFileFromRepository.getFileName();
 
-        File fileForDownload = new File(filePath);
+        final Path resourceDirectory = Paths.get(filePath);
+        final String uploadFilePath = resourceDirectory.toString();
 
-        if (!fileForDownload.exists()) {
+        File fileForDownload = new File(uploadFilePath);
+
+        if(!fileForDownload.exists()) {
             return getFileResponse(new byte[0], fileName);
         }
 
@@ -140,14 +152,14 @@ public class FileServiceImpl extends AbstractService implements FileService {
     }
 
     private void deleteRealFile(List<AppFile> deletedFiles) {
-        if (CollectionUtils.isEmpty(deletedFiles)) {
+        if(CollectionUtils.isEmpty(deletedFiles)) {
             return;
         }
 
-        for (AppFile appFile : deletedFiles) {
+        for(AppFile appFile : deletedFiles) {
             File file = new File(appFile.getFilePath());
-            if (file.exists()) {
-                log.info("Real file deleted :" +appFile.getFileName());
+            if(file.exists()) {
+                log.info("Real file deleted :" + appFile.getFileName());
                 file.delete();
             }
         }

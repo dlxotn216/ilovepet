@@ -16,6 +16,7 @@ import sch.pl.graduate.recommendation.code.model.CodeCriteria;
 import sch.pl.graduate.recommendation.code.service.CodeService;
 import sch.pl.graduate.recommendation.common.controller.AbstractController;
 import sch.pl.graduate.recommendation.pet.model.Pet;
+import sch.pl.graduate.recommendation.pet.model.PetCare;
 import sch.pl.graduate.recommendation.pet.model.PetCriteria;
 import sch.pl.graduate.recommendation.pet.model.PetType;
 import sch.pl.graduate.recommendation.pet.service.PetService;
@@ -44,7 +45,7 @@ public class PetViewController extends AbstractController {
 
         model.addAttribute("pets", pets);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
         model.addAttribute("currentPage", currentPage);
 
         return "pet/pet";
@@ -66,6 +67,9 @@ public class PetViewController extends AbstractController {
         Boolean isOwner = petService.currentUserIsOwner(pet);
         model.addAttribute("isOwner", isOwner);
 
+        List<PetCare> petCares = petService.getPetCareLog(petKey);
+        model.addAttribute("petCares", petCares);
+
         return "pet/petDetail";
     }
 
@@ -79,9 +83,9 @@ public class PetViewController extends AbstractController {
 
         Boolean isOwner = petService.currentUserIsOwner(pet);
 
-        if(!isOwner){
+        if(!isOwner) {
             return "error/403";
-        } else{
+        } else {
             return "pet/petUpdate";
         }
 

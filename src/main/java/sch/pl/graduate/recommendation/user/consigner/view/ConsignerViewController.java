@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
+import sch.pl.graduate.recommendation.care.model.Care;
+import sch.pl.graduate.recommendation.care.model.CareReview;
+import sch.pl.graduate.recommendation.care.service.CareService;
 import sch.pl.graduate.recommendation.code.model.CodeCriteria;
 import sch.pl.graduate.recommendation.code.service.CodeService;
 import sch.pl.graduate.recommendation.common.controller.AbstractViewController;
@@ -41,6 +44,9 @@ public class ConsignerViewController extends AbstractViewController {
     @Autowired
     private PetService petService;
 
+    @Autowired
+    private CareService careService;
+
     @GetMapping({"/consigner", "/consigner/"})
     public String getConsignerView() {
         return "consigner/dashboard";
@@ -55,7 +61,7 @@ public class ConsignerViewController extends AbstractViewController {
 
         model.addAttribute("users", users);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
         model.addAttribute("currentPage", currentPage);
 
         return getListView(model, "consigner/caretakerList");
@@ -64,8 +70,19 @@ public class ConsignerViewController extends AbstractViewController {
     @GetMapping("/consigner/user/{userKey}/detail")
     public String getUserDetailForConsignerView(Model model, @PathVariable Long userKey) {
         Caretaker user = consignerService.getUserForConsigner(userKey);
-
         model.addAttribute("user", user);
+
+        PetCriteria petCriteria = new PetCriteria();
+        petCriteria.setLimit(-1);
+        List<Pet> pets = petService.getPets(petCriteria);
+        model.addAttribute("pets", pets);
+
+        List<Care> cares = consignerService.getCareLogsByCaretakerKeyAndWithoutAddCareReview(userKey);
+        model.addAttribute("cares", cares);
+
+        List<CareReview> careReviews = careService.getCaretakersCareReviews(userKey);
+        model.addAttribute("careReviews", careReviews);
+
         return "consigner/caretakerDetail";
     }
 
@@ -110,7 +127,7 @@ public class ConsignerViewController extends AbstractViewController {
 
         model.addAttribute("pets", pets);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
         model.addAttribute("currentPage", currentPage);
 
         final String redirectUrl = petCriteria.getRedirect();
