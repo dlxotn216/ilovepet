@@ -24,5 +24,7 @@ public interface CareService {
 
     List<Care> getCareLogsByCaretakerKeyAndWithoutAddCareReview(Long consignerKey, Long caretakerKey);
 
-    List<CareReview> getCaretakersCareReviews(Long caretakerKey);
+    List<CareReview> getCareReviewsByCaretakerKey(Long caretakerKey);
+
+    List<Care> getCaresByCaretakerKey(Long caretakerKey);
 }

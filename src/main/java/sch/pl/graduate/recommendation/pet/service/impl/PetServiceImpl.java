@@ -61,10 +61,11 @@ public class PetServiceImpl extends AbstractService implements PetService {
     @Override
     public List<Pet> getPets(PetCriteria petCriteria) {
         User currentUser = getCurrentUser();
-        petCriteria.setOwnerKey(currentUser.getUserKey());
         if (hasRole("ROLE_CARETAKER")) {
+            petCriteria.setCaretakerKey(currentUser.getUserKey());
             return petMapper.getPetsForCaretaker(petCriteria);
         } else if (hasRole("ROLE_CONSIGNER")) {
+            petCriteria.setOwnerKey(currentUser.getUserKey());
             return petMapper.getPetsForConsigner(petCriteria);
         } else if (hasRole("ROLE_ADMIN")) {
             return petMapper.getPets(petCriteria);
@@ -76,10 +77,11 @@ public class PetServiceImpl extends AbstractService implements PetService {
     @Override
     public Integer getPetsTotalCount(PetCriteria petCriteria) {
         User currentUser = getCurrentUser();
-        petCriteria.setOwnerKey(currentUser.getUserKey());
         if (hasRole("ROLE_CARETAKER")) {
+            petCriteria.setCaretakerKey(currentUser.getUserKey());
             return petMapper.getPetsForCaretakerTotalCount(petCriteria);
         } else if (hasRole("ROLE_CONSIGNER")) {
+            petCriteria.setOwnerKey(currentUser.getUserKey());
             return petMapper.getPetsForConsignerTotalCount(petCriteria);
         } else if (hasRole("ROLE_ADMIN")) {
             return petMapper.getPetsTotalCount(petCriteria);

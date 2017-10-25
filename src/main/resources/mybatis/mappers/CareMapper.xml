@@ -7,7 +7,11 @@
     <resultMap id="CareMap" type="Care">
         <id property="careKey" column="CARE_KEY"/>
         <result property="caretakerKey" column="CARETAKER_KEY"/>
+        <result property="caretakerId" column="CARETAKER_ID"/>
+        <result property="caretakerName" column="CARETAKER_NAME"/>
         <result property="consignerKey" column="CONSIGNER_KEY"/>
+        <result property="consingerId" column="CONSIGNER_ID"/>
+        <result property="consignerName" column="CONSIGNER_NAME"/>
         <result property="startAt" column="START_AT"/>
         <result property="endAt" column="END_AT"/>
         <result property="finishedAt" column="FINISHED_AT"/>
@@ -69,6 +73,24 @@
         </foreach>
     </insert>
 
+    <select id="getCaresByCaretakerKey" resultMap="CareMap">
+        SELECT
+          *,
+          IFNULL(C.USER_ID, 'Unknown')   AS CONSIGNER_ID,
+          IFNULL(C.USER_KEY, NULL)  AS CONSIGNER_KEY,
+          IFNULL(C.USER_NAME, '탈퇴한 맡기미입니다') AS CONSIGNER_NAME,
+          IFNULL(B.USER_ID, 'Unknown')   AS CARETAKER_ID,
+          IFNULL(B.USER_NAME, '탈퇴한 돌보미입니다') AS CARETAKER_NAME,
+          IFNULL(B.USER_KEY, NULL)  AS CARETAKER_KEY
+        FROM CARE A
+          LEFT JOIN USER B
+            ON A.CARETAKER_KEY = B.USER_KEY
+        LEFT JOIN USER C
+            ON A.CONSIGNER_KEY = C.USER_KEY
+          WHERE
+            A.CARETAKER_KEY = #{caretakerKey}
+    </select>
+
     <select id="getCaretakersFromCareLog" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
         SELECT *
         FROM (SELECT * FROM CARE WHERE CONSIGNER_KEY =  #{userKey}) A
@@ -114,7 +136,7 @@
 
     </resultMap>
 
-    <select id="getCaretakersCareReviews" resultMap="CareReviewMap">
+    <select id="getCareReviewsByCaretakerKey" resultMap="CareReviewMap">
         SELECT A.*,
             C.COMMENT, C.SCORE, C.CREATED_AT,
             D.USER_ID AS WRITER_ID,

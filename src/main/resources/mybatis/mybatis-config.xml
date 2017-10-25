@@ -26,6 +26,7 @@
         <typeAlias type="sch.pl.graduate.recommendation.care.model.CareDetail" alias="CareDetail"/>
         <typeAlias type="sch.pl.graduate.recommendation.care.model.CareReview" alias="CareReview"/>
         <typeAlias type="sch.pl.graduate.recommendation.dashboard.model.Dashboard" alias="Dashboard"/>
+        <typeAlias type="sch.pl.graduate.recommendation.notice.model.Notice" alias="Notice"/>
     </typeAliases>
 
     <typeHandlers>

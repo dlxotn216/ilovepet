@@ -35,5 +35,7 @@ public interface CareMapper {
 
     Integer addCareReview(CareReview careReview);
 
-    List<CareReview> getCaretakersCareReviews(Long caretakerKey);
+    List<CareReview> getCareReviewsByCaretakerKey(Long caretakerKey);
+
+    List<Care> getCaresByCaretakerKey(Long caretakerKey);
 }

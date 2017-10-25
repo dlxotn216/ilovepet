@@ -34,5 +34,10 @@ public class Care extends AbstractModel {
     private Timestamp finishedAt;
     private Integer price;
 
+    private String consingerId;
+    private String consignerName;
+    private String caretakerId;
+    private String caretakerName;
+
     private List<CareDetail> careDetails;
 }

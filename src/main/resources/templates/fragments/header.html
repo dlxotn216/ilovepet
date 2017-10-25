@@ -36,7 +36,7 @@
 			<ul sec:authorize="hasRole('ROLE_CARETAKER')" class="nav navbar-nav">
 				<li class="active"><a th:href="@{/caretaker}">대시보드</a></li>
 				<li class="active"><a th:href="@{/pet}">위탁받은 반려 동물</a></li>
-				<li class="active"><a th:href="@{/caretaker/user}">돌봄 서비스 이력</a></li>
+				<li class="active"><a th:href="@{/caretaker/carelog}">돌봄 서비스 이력</a></li>
 			</ul>
 			<!-- 맡기미 (위탁자)-->
 			<ul sec:authorize="hasRole('ROLE_CONSIGNER')" class="nav navbar-nav">

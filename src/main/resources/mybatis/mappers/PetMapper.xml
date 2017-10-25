@@ -124,23 +124,35 @@
 
     <select id="getPetsForCaretaker" resultMap="PetMap">
         SELECT *
-        FROM PET A
-            LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
-                ON A.PET_TYPE_KEY = B.CODE_SEQ
-            LEFT JOIN PET_FILE C
-                ON A.PET_KEY = C.PET_KEY
-            LEFT JOIN FILE D
-		        ON C.FILE_KEY = D.FILE_KEY
-        WHERE A.CARETAKER_KEY = #{caretakerKey}
-        GROUP BY A.PET_KEY
+          FROM PET A
+          INNER JOIN CARE_DETAIL CD
+            ON A.PET_KEY = CD.PET_KEY
+          INNER JOIN CARE CARE
+            ON CD.CARE_KEY = CARE.CARE_KEY
+            AND CARE.CARETAKER_KEY = #{caretakerKey}
+          LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=0) B
+            ON A.PET_TYPE_KEY = B.CODE_SEQ
+          LEFT JOIN PET_FILE C
+            ON A.PET_KEY = C.PET_KEY
+          LEFT JOIN FILE D
+            ON C.FILE_KEY = D.FILE_KEY
+          GROUP BY A.PET_KEY
         <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
 
     <select id="getPetsForCaretakerTotalCount" resultType="Integer">
-        SELECT COUNT(*)
-        FROM PET A
-        WHERE A.CARETAKER_KEY = #{caretakerKey}
+         SELECT COUNT(*)
+            FROM (
+              SELECT A.PET_KEY
+              FROM PET A
+                INNER JOIN CARE_DETAIL CD
+                  ON A.PET_KEY = CD.PET_KEY
+                INNER JOIN CARE CARE
+                  ON CD.CARE_KEY = CARE.CARE_KEY
+                     AND CARE.CARETAKER_KEY = #{caretakerKey}
+              GROUP BY A.PET_KEY
+            ) R
     </select>
 
     <select id="getPetsForConsigner" resultMap="PetMap">
@@ -281,7 +293,7 @@
             LEFT JOIN USER C
                 ON A.CONSIGNER_KEY = C.USER_KEY
             LEFT JOIN USER D
-                ON A.CARETAKER_KEY = C.USER_KEY
+              ON A.CARETAKER_KEY = D.USER_KEY
 
     </select>
 </mapper>

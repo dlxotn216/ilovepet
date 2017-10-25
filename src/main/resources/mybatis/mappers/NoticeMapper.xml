@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.notice.mapper.NoticeMapper">
+
+    <resultMap id="NoticeMap" type="Notice">
+        <id property="noticeKey" column="NOTICE_KEY"/>
+        <result property="title" column="TITLE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="createdAt" column="CREATED_AT"/>
+    </resultMap>
+
+    <insert id="addNotice" parameterType="Notice">
+        INSERT INTO NOTICE(TITLE, CONTENT, CREATED_AT)
+        VALUES(
+          #{title},
+          #{content},
+          #{createdAt}
+        )
+    </insert>
+
+    <select id="getNoticeByNoticeKey" resultMap="NoticeMap">
+        SELECT * FROM NOTICE
+        WHERE
+        NOTICE_KEY = #{noticeKey}
+    </select>
+
+    <select id="getNoticesTotalCount" resultMap="NoticeMap">
+        SELECT COUNT(*) FROM NOTICE
+    </select>
+
+
+    <select id="getNotices" resultMap="NoticeMap">
+        SELECT * FROM NOTICE
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <update id="updateNotice" parameterType="Notice">
+        UPDATE
+          NOTICE
+        <set>
+            <if test="title != null and !title.trim().equals('') ">
+                TITLE = #{title},
+            </if>
+            <if test="content != null and !content.trim().equals('') ">
+                CONTENT = #{content},
+            </if>
+        </set>
+        WHERE
+          NOTICE_KEY = #{noticeKey}
+    </update>
+
+    <delete id="deleteNotice">
+        DELETE
+          FROM NOTICE
+         WHERE
+          NOTICE_KEY = #{noticeKey}
+    </delete>
+
+</mapper>

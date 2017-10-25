@@ -89,7 +89,12 @@ public class CareServiceImpl extends AbstractService implements CareService {
     }
 
     @Override
-    public List<CareReview> getCaretakersCareReviews(Long caretakerKey){
-        return careMapper.getCaretakersCareReviews(caretakerKey);
+    public List<CareReview> getCareReviewsByCaretakerKey(Long caretakerKey){
+        return careMapper.getCareReviewsByCaretakerKey(caretakerKey);
+    }
+
+    @Override
+    public List<Care> getCaresByCaretakerKey(Long caretakerKey){
+        return careMapper.getCaresByCaretakerKey(caretakerKey);
     }
 }

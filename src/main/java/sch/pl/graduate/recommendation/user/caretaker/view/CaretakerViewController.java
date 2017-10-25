@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sch.pl.graduate.recommendation.care.model.Care;
+import sch.pl.graduate.recommendation.care.model.CareReview;
+import sch.pl.graduate.recommendation.care.service.CareService;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.caretaker.service.CaretakerService;
 import sch.pl.graduate.recommendation.user.common.model.User;
@@ -29,24 +32,26 @@ public class CaretakerViewController {
     @Autowired
     private CaretakerService caretakerService;
 
+    @Autowired
+    private CareService careService;
+
     @GetMapping({"/caretaker", "/caretaker/"})
     public String getCaretakerView(){
         return "caretaker/dashboard";
     }
 
-    @GetMapping("/caretaker/user")
-    public String getUsersForCaretakerView(Model model, UserCriteria userCriteria){
-        List<Consigner> users = caretakerService.getUsersForCaretaker(userCriteria);
-        final Integer totalCount = caretakerService.getUsersForCaretakerTotalCount(userCriteria);
-        final Integer totalPage = totalCount / userCriteria.getLimit();
-        final Integer currentPage = userCriteria.getPage();
+    @GetMapping("/caretaker/carelog")
+    public String getCareLog(Model model, UserCriteria userCriteria){
+        Caretaker user = caretakerService.getCaretakerFromCurrentSession();
+        final Long caretakerKey = user.getUserKey();
+        model.addAttribute("user", user);
 
-        model.addAttribute("users", users);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
-        model.addAttribute("currentPage", currentPage);
+        List<Care> cares = careService.getCaresByCaretakerKey(caretakerKey);
+        model.addAttribute("cares", cares);
 
-        return "caretaker/consignerList";
+        List<CareReview> careReviews = careService.getCareReviewsByCaretakerKey(caretakerKey);
+        model.addAttribute("careReviews", careReviews);
+        return "caretaker/caretakerLog";
     }
 
 

@@ -80,7 +80,7 @@ public class ConsignerViewController extends AbstractViewController {
         List<Care> cares = consignerService.getCareLogsByCaretakerKeyAndWithoutAddCareReview(userKey);
         model.addAttribute("cares", cares);
 
-        List<CareReview> careReviews = careService.getCaretakersCareReviews(userKey);
+        List<CareReview> careReviews = careService.getCareReviewsByCaretakerKey(userKey);
         model.addAttribute("careReviews", careReviews);
 
         return "consigner/caretakerDetail";

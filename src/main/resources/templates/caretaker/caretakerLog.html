@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link rel="stylesheet" th:href="@{/css/user/caretakerDetail.css}" href="/css/user/caretakerDetail.css"/>
+    <link rel="stylesheet" th:href="@{/css/calendar.css}" type="text/css" href="/css/calendar.css"/>
+    <link rel="stylesheet" href="/css/nouislider.min.css" th:href="@{/css/nouislider.min.css}"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+<input type="hidden" id="caretakerKey" th:value="${user.userKey}"/>
+<div class="page-wrap">
+    <div class="container user-detail">
+        <!-- Portfolio Item Row -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="main-intro-image-wrap">
+                        <div class="main-intro-image-inner">
+                            <img class="img-responsive main-intro-image" id="mainIntroImage"
+                                 th:if="${user.introductionFiles != null and user.introductionFiles.size() > 0}"
+                                 th:src="@{'/files/'+${user.introductionFiles.get(0).fileKey} + '/downloads'}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sub-images">
+                    <div class="row sub-images-inner">
+                        <div class="col-xs-3"
+                             th:onclick="'javascript:onChangeImageClick('+${user.introductionFiles.get(0).fileKey} +')'"
+                             th:if="${user.introductionFiles != null and user.introductionFiles.size() > 0}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{'/files/'+${user.introductionFiles.get(0).fileKey} + '/downloads'}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3"
+                             th:unless="${user.introductionFiles != null and user.introductionFiles.size() > 0}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{/images/home.png}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3"
+                             th:onclick="'javascript:onChangeImageClick('+${user.introductionFiles.get(1).fileKey} +')'"
+                             th:if="${user.introductionFiles != null and user.introductionFiles.size() > 1}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{'/files/'+${user.introductionFiles.get(1).fileKey} + '/downloads'}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3"
+                             th:unless="${user.introductionFiles != null and user.introductionFiles.size() > 1}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{/images/home.png}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3"
+                             th:onclick="'javascript:onChangeImageClick('+${user.introductionFiles.get(2).fileKey} +')'"
+                             th:if="${user.introductionFiles != null and user.introductionFiles.size() > 2}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{'/files/'+${user.introductionFiles.get(2).fileKey} + '/downloads'}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3"
+                             th:unless="${user.introductionFiles != null and user.introductionFiles.size() > 2}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{/images/home.png}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3"
+                             th:onclick="'javascript:onChangeImageClick('+${user.introductionFiles.get(3).fileKey} +')'"
+                             th:if="${user.introductionFiles != null and user.introductionFiles.size() > 3}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{'/files/'+${user.introductionFiles.get(3).fileKey} + '/downloads'}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3"
+                             th:unless="${user.introductionFiles != null and user.introductionFiles.size() > 3}">
+                            <div class="sub-image-wrap">
+                                <div class="sub-image-inner">
+                                    <img class="img-responsive"
+                                         th:src="@{/images/home.png}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row care-env-wrap" style="margin-left: 0px; margin-right: 0px;">
+                    <h5 style="color: #1aa19d">돌봄 환경</h5>
+                    <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="row">
+                            <div class="col-md-12 care-env-left-group" style="padding-left: 0px; padding-right: 0px;">
+                                <div class="care-env-odd col-md-6">
+                                    <span class="care-env-left glyphicon glyphicon-leaf"></span>
+                                    <span class="care-env-left"> 마당 여부</span>
+                                    <span class="care-env-right" th:if="${user.yard}">마당이 있습니다</span>
+                                    <span class="care-env-right" th:unless="${user.yard}">마당이 없습니다</span>
+                                </div>
+                                <div class="care-env-odd col-md-6">
+                                    <span class="care-env-left glyphicon glyphicon-picture"
+                                          style="padding-left: 4px !important;"></span>
+                                    <span class="care-env-left"
+                                          style="padding-left: 4px !important;"> 12세 이하 어린이 여부</span>
+                                    <span class="care-env-right" th:if="${user.hasYoungChildren}">있습니다</span>
+                                    <span class="care-env-right" th:unless="${user.hasYoungChildren}">없습니다</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 care-env-right-group" style="padding-left: 0px; padding-right: 0px;">
+                                <div class="care-env-even col-md-6">
+                                    <span class="care-env-left	glyphicon glyphicon-user"></span>
+                                    <span class="care-env-left"> 가족 동거 유무</span>
+                                    <span class="care-env-right" th:if="${user.liveWithFamily}">가족과 함께 살고 있습니다</span>
+                                    <span class="care-env-right"
+                                          th:unless="${user.liveWithFamily}">가족과 함께 살고 있지 않습니다</span>
+                                </div>
+                                <div class="care-env-even col-md-6">
+                                    <span class="care-env-left glyphicon glyphicon-road"></span>
+                                    <span class="care-env-left"> 픽업 서비스 유무</span>
+                                    <span class="care-env-right" th:if="${user.pickup}">픽업 가능해요</span>
+                                    <span class="care-env-right" th:unless="${user.pickup}">픽업 가능하지 않습니다</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 care-env-right-group" style="padding-left: 0px; padding-right: 0px;">
+                                <div class="care-env-odd col-md-6">
+                                    <span class="care-env-left	glyphicon glyphicon-time"></span>
+                                    <span class="care-env-left"> 체크인</span>
+                                    <span class="care-env-right" th:text="${user.checkIn}"></span>
+                                </div>
+                                <div class="care-env-odd col-md-6">
+                                    <span class="care-env-left 	glyphicon glyphicon-time"></span>
+                                    <span class="care-env-left"> 체크아웃</span>
+                                    <span class="care-env-right" th:text="${user.checkOut}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 right-side">
+                <div class="right-side-inner">
+                    <h5 class="my-3">달력 미리보기 서비스</h5>
+                    <div class="calendar-wrap">
+                        <div class="cal calendar-wrap-inner">
+                            <div class="cal__header">
+                                <button class="btn btn-action btn-link btn-lg" data-calendar-toggle="previous">
+                                    <svg height="24" version="1.1" viewbox="0 0 24 24" width="24"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path>
+                                    </svg>
+                                </button>
+                                <div class="cal__header__label" data-calendar-label="month">
+                                    March 2017
+                                </div>
+                                <button class="btn btn-action btn-link btn-lg" data-calendar-toggle="next">
+                                    <svg height="24" version="1.1" viewbox="0 0 24 24" width="24"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="cal__week">
+                                <span>Mon</span> <span>Tue</span><span>Wed</span> <span>Thu</span> <span>Fri</span>
+                                <span>Sat</span> <span>Sun</span>
+                            </div>
+                            <div class="cal__body" data-calendar-area="month"></div>
+                            <div data-calendar-label="picked" id="startAt"></div>
+                        </div>
+                    </div>
+                    <h2 class="my-3 pee-per-night" th:text="${user.feePerNight}+'원'"></h2>
+                    <h4>반려견 추가 당 <span class="additional-fee" th:text="${user.additionalFee}+ '원'"></span></h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-separator">
+            <h5>선호하는 반려동물 특성</h5>
+            <div class="col-md-8" style="padding-left: 0px; padding-right: 0px;">
+                <input type="hidden" th:value="${user.barking}" id="barking"/>
+                <input type="hidden" th:value="${user.marking}" id="marking"/>
+                <input type="hidden" th:value="${user.mounting}" id="mounting"/>
+                <input type="hidden" th:value="${user.aggression}" id="aggression"/>
+                <input type="hidden" th:value="${user.size}" id="size"/>
+                <div class="tab-pane-content-wrap">
+                    <div class="tab-pane-body">
+                        <div class="form-group">
+                            <label>짖음 <span th:text="${'('+user.barking+')'}"></span></label>
+                            <div id="slider-barking" class="pet-slider slider-barking"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>마킹 <span th:text="${'('+user.marking+')'}"></span></label>
+                            <div id="slider-marking" class="pet-slider slider-marking"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>마운팅 <span th:text="${'('+user.mounting+')'}"></span></label>
+                            <div id="slider-mounting" class="pet-slider slider-mounting"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>공격성 <span th:text="${'('+user.aggression+')'}"></span></label>
+                            <div id="slider-aggression" class="pet-slider slider-aggression"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>크기 <span th:text="${'('+user.size+')'}"></span></label>
+                            <div id="slider-size" class="pet-slider slider-size"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-separator">
+            <h5>돌보미 소개</h5>
+            <div class="col-md-8">
+                <div class="media">
+                    <div class="media-left">
+                        <img th:if="${user.profileFileKey != null}"
+                             th:src="@{'/files/'+${user.profileFileKey}+'/downloads'}"
+                             class="media-object" style="width:60px"/>
+                        <img th:unless="${user.profileFileKey != null}" th:src="@{/images/user.jpg}"
+                             class="media-object" style="width:60px"/>
+                    </div>
+                    <div class="media-body">
+                        <h4 th:text="${user.userName}" class="media-heading">John Doe</h4>
+                        <p th:text="${user.title}">Lorem ipsum...</p>
+                    </div>
+                </div>
+                <div class="user-summary" th:text="${user.summary}">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-separator">
+            <h5>맡김 후기</h5>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="review-wrap" th:if="${careReviews != null and careReviews.size() > 0}">
+                        <div class="" th:each="review: ${careReviews}">
+                            <div class="panel panel-default">
+                                <div class="panel-heading review-panel-heading">
+                                    <span class="writer"
+                                          th:text="${review.writerId} + '(' + ${review.writerName} + ')'"></span>
+                                    <span class="score">
+										<span class="glyphicon glyphicon-star"></span>
+										<span th:text="${review.score}"></span>
+									</span>
+                                </div>
+                                <div class="panel-body review-panel-body">
+                                    <p th:text="${review.comment}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-wrap" th:unless="${careReviews != null and careReviews.size() > 0}">
+                        후기가 없습니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-separator">
+            <h5>돌봄 이력</h5>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="review-wrap" th:if="${cares != null and cares.size() > 0}">
+                        <div class="" th:each="care: ${cares}">
+                            <div class="panel panel-success">
+                                <div class="panel-heading review-panel-heading">
+                                    <span class="writer"
+                                          th:text="${care.consingerId} + '(' + ${care.consignerName} + ')'"></span>
+                                    <span class="score">
+										<span class="glyphicon glyphicon-calendar"></span>
+										<span th:text="${care.startAt} + '~'+ ${care.endAt}"></span>
+									</span>
+                                </div>
+                                <div class="panel-body review-panel-body">
+                                    <p th:text="'결제금액: ￦ ' + ${care.price}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-wrap" th:unless="${cares != null and cares.size() > 0}">
+                        돌봄 이력이 없습니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+<script type="text/javascript"
+        src="/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" src="/js/vanillacalendar.js" th:src="@{/js/vanillacalendar.js}"></script>
+<script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
+<script type="text/javascript" src="/js/user/caretakerLog.js" th:src="@{/js/user/caretakerLog.js}"></script>
+<div th:replace="common/common :: deleteModal"/>
+<div th:replace="common/common :: alertModal"/>
+</body>
+</html>
