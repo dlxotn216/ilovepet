@@ -17,6 +17,7 @@
         <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
         <result property="roleKey" column="ROLE_KEY"/>
         <result property="cityTypeKey" column="CODE_SEQ"/>
+        <result property="createdAt" column="CREATED_AT"/>
         <association property="cityType" javaType="CityType">
             <result property="cityTypeKey" column="CODE_SEQ"/>
             <result property="cityTypeName" column="CODE_NAME"/>
@@ -166,4 +167,17 @@
           WHERE
           USER_KEY = #{userKey};
     </delete>
+
+    <insert id="addUserLoginHistory" parameterType="UserLoginHistory">
+        INSERT INTO USER_LOGIN_HISTORY(USER_KEY, TRY_AT, IP, IS_SUCCESS, FAIL_REASON, USER_ID)
+        VALUES
+        (
+            #{userKey},
+            #{tryAt},
+            #{ip},
+            #{isSuccess},
+            #{failReason},
+            #{userId}
+        )
+    </insert>
 </mapper>

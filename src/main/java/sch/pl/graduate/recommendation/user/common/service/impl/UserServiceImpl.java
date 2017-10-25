@@ -18,12 +18,16 @@ import sch.pl.graduate.recommendation.user.caretaker.service.CaretakerService;
 import sch.pl.graduate.recommendation.user.common.mapper.UserMapper;
 import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.common.model.UserLoginHistory;
 import sch.pl.graduate.recommendation.user.common.service.UserService;
 import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
 import sch.pl.graduate.recommendation.user.consigner.service.ConsignerService;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by taesu on 2017-10-14.
@@ -61,6 +65,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
         if (role == null) {
             throw new SystemException("Role이 존재하지 않습니다");
         }
+
+        Long currentMillis = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
+        Timestamp createdAt = new Timestamp(currentMillis);
+        user.setCreatedAt(createdAt);
 
         user.setRoleKey(role.getRoleKey());
         userMapper.addUser(user);
@@ -168,5 +176,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     private List<GrantedAuthority> getUserAuthorities(String userId) {
         return roleService.getUserRolesByUserId(userId);
+    }
+
+    @Override
+    public Integer addUserLoginHistory(UserLoginHistory userLoginHistory) {
+        return userMapper.addUserLoginHistory(userLoginHistory);
     }
 }

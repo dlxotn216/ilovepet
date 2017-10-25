@@ -24,9 +24,9 @@
 			</div>
 			<div class="col-md-4">
 				<div class="widget-wrap">
-					<h4>월별 반려 동물 등록 현황</h4>
+					<h4>월별 돌보미 등록 현황</h4>
 					<div class="chart-container" style="position: relative;">
-						<canvas id="monthlyAddedPetLog"></canvas>
+						<canvas id="monthlyAddedCaretakerLog"></canvas>
 					</div>
 				</div>
 			</div>
@@ -42,25 +42,18 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="widget-wrap">
-					<h4>월별 나의 돌봄 서비스 제공 현황</h4>
+					<h4>월별 반려 동물 등록 현황</h4>
 					<div class="chart-container" style="position: relative;">
-						<canvas id="monthlyCareLogAsCurrentUser"></canvas>
+						<canvas id="monthlyAddedPetLog"></canvas>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="widget-wrap">
-					<h4>공지사항</h4>
-					<table class="table">
-						<tr>
-							<th>제목</th>
-							<th>게시일</th>
-						</tr>
-						<tr>
-							<td>testaaa</td>
-							<td>2017-11-04</td>
-						</tr>
-					</table>
+					<h4>월별 사용자 로그인 현황</h4>
+					<div class="chart-container" style="position: relative;">
+						<canvas id="monthlyLoginLog"></canvas>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -71,6 +64,6 @@
 <div th:replace="fragments/footer :: footer"/>
 <script src="/js/chart.js" th:src="@{/js/chart.js}"></script>
 <script type="text/javascript"
-		src="/js/user/caretakerDashboard.js" th:src="@{/js/user/caretakerDashboard.js}"></script>
+		src="/js/user/adminDashboard.js" th:src="@{/js/user/adminDashboard.js}"></script>
 </body>
 </html>

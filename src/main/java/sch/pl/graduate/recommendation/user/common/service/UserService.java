@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.common.model.UserLoginHistory;
 import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
 
 import java.util.List;
@@ -36,5 +37,6 @@ public interface UserService {
 
     User getUserFromCurrentSession();
 
+    Integer addUserLoginHistory(UserLoginHistory userLoginHistory);
 
 }

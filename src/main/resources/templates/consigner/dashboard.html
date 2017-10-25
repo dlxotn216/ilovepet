@@ -2,21 +2,75 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="fragments/header :: header-css"/>
+	<link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"/>
 
 <div class="page-wrap">
-	<div class="container">
+	<div class="dashboard-container">
 		<div class="starter-template">
-			<h1>Consigner page (Spring Security protected)</h1>
+			<!--<h1>맡기미 대시보드</h1>-->
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="widget-wrap">
+					<h4>월별 반려 동물 등록 현황</h4>
+					<div class="chart-container" style="position: relative;">
+						<canvas id="monthlyAddedPetLog"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="widget-wrap">
+					<h4>월별 돌보미 등록 현황</h4>
+					<div class="chart-container" style="position: relative;">
+						<canvas id="monthlyAddedCaretakerLog"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="widget-wrap">
+					<h4>거주지 별 돌보미 현황</h4>
+					<div class="chart-container" style="position: relative;">
+						<canvas id="numOfCaretakerAsCity"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="widget-wrap">
+					<h4>월별 돌봄 서비스 이용 현황</h4>
+					<div class="chart-container" style="position: relative;">
+						<canvas id="monthlyCareServiceUsageLog"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="widget-wrap">
+					<h4>공지사항</h4>
+					<table class="table">
+						<tr>
+							<th>제목</th>
+							<th>게시일</th>
+						</tr>
+						<tr>
+							<td>testaaa</td>
+							<td>2017-11-04</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <!-- /.container -->
 
 <div th:replace="fragments/footer :: footer"/>
-
+<script src="/js/chart.js" th:src="@{/js/chart.js}"></script>
+<script type="text/javascript"
+		src="/js/user/consignerDashboard.js" th:src="@{/js/user/consignerDashboard.js}"></script>
 </body>
 </html>

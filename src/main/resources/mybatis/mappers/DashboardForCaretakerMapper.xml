@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.dashboard.mapper.DashboardForCaretakerMapper">
+
+    <resultMap id="DashboardMap" type="Dashboard">
+        <result property="month" column="MONTH"/>
+        <result property="count" column="COUNT"/>
+        <result property="cityName" column="CITY_NAME"/>
+    </resultMap>
+
+    <select id="monthlyCareLogAsAllUser" resultMap="DashboardMap">
+        SELECT
+             CASE MONTH(A.START_AT)
+                WHEN '1' THEN 'Jan'
+                WHEN '2' THEN 'Feb'
+                WHEN '3' THEN 'Mar'
+                WHEN '4' THEN 'Apr'
+                WHEN '5' THEN 'May'
+                WHEN '6' THEN 'Jun'
+                WHEN '7' THEN 'Jul'
+                WHEN '8' THEN 'Aug'
+                WHEN '9' THEN 'Sep'
+                WHEN '10' THEN 'Oct'
+                WHEN '11' THEN 'Nov'
+                WHEN '12' THEN 'Dec'
+            END AS MONTH,
+            COUNT(*) AS COUNT
+        FROM CARE A
+        GROUP BY MONTH
+    </select>
+
+    <select id="monthlyCareLogAsCurrentUser" resultMap="DashboardMap">
+        SELECT
+             CASE MONTH(A.START_AT)
+                WHEN '1' THEN 'Jan'
+                WHEN '2' THEN 'Feb'
+                WHEN '3' THEN 'Mar'
+                WHEN '4' THEN 'Apr'
+                WHEN '5' THEN 'May'
+                WHEN '6' THEN 'Jun'
+                WHEN '7' THEN 'Jul'
+                WHEN '8' THEN 'Aug'
+                WHEN '9' THEN 'Sep'
+                WHEN '10' THEN 'Oct'
+                WHEN '11' THEN 'Nov'
+                WHEN '12' THEN 'Dec'
+            END AS MONTH,
+            COUNT(*) AS COUNT
+        FROM (SELECT * FROM CARE WHERE CARETAKER_KEY=#{userKey}) A
+        GROUP BY MONTH
+    </select>
+
+    <select id="monthlyAddedPetLog" resultMap="DashboardMap">
+       SELECT
+             CASE MONTH(A.CREATED_AT)
+                WHEN '1' THEN 'Jan'
+                WHEN '2' THEN 'Feb'
+                WHEN '3' THEN 'Mar'
+                WHEN '4' THEN 'Apr'
+                WHEN '5' THEN 'May'
+                WHEN '6' THEN 'Jun'
+                WHEN '7' THEN 'Jul'
+                WHEN '8' THEN 'Aug'
+                WHEN '9' THEN 'Sep'
+                WHEN '10' THEN 'Oct'
+                WHEN '11' THEN 'Nov'
+                WHEN '12' THEN 'Dec'
+            END AS MONTH,
+            COUNT(*) AS COUNT
+        FROM (SELECT * FROM PET) A
+        GROUP BY MONTH
+    </select>
+
+    <select id="monthlyAddedConsignerLog" resultMap="DashboardMap">
+        SELECT
+            CASE MONTH(A.CREATED_AT)
+                WHEN '1' THEN 'Jan'
+                WHEN '2' THEN 'Feb'
+                WHEN '3' THEN 'Mar'
+                WHEN '4' THEN 'Apr'
+                WHEN '5' THEN 'May'
+                WHEN '6' THEN 'Jun'
+                WHEN '7' THEN 'Jul'
+                WHEN '8' THEN 'Aug'
+                WHEN '9' THEN 'Sep'
+                WHEN '10' THEN 'Oct'
+                WHEN '11' THEN 'Nov'
+                WHEN '12' THEN 'Dec'
+            END AS MONTH,
+            COUNT(A.USER_KEY) AS COUNT
+        FROM (SELECT * FROM USER WHERE ROLE_KEY=2) A
+        GROUP BY MONTH(A.CREATED_AT)
+    </select>
+
+</mapper>

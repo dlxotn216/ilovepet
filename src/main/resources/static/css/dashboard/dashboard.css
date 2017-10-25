@@ -1,0 +1,33 @@
+/**
+ * @author Lee Tae Su
+ * @project recommendation
+ * @version 1.0
+ * @since 2017-10-25
+ */
+
+.page-wrap{
+    margin-top: 50px !important;
+}
+
+.dashboard-container {
+    padding: 30px
+}
+
+.starter-template h1{
+    color: #7d7d7d !important;
+    font-weight: bolder !important;
+}
+
+.dashboard-container{
+    background: #eaeaea;
+}
+
+.widget-wrap{
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+}
+
+.dashboard-container .col-md-6{
+    margin-top: 15px;
+}

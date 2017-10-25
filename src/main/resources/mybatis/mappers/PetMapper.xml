@@ -19,6 +19,7 @@
         <result property="size" column="SIZE"/>
         <result property="ownerKey" column="OWNER_KEY"/>
         <result property="caretakerKey" column="CARETAKER_KEY"/>
+        <result property="createdAt" column="CREATED_AT"/>
         <association property="petType" javaType="PetType">
             <result property="petTypeKey" column="CODE_SEQ"/>
             <result property="petTypeName" column="CODE_NAME"/>

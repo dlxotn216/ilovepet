@@ -61,3 +61,7 @@ const afterSuccess = function(){
 const afterSuccessThenRefresh = function(){
 	setTimeout(function(){ location.reload(); }, 2000);
 }
+
+const afterSuccessThenHref = function(uri){
+	setTimeout(function(){ window.localtion.href=uri }, 2000);
+};

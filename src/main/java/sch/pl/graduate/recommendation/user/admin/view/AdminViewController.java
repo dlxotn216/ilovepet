@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by Lee Tae Su on 2017-10-13.
  */
 @Controller
-@RequestMapping("/admin")
 public class AdminViewController {
-    @GetMapping({"", "/"})
+    @GetMapping({"/admin"})
     public String getAdminView(){
+        return "admin/dashboard";
+    }
+
+    @GetMapping({"/admin/notice"})
+    public String getAdminDashboardView(){
         return "admin/admin";
     }
 }

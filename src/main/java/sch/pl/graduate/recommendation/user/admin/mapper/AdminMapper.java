@@ -8,6 +8,9 @@ package sch.pl.graduate.recommendation.user.admin.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import sch.pl.graduate.recommendation.user.admin.model.DashboardForLoginHistory;
+
+import java.util.List;
 
 /**
  * Created by Lee Tae Su on 2017-10-13.
@@ -15,5 +18,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface AdminMapper {
-    Integer test();
+    List<DashboardForLoginHistory> getSystemLoginHistoriesByMonth();
 }

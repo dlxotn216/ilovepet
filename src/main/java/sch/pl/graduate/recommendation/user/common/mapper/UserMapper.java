@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.User;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.common.model.UserLoginHistory;
 import sch.pl.graduate.recommendation.user.consigner.model.Consigner;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface UserMapper {
     Integer updateUser(User user);
 
     Integer deleteUser(User user);
+
+    Integer addUserLoginHistory(UserLoginHistory userLoginHistory);
 }

@@ -19,7 +19,10 @@ import sch.pl.graduate.recommendation.pet.model.*;
 import sch.pl.graduate.recommendation.pet.service.PetService;
 import sch.pl.graduate.recommendation.user.common.model.User;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Lee Tae Su on 2017-10-16.
@@ -39,6 +42,10 @@ public class PetServiceImpl extends AbstractService implements PetService {
         User currentUser = getCurrentUser();
         pet.setCaretakerKey(null);
         pet.setOwnerKey(currentUser.getUserKey());
+
+        Long currentMillis = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
+        Timestamp createdAt = new Timestamp(currentMillis);
+        pet.setCreatedAt(createdAt);
 
         Integer result = petMapper.addPet(pet);
 

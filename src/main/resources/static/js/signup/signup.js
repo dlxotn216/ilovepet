@@ -262,7 +262,7 @@ signupButton.onclick = function () {
 				let response = JSON.parse(xhr.responseText);
 				if (response.status) {
 					displayAlertModal(true, '요청 성공하였습니다');
-					afterSuccess();
+					afterSuccessThenHref('/login');
 				} else {
 					displayAlertModal(false, '요청 실패하였습니다');
 				}
@@ -355,7 +355,7 @@ signupButton.onclick = function () {
 						}
 					} else {
 						displayAlertModal(true, '요청 성공하였습니다');
-						afterSuccess();
+						afterSuccessThenHref('/login');
 					}
 				} else {
 					displayAlertModal(false, '요청 실패하였습니다');
