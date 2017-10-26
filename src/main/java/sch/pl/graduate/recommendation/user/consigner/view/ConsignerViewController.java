@@ -28,6 +28,7 @@ import sch.pl.graduate.recommendation.pet.service.PetService;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.CityType;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.consigner.model.ConsignerWithCaretakerMatrix;
 import sch.pl.graduate.recommendation.user.consigner.service.ConsignerService;
 
 import java.util.List;
@@ -151,4 +152,10 @@ public class ConsignerViewController extends AbstractViewController {
         return "consigner/recommendation/selectPet";
     }
 
+    @GetMapping("/consigner/recommendation/matrix")
+    public String getConsignerWithCaretakerMatrixView(Model model){
+        List<ConsignerWithCaretakerMatrix> matrix = consignerService.getConsignerAndCaretakerMatrix();
+        model.addAttribute("matrix", matrix);
+        return "consigner/recommendation/matrix";
+    }
 }

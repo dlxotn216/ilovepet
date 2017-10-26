@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
+import sch.pl.graduate.recommendation.user.consigner.model.ConsignerWithCaretakerMatrix;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface ConsignerMapper {
     Integer getUsersForConsignerTotalCount(UserCriteria userCriteria);
 
     Caretaker getUserForConsigner(Long userKey);
+
+    List<ConsignerWithCaretakerMatrix> getConsignerAndCaretakerMatrix(Long consignerKey);
 }
