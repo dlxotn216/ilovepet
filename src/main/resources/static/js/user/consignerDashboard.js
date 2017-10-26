@@ -23,31 +23,29 @@ const MonthMapper = {
 const initModule = (function () {
 	'use strict';
 
-	const initMounthlyAddedPetLog = function (result) {
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyAddedPetLog = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if (idx >= 0) {
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(75, 192, 192, 0.2)';
+				borderColors[i] = 'rgba(75, 192, 192, 1)';
 			}
 		}
 		const ctx = document.getElementById("monthlyAddedPetLog").getContext('2d');
 		const myChart = new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
 					label: '등록 된 반려동물 수',
-					data: data,
-					backgroundColor: [
-						'rgba(54, 162, 235, 0.2)',
-					],
-					borderColor: [
-						'rgba(54, 162, 235, 1)',
-					],
+					data: datas,
+					backgroundColor: backgroundColors,
+					borderColor: borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -63,53 +61,29 @@ const initModule = (function () {
 		});
 	};
 
-	const initMounthlyCareServiceUsageLog = function (result) {
-		const ctx2 = document.getElementById("monthlyCareServiceUsageLog").getContext('2d');
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyCareServiceUsageLog = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if (idx >= 0) {
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(255, 206, 86, 0.2)';
+				borderColors[i] = 'rgba(255, 206, 86, 1)';
 			}
 		}
+		const ctx2 = document.getElementById("monthlyCareServiceUsageLog").getContext('2d');
 		const myChart2 = new Chart(ctx2, {
 			type: 'bar',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels:labels,
 				datasets: [{
 					label: '돌봄 서비스 사용 현황',
-					data: data,
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)',
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)',
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					data: datas,
+					backgroundColor: backgroundColors,
+					borderColor: borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -125,42 +99,29 @@ const initModule = (function () {
 		});
 	};
 
-	const initMounthlyAddedCaretakerLog = function (result) {
-		const ctx3 = document.getElementById("monthlyAddedCaretakerLog").getContext('2d');
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyAddedCaretakerLog = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if(idx >=0){
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(54, 162, 235, 0.2)';
+				borderColors[i] = 'rgba(54, 162, 235, 1)';
 			}
 		}
-		console.log("DEBUG CHECK DATA33 :", data);
+		const ctx3 = document.getElementById("monthlyAddedCaretakerLog").getContext('2d');
 		const myChart3 = new Chart(ctx3, {
 			type: 'line',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
 					label: '등록 된 돌보미 수',
-					data: data,
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)',
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)',
-					],
+					data: datas,
+					backgroundColor: backgroundColors,
+					borderColor:borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -177,7 +138,6 @@ const initModule = (function () {
 	};
 
 	const initNumOfCaretakerAsCity = function (result) {
-		const ctx4 = document.getElementById("numOfCaretakerAsCity").getContext('2d');
 		let labels = [];
 		let data = [];
 
@@ -187,7 +147,7 @@ const initModule = (function () {
 				data.push(result[i].count);
 			}
 		}
-		console.log("DEBUG CHECK DATA 44:", data);
+		const ctx4 = document.getElementById("numOfCaretakerAsCity").getContext('2d');
 		const myChart4 = new Chart(ctx4, {
 			type: 'doughnut',
 			data: {
@@ -244,13 +204,18 @@ const initModule = (function () {
 				labels: labels,
 			}
 		});
+	};
+
+	const onNoticeDetailClick = function (noticeKey) {
+		window.location.href = '/notice/' + noticeKey + "/detail";
 	}
 
 	return {
-		'initMounthlyAddedPetLog': initMounthlyAddedPetLog,
-		'initMounthlyCareServiceUsageLog': initMounthlyCareServiceUsageLog,
-		'initMounthlyAddedCaretakerLog': initMounthlyAddedCaretakerLog,
-		'initNumOfCaretakerAsCity': initNumOfCaretakerAsCity
+		'initDailyAddedPetLog': initDailyAddedPetLog,
+		'initDailyCareServiceUsageLog': initDailyCareServiceUsageLog,
+		'initDailyAddedCaretakerLog': initDailyAddedCaretakerLog,
+		'initNumOfCaretakerAsCity': initNumOfCaretakerAsCity,
+		'onNoticeDetailClick': onNoticeDetailClick
 	};
 })();
 
@@ -262,7 +227,7 @@ const dashboardForConsignerModule = (function () {
 	xhr.setRequestHeader('Content-Type', 'application/json');
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
-			initModule.initMounthlyAddedPetLog(JSON.parse(xhr.responseText).result);
+			initModule.initDailyAddedPetLog(JSON.parse(xhr.responseText).result);
 		}
 	};
 	xhr.send();
@@ -272,7 +237,7 @@ const dashboardForConsignerModule = (function () {
 	xhr2.setRequestHeader('Content-Type', 'application/json');
 	xhr2.onreadystatechange = function () {
 		if (xhr2.readyState === 4 && xhr2.status === 200) {
-			initModule.initMounthlyCareServiceUsageLog(JSON.parse(xhr2.responseText).result);
+			initModule.initDailyCareServiceUsageLog(JSON.parse(xhr2.responseText).result);
 		}
 	};
 	xhr2.send();
@@ -282,7 +247,7 @@ const dashboardForConsignerModule = (function () {
 	xhr3.setRequestHeader('Content-Type', 'application/json');
 	xhr3.onreadystatechange = function () {
 		if (xhr3.readyState === 4 && xhr3.status === 200) {
-			initModule.initMounthlyAddedCaretakerLog(JSON.parse(xhr3.responseText).result);
+			initModule.initDailyAddedCaretakerLog(JSON.parse(xhr3.responseText).result);
 		}
 	};
 	xhr3.send();
@@ -297,3 +262,5 @@ const dashboardForConsignerModule = (function () {
 	};
 	xhr4.send();
 })();
+
+const onNoticeDetailClick = initModule.onNoticeDetailClick;

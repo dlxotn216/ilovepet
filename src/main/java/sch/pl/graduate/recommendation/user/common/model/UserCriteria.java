@@ -21,7 +21,8 @@ public class UserCriteria extends AbstractCriteria{
 
     static {
         Map<String, String> aMap = new HashMap<>();
-
+        aMap.put("userKey", "USER_KEY");
+        aMap.put("userName", "USER_NAME");
         MAPPING_FILEDS = Collections.unmodifiableMap(aMap);
     }
 

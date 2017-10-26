@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<form class="form-horizontal">
+			<h3 style="margin-bottom: 30px;">공지사항 등록</h3>
+			<div class="form-group">
+				<input type="text" class="form-control" id="title" name="title" placeholder="공지사항 제목" required="required" />
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" id="content" placeholder="공지사항 내용" maxlength="140" rows="7"></textarea>
+			</div>
+			<div class="form-group" style="margin-bottom: 30px;">
+				<button type="button" id="addNoticeButton" class="btn btn-success">Submit Form</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+<div th:replace="common/common :: deleteModal"/>
+<div th:replace="common/common :: alertModal"/>
+
+<script th:src="@{/js/notice/noticeAdd.js}" src="/js/notice/noticeAdd.js"></script>
+<script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<form class="form-horizontal">
+			<h3 style="margin-bottom: 30px;">공지사항 조회</h3>
+			<div class="form-group">
+				<input type="text" class="form-control" th:value="${notice.title}" id="title" name="title" />
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" id="content" th:text="${notice.content}" maxlength="140" rows="7"></textarea>
+			</div>
+			<input type="hidden" th:value="${notice.noticeKey}" id="noticeKey" />
+			<div class="form-group" style="margin-bottom: 30px;" sec:authorize="hasRole('ROLE_ADMIN')">
+				<button type="button" id="updateNoticeButton" class="btn btn-success">저장</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+<div th:replace="common/common :: deleteModal"/>
+<div th:replace="common/common :: alertModal"/>
+
+<script th:src="@{/js/notice/noticeUpdate.js}" src="/js/notice/noticeUpdate.js"></script>
+<script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
+</body>
+</html>

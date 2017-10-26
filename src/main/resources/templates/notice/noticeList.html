@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<div class="starter-template">
+			<h3 sec:authorize="hasRole('ROLE_ADMIN')">공지사항 관리</h3>
+			<h3 sec:authorize="!hasRole('ROLE_ADMIN')">공지사항</h3>
+		</div>
+		<div class="row" align="right" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-sm-10 pagination-col">
+				<ul class="pagination" style="float:left; margin: 0px !important;">
+					<li>
+						<a style="margin-right: 10px;" th:text="'total: '+${totalCount}"></a>
+					</li>
+					<li th:each="i : ${#numbers.sequence( 1, totalPage)}"
+						th:classappend="${(i) == currentPage} ? 'active'">
+						<a th:if="${(i) == currentPage}" th:text="${i}"></a>
+						<a th:unless="${(i) == currentPage}" th:href="@{/notice(page=${i},limit=6)}" th:text="${i}"></a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-2" style="float: right !important;">
+				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/notice/add}" class="btn btn-success btn-md">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<table class="table table-striped" style="margin-top: 40px">
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>게시일</th>
+				</tr>
+				<tr th:if="${notices != null and notices.size()>0}"
+					th:each="notice : ${notices}"
+					th:onclick="'javascript:onNoticeDetailClick('+${notice.noticeKey}+');'"
+					style="cursor: pointer">
+					<td th:text="${notice.noticeKey}"></td>
+					<td th:text="${notice.title}"></td>
+					<td th:text="${notice.createdAt}"></td>
+				</tr>
+				<tr th:unless="${notices != null and notices.size()>0}">
+					<td align="center" colspan="3">존재하지 않습니다.</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+<script>
+	const onNoticeDetailClick = function (noticeKey) {
+		window.location.href = '/notice/' + noticeKey + "/detail";
+	}
+</script>
+</body>
+</html>

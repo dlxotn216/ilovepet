@@ -27,4 +27,10 @@ public class AdminServiceImpl extends AbstractService implements AdminService {
     public List<DashboardForLoginHistory> getSystemLoginHistoriesByMonth() {
         return adminMapper.getSystemLoginHistoriesByMonth();
     }
+
+    @Override
+    public List<DashboardForLoginHistory> getSystemLoginHistoriesByDaily() {
+        List<DashboardForLoginHistory> result = adminMapper.getSystemLoginHistoriesByDaily();
+        return result;
+    }
 }

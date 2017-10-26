@@ -19,9 +19,4 @@ public class AdminViewController {
     public String getAdminView(){
         return "admin/dashboard";
     }
-
-    @GetMapping({"/admin/notice"})
-    public String getAdminDashboardView(){
-        return "admin/admin";
-    }
 }

@@ -14,6 +14,7 @@
         <typeAlias type="org.springframework.security.core.authority.SimpleGrantedAuthority" alias="GrantedAuthority"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.admin.model.Admin" alias="Admin"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.admin.model.DashboardForLoginHistory" alias="DashboardForLoginHistory"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.admin.model.DashboardForLoginHistoryInner" alias="DashboardForLoginHistoryInner"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.caretaker.model.Caretaker" alias="Caretaker"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.caretaker.model.CaretakerFile" alias="CaretakerFile"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.Consigner" alias="Consigner"/>

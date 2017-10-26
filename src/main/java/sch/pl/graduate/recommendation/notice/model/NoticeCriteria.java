@@ -12,13 +12,14 @@ import java.util.Map;
  */
 @Data
 public class NoticeCriteria extends AbstractCriteria{
+    private Long noticeKey;
+
     private static final Map<String, String> MAPPING_FILEDS;
     public static final String userStatusTypePrefix="UserStatusType_";
 
-
     static {
         Map<String, String> aMap = new HashMap<>();
-
+        aMap.put("noticeKey", "NOTICE_KEY");
         MAPPING_FILEDS = Collections.unmodifiableMap(aMap);
     }
 

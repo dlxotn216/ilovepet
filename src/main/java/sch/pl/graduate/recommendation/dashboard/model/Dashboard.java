@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 public class Dashboard {
     private String month;
+    private String date;
     private Long count;
     private String cityName;
 }

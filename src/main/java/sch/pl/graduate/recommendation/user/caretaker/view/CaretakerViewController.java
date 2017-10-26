@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import sch.pl.graduate.recommendation.care.model.Care;
 import sch.pl.graduate.recommendation.care.model.CareReview;
 import sch.pl.graduate.recommendation.care.service.CareService;
+import sch.pl.graduate.recommendation.notice.model.Notice;
+import sch.pl.graduate.recommendation.notice.model.NoticeCriteria;
+import sch.pl.graduate.recommendation.notice.service.NoticeService;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.caretaker.service.CaretakerService;
 import sch.pl.graduate.recommendation.user.common.model.User;
@@ -35,8 +38,20 @@ public class CaretakerViewController {
     @Autowired
     private CareService careService;
 
+    @Autowired
+    private NoticeService noticeService;
+
+
     @GetMapping({"/caretaker", "/caretaker/"})
-    public String getCaretakerView(){
+    public String getCaretakerView(Model model){
+        NoticeCriteria noticeCriteria = new NoticeCriteria();
+        noticeCriteria.setPage(1);
+        noticeCriteria.setLimit(5);
+        noticeCriteria.setOrder("DESC");
+        noticeCriteria.setTarget("noticeKey");
+        List<Notice> notices = noticeService.getNotices(noticeCriteria);
+
+        model.addAttribute("notices", notices);
         return "caretaker/dashboard";
     }
 

@@ -20,10 +20,13 @@ import java.util.Map;
 @Mapper
 public interface DashboardForConsignerMapper {
     List<Dashboard> getMonthlyAddedPetLog();
+    List<Dashboard> getDailyAddedPetLog();
 
     List<Dashboard> getMonthlyCareServiceUsageLog();
+    List<Dashboard> getDailyCareServiceUsageLog();
 
     List<Dashboard> getMonthlyAddedCaretakerLog();
+    List<Dashboard> getDailyAddedCaretakerLog();
 
     List<Dashboard> getNumOfCaretakerAsCity();
 }

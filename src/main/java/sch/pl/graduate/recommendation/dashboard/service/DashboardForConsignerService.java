@@ -16,10 +16,13 @@ import java.util.Map;
  */
 public interface DashboardForConsignerService {
     List<Dashboard> getMonthlyAddedPetLog();
+    List<Dashboard> getDailyAddedPetLog();
 
     List<Dashboard> getMonthlyCareServiceUsageLog();
+    List<Dashboard> getDailyCareServiceUsageLog();
 
     List<Dashboard> getMonthlyAddedCaretakerLog();
+    List<Dashboard> getDailyAddedCaretakerLog();
 
     List<Dashboard> getNumOfCaretakerAsCity();
 }

@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sch.pl.graduate.recommendation.common.controller.AbstractController;
+import sch.pl.graduate.recommendation.user.admin.model.DashboardForLoginHistory;
 import sch.pl.graduate.recommendation.user.admin.service.AdminService;
+
+import java.util.List;
 
 /**
  * Created by Lee Tae Su on 2017-10-25.
@@ -22,7 +25,9 @@ public class AdminController extends AbstractController {
     private AdminService adminService;
 
     @GetMapping("/admins/login/histories")
-    public ResponseEntity getSystemLoginHistoriesByMonth() {
-        return getSuccessResponse(adminService.getSystemLoginHistoriesByMonth(), "성공하였습니다");
+    public ResponseEntity getSystemLoginHistoriesByDaily() {
+        List<DashboardForLoginHistory> result = adminService.getSystemLoginHistoriesByDaily();
+
+        return getSuccessResponse(result, "성공하였습니다");
     }
 }

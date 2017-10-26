@@ -8,12 +8,16 @@ package sch.pl.graduate.recommendation.user.admin.model;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by Lee Tae Su on 2017-10-25.
  */
 @Data
 public class DashboardForLoginHistory {
     private String month;
-    private Integer isSuccess;
-    private Integer count;
+    private String date;
+    private List<DashboardForLoginHistoryInner> inner;
 }
+
+

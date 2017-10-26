@@ -19,6 +19,9 @@ import sch.pl.graduate.recommendation.care.service.CareService;
 import sch.pl.graduate.recommendation.code.model.CodeCriteria;
 import sch.pl.graduate.recommendation.code.service.CodeService;
 import sch.pl.graduate.recommendation.common.controller.AbstractViewController;
+import sch.pl.graduate.recommendation.notice.model.Notice;
+import sch.pl.graduate.recommendation.notice.model.NoticeCriteria;
+import sch.pl.graduate.recommendation.notice.service.NoticeService;
 import sch.pl.graduate.recommendation.pet.model.Pet;
 import sch.pl.graduate.recommendation.pet.model.PetCriteria;
 import sch.pl.graduate.recommendation.pet.service.PetService;
@@ -47,8 +50,19 @@ public class ConsignerViewController extends AbstractViewController {
     @Autowired
     private CareService careService;
 
+    @Autowired
+    private NoticeService noticeService;
+
     @GetMapping({"/consigner", "/consigner/"})
-    public String getConsignerView() {
+    public String getConsignerView(Model model) {
+        NoticeCriteria noticeCriteria = new NoticeCriteria();
+        noticeCriteria.setPage(1);
+        noticeCriteria.setLimit(5);
+        noticeCriteria.setOrder("DESC");
+        noticeCriteria.setTarget("noticeKey");
+        List<Notice> notices = noticeService.getNotices(noticeCriteria);
+
+        model.addAttribute("notices", notices);
         return "consigner/dashboard";
     }
 

@@ -14,11 +14,15 @@ import java.util.List;
  * Created by Lee Tae Su on 2017-10-25.
  */
 public interface DashboardForCaretakerService {
-    List<Dashboard> monthlyCareLogAsAllUser();
+    List<Dashboard> getMonthlyCareLogAsAllUser();
+    List<Dashboard> getDailyCareLogAsAllUser();
 
-    List<Dashboard> monthlyCareLogAsCurrentUser();
+    List<Dashboard> getMonthlyCareLogAsCurrentUser();
+    List<Dashboard> getDailyCareLogAsCurrentUser();
 
-    List<Dashboard> monthlyAddedPetLog();
+    List<Dashboard> getMonthlyAddedPetLog();
+    List<Dashboard> getDailyAddedPetLog();
 
-    List<Dashboard> monthlyAddedConsignerLog();
+    List<Dashboard> getMonthlyAddedConsignerLog();
+    List<Dashboard> getDailyAddedConsignerLog();
 }

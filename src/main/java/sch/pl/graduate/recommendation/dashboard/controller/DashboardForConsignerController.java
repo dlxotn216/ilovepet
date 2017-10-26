@@ -23,18 +23,18 @@ public class DashboardForConsignerController extends AbstractController {
     private DashboardForConsignerService dashboardForConsignerService;
 
     @GetMapping("/consigners/dashboard/pets")
-    public ResponseEntity getMonthlyAddedPetLog() {
-        return getSuccessResponse(dashboardForConsignerService.getMonthlyAddedPetLog(), "성공");
+    public ResponseEntity getDailyAddedPetLog() {
+        return getSuccessResponse(dashboardForConsignerService.getDailyAddedPetLog(), "성공");
     }
 
     @GetMapping("/consigners/dashboard/care/usage")
-    public ResponseEntity getMonthlyCareServiceUsageLog() {
-        return getSuccessResponse(dashboardForConsignerService.getMonthlyCareServiceUsageLog(), "성공");
+    public ResponseEntity getDailyCareServiceUsageLog() {
+        return getSuccessResponse(dashboardForConsignerService.getDailyCareServiceUsageLog(), "성공");
     }
 
     @GetMapping("/consigners/dashboard/added-caretakers")
-    public ResponseEntity getMonthlyAddedCaretakerLog() {
-        return getSuccessResponse(dashboardForConsignerService.getMonthlyAddedCaretakerLog(), "성공");
+    public ResponseEntity getDailyAddedCaretakerLog() {
+        return getSuccessResponse(dashboardForConsignerService.getDailyAddedCaretakerLog(), "성공");
     }
 
     @GetMapping("/consigners/dashboard/caretakers-by-city")

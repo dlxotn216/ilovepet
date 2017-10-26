@@ -35,6 +35,11 @@ public class NoticeViewController extends AbstractViewController {
         return getListView(model, "notice/noticeList");
     }
 
+    @GetMapping("/notice/add")
+    public String getNoticeAddView() {
+        return "notice/noticeAdd";
+    }
+
     @GetMapping("/notice/{noticeKey}/detail")
     public String getNoticeDetailView(Model model, @PathVariable Long noticeKey) {
         Notice notice = noticeService.getNoticeByNoticeKey(noticeKey);

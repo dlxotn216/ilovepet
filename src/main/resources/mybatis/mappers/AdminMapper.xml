@@ -6,8 +6,11 @@
 
     <resultMap id="DashboardForLoginHistoryMap" type="DashboardForLoginHistory">
         <result property="month" column="MONTH"/>
-        <result property="isSuccess" column="IS_SUCCESS"/>
-        <result property="count" column="COUNT"/>
+        <result property="date" column="DATE"/>
+        <collection property="inner" javaType="java.util.List" ofType="DashboardForLoginHistoryInner">
+            <result property="isSuccess" column="IS_SUCCESS"/>
+            <result property="count" column="COUNT"/>
+        </collection>
     </resultMap>
 
     <select id="getSystemLoginHistoriesByMonth" resultMap="DashboardForLoginHistoryMap">
@@ -30,6 +33,52 @@
             COUNT(IS_SUCCESS) AS COUNT
         FROM USER_LOGIN_HISTORY A
             GROUP BY MONTH, IS_SUCCESS
+    </select>
+    <select id="getSystemLoginHistoriesByDaily" resultMap="DashboardForLoginHistoryMap">
+        SELECT
+            B.DATE,
+            COUNT(A.TRY_AT) AS COUNT,
+            IS_SUCCESS
+        FROM (SELECT A.DATE
+              FROM (
+                       SELECT CURDATE() - INTERVAL (A.A + (10 * B.A) + (100 * C.A)) DAY AS DATE
+                       FROM (SELECT 0 AS A
+                             UNION ALL SELECT 1
+                             UNION ALL SELECT 2
+                             UNION ALL SELECT 3
+                             UNION ALL SELECT 4
+                             UNION ALL SELECT 5
+                             UNION ALL SELECT 6
+                             UNION ALL SELECT 7
+                             UNION ALL SELECT 8
+                             UNION ALL SELECT 9) AS A
+                           CROSS JOIN (SELECT 0 AS A
+                                       UNION ALL SELECT 1
+                                       UNION ALL SELECT 2
+                                       UNION ALL SELECT 3
+                                       UNION ALL SELECT 4
+                                       UNION ALL SELECT 5
+                                       UNION ALL SELECT 6
+                                       UNION ALL SELECT 7
+                                       UNION ALL SELECT 8
+                                       UNION ALL SELECT 9) AS B
+                           CROSS JOIN (SELECT 0 AS A
+                                       UNION ALL SELECT 1
+                                       UNION ALL SELECT 2
+                                       UNION ALL SELECT 3
+                                       UNION ALL SELECT 4
+                                       UNION ALL SELECT 5
+                                       UNION ALL SELECT 6
+                                       UNION ALL SELECT 7
+                                       UNION ALL SELECT 8
+                                       UNION ALL SELECT 9) AS C
+                   ) A
+              WHERE A.DATE BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY) AND CURRENT_DATE
+             ) B
+            LEFT JOIN  USER_LOGIN_HISTORY A
+                ON B.DATE = DATE(A.TRY_AT)
+        GROUP BY DATE, IS_SUCCESS
+        ORDER BY DATE ASC
     </select>
 
 </mapper>

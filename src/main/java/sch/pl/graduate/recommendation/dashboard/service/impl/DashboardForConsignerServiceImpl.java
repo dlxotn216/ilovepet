@@ -31,15 +31,30 @@ public class DashboardForConsignerServiceImpl extends AbstractService implements
     }
 
     @Override
+    public List<Dashboard> getDailyAddedPetLog() {
+        return dashboardForConsignerMapper.getDailyAddedPetLog();
+    }
+
+    @Override
     public List<Dashboard> getMonthlyCareServiceUsageLog() {
         List<Dashboard> result =  dashboardForConsignerMapper.getMonthlyCareServiceUsageLog();
         return result;
     }
 
     @Override
+    public List<Dashboard> getDailyCareServiceUsageLog() {
+        return dashboardForConsignerMapper.getDailyCareServiceUsageLog();
+    }
+
+    @Override
     public List<Dashboard> getMonthlyAddedCaretakerLog() {
         List<Dashboard> result =  dashboardForConsignerMapper.getMonthlyAddedCaretakerLog();
         return result;
+    }
+
+    @Override
+    public List<Dashboard> getDailyAddedCaretakerLog() {
+        return dashboardForConsignerMapper.getDailyAddedCaretakerLog();
     }
 
     @Override

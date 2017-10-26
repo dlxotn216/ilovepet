@@ -23,22 +23,22 @@ public class DashboardForCaretakerController extends AbstractController {
     private DashboardForCaretakerService dashboardForCaretakerService;
 
     @GetMapping("/caretakers/dashboard/cares")
-    public ResponseEntity monthlyCareLogAsAllUser() {
-        return getSuccessResponse(dashboardForCaretakerService.monthlyCareLogAsAllUser(), "성공");
+    public ResponseEntity dailyCareLogAsAllUser() {
+        return getSuccessResponse(dashboardForCaretakerService.getDailyCareLogAsAllUser(), "성공");
     }
 
     @GetMapping("/caretakers/dashboard/my-cares")
-    public ResponseEntity monthlyCareLogAsCurrentUser() {
-        return getSuccessResponse(dashboardForCaretakerService.monthlyCareLogAsCurrentUser(), "성공");
+    public ResponseEntity dailyCareLogAsCurrentUser() {
+        return getSuccessResponse(dashboardForCaretakerService.getDailyCareLogAsCurrentUser(), "성공");
     }
 
     @GetMapping("/caretakers/dashboard/added-pets")
-    public ResponseEntity monthlyAddedPetLog() {
-        return getSuccessResponse(dashboardForCaretakerService.monthlyAddedPetLog(), "성공");
+    public ResponseEntity dailyAddedPetLog() {
+        return getSuccessResponse(dashboardForCaretakerService.getDailyAddedPetLog(), "성공");
     }
 
     @GetMapping("/caretakers/dashboard/added-consigners")
-    public ResponseEntity monthlyAddedConsignerLog() {
-        return getSuccessResponse(dashboardForCaretakerService.monthlyAddedConsignerLog(), "성공");
+    public ResponseEntity dailyAddedConsignerLog() {
+        return getSuccessResponse(dashboardForCaretakerService.getDailyAddedConsignerLog(), "성공");
     }
 }

@@ -19,4 +19,5 @@ import java.util.List;
 @Mapper
 public interface AdminMapper {
     List<DashboardForLoginHistory> getSystemLoginHistoriesByMonth();
+    List<DashboardForLoginHistory> getSystemLoginHistoriesByDaily();
 }

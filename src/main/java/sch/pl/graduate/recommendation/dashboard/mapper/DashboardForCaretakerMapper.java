@@ -18,11 +18,15 @@ import java.util.List;
 @Repository
 @Mapper
 public interface DashboardForCaretakerMapper {
-    List<Dashboard> monthlyCareLogAsAllUser();
+    List<Dashboard> getMonthlyCareLogAsAllUser();
+    List<Dashboard> getDailyCareLogAsAllUser();
 
-    List<Dashboard> monthlyCareLogAsCurrentUser(Long userKey);
+    List<Dashboard> getMonthlyCareLogAsCurrentUser(Long userKey);
+    List<Dashboard> getDailyCareLogAsCurrentUser(Long userKey);
 
-    List<Dashboard> monthlyAddedPetLog();
+    List<Dashboard> getMonthlyAddedPetLog();
+    List<Dashboard> getDailyAddedPetLog();
 
-    List<Dashboard> monthlyAddedConsignerLog();
+    List<Dashboard> getMonthlyAddedConsignerLog();
+    List<Dashboard> getDailyAddedConsignerLog();
 }

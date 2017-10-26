@@ -8,6 +8,7 @@
         <result property="month" column="MONTH"/>
         <result property="count" column="COUNT"/>
         <result property="cityName" column="CITY_NAME"/>
+        <result property="date" column="DATE"/>
     </resultMap>
 
     <select id="getMonthlyAddedPetLog" resultMap="DashboardMap">
@@ -31,6 +32,52 @@
         GROUP BY MONTH(A.CREATED_AT)
     </select>
 
+    <select id="getDailyAddedPetLog" resultMap="DashboardMap">
+        SELECT
+        B.DATE,
+        COUNT(A.PET_KEY) AS COUNT
+        FROM (SELECT A.DATE
+        FROM (
+        SELECT CURDATE() - INTERVAL (A.A + (10 * B.A) + (100 * C.A)) DAY AS DATE
+        FROM (SELECT 0 AS A
+        UNION ALL SELECT 1
+        UNION ALL SELECT 2
+        UNION ALL SELECT 3
+        UNION ALL SELECT 4
+        UNION ALL SELECT 5
+        UNION ALL SELECT 6
+        UNION ALL SELECT 7
+        UNION ALL SELECT 8
+        UNION ALL SELECT 9) AS A
+        CROSS JOIN (SELECT 0 AS A
+        UNION ALL SELECT 1
+        UNION ALL SELECT 2
+        UNION ALL SELECT 3
+        UNION ALL SELECT 4
+        UNION ALL SELECT 5
+        UNION ALL SELECT 6
+        UNION ALL SELECT 7
+        UNION ALL SELECT 8
+        UNION ALL SELECT 9) AS B
+        CROSS JOIN (SELECT 0 AS A
+        UNION ALL SELECT 1
+        UNION ALL SELECT 2
+        UNION ALL SELECT 3
+        UNION ALL SELECT 4
+        UNION ALL SELECT 5
+        UNION ALL SELECT 6
+        UNION ALL SELECT 7
+        UNION ALL SELECT 8
+        UNION ALL SELECT 9) AS C
+        ) A
+        WHERE A.DATE BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY) AND CURRENT_DATE
+        ) B
+        LEFT JOIN (SELECT * FROM PET) A
+        ON B.DATE = DATE(A.CREATED_AT)
+        GROUP BY B.DATE
+        ORDER BY DATE ASC
+    </select>
+
     <select id="getMonthlyCareServiceUsageLog" resultMap="DashboardMap">
         SELECT
             CASE MONTH(A.START_AT)
@@ -52,6 +99,52 @@
         GROUP BY MONTH(A.START_AT)
     </select>
 
+    <select id="getDailyCareServiceUsageLog" resultMap="DashboardMap">
+         SELECT
+            B.DATE,
+            COUNT(A.CARE_KEY) AS COUNT
+        FROM (SELECT A.DATE
+              FROM (
+                       SELECT CURDATE() - INTERVAL (A.A + (10 * B.A) + (100 * C.A)) DAY AS DATE
+                       FROM (SELECT 0 AS A
+                             UNION ALL SELECT 1
+                             UNION ALL SELECT 2
+                             UNION ALL SELECT 3
+                             UNION ALL SELECT 4
+                             UNION ALL SELECT 5
+                             UNION ALL SELECT 6
+                             UNION ALL SELECT 7
+                             UNION ALL SELECT 8
+                             UNION ALL SELECT 9) AS A
+                           CROSS JOIN (SELECT 0 AS A
+                                       UNION ALL SELECT 1
+                                       UNION ALL SELECT 2
+                                       UNION ALL SELECT 3
+                                       UNION ALL SELECT 4
+                                       UNION ALL SELECT 5
+                                       UNION ALL SELECT 6
+                                       UNION ALL SELECT 7
+                                       UNION ALL SELECT 8
+                                       UNION ALL SELECT 9) AS B
+                           CROSS JOIN (SELECT 0 AS A
+                                       UNION ALL SELECT 1
+                                       UNION ALL SELECT 2
+                                       UNION ALL SELECT 3
+                                       UNION ALL SELECT 4
+                                       UNION ALL SELECT 5
+                                       UNION ALL SELECT 6
+                                       UNION ALL SELECT 7
+                                       UNION ALL SELECT 8
+                                       UNION ALL SELECT 9) AS C
+                   ) A
+              WHERE A.DATE BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY) AND CURRENT_DATE
+             ) B
+            LEFT JOIN CARE A
+                ON B.DATE = DATE(A.START_AT)
+        GROUP BY B.DATE
+        ORDER BY DATE ASC
+    </select>
+
     <select id="getMonthlyAddedCaretakerLog" resultMap="DashboardMap">
         SELECT
             CASE MONTH(A.CREATED_AT)
@@ -71,6 +164,52 @@
             COUNT(A.USER_KEY) AS COUNT
         FROM (SELECT * FROM USER WHERE ROLE_KEY=3) A
         GROUP BY MONTH(A.CREATED_AT)
+    </select>
+
+    <select id="getDailyAddedCaretakerLog" resultMap="DashboardMap">
+       SELECT
+            B.DATE,
+            COUNT(A.CREATED_AT) AS COUNT
+        FROM (SELECT A.DATE
+              FROM (
+                       SELECT CURDATE() - INTERVAL (A.A + (10 * B.A) + (100 * C.A)) DAY AS DATE
+                       FROM (SELECT 0 AS A
+                             UNION ALL SELECT 1
+                             UNION ALL SELECT 2
+                             UNION ALL SELECT 3
+                             UNION ALL SELECT 4
+                             UNION ALL SELECT 5
+                             UNION ALL SELECT 6
+                             UNION ALL SELECT 7
+                             UNION ALL SELECT 8
+                             UNION ALL SELECT 9) AS A
+                           CROSS JOIN (SELECT 0 AS A
+                                       UNION ALL SELECT 1
+                                       UNION ALL SELECT 2
+                                       UNION ALL SELECT 3
+                                       UNION ALL SELECT 4
+                                       UNION ALL SELECT 5
+                                       UNION ALL SELECT 6
+                                       UNION ALL SELECT 7
+                                       UNION ALL SELECT 8
+                                       UNION ALL SELECT 9) AS B
+                           CROSS JOIN (SELECT 0 AS A
+                                       UNION ALL SELECT 1
+                                       UNION ALL SELECT 2
+                                       UNION ALL SELECT 3
+                                       UNION ALL SELECT 4
+                                       UNION ALL SELECT 5
+                                       UNION ALL SELECT 6
+                                       UNION ALL SELECT 7
+                                       UNION ALL SELECT 8
+                                       UNION ALL SELECT 9) AS C
+                   ) A
+              WHERE A.DATE BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY) AND CURRENT_DATE
+             ) B
+            LEFT JOIN  (SELECT * FROM USER WHERE ROLE_KEY=3) A
+                ON B.DATE = DATE(A.CREATED_AT)
+        GROUP BY B.DATE
+        ORDER BY DATE ASC
     </select>
 
     <select id="getNumOfCaretakerAsCity" resultMap="DashboardMap">

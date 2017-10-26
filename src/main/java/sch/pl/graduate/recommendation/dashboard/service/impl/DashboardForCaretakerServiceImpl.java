@@ -25,23 +25,44 @@ public class DashboardForCaretakerServiceImpl extends AbstractService implements
     private DashboardForCaretakerMapper dashboardForCaretakerMapper;
 
     @Override
-    public List<Dashboard> monthlyCareLogAsAllUser() {
-        return dashboardForCaretakerMapper.monthlyCareLogAsAllUser();
+    public List<Dashboard> getMonthlyCareLogAsAllUser() {
+        return dashboardForCaretakerMapper.getMonthlyCareLogAsAllUser();
     }
 
     @Override
-    public List<Dashboard> monthlyCareLogAsCurrentUser() {
+    public List<Dashboard> getDailyCareLogAsAllUser() {
+        return dashboardForCaretakerMapper.getDailyCareLogAsAllUser();
+    }
+
+    @Override
+    public List<Dashboard> getMonthlyCareLogAsCurrentUser() {
         User currentUser = getCurrentUser();
-        return dashboardForCaretakerMapper.monthlyCareLogAsCurrentUser(currentUser.getUserKey());
+        return dashboardForCaretakerMapper.getMonthlyCareLogAsCurrentUser(currentUser.getUserKey());
     }
 
     @Override
-    public List<Dashboard> monthlyAddedPetLog() {
-        return dashboardForCaretakerMapper.monthlyAddedPetLog();
+    public List<Dashboard> getDailyCareLogAsCurrentUser() {
+        User currentUser = getCurrentUser();
+        return dashboardForCaretakerMapper.getDailyCareLogAsCurrentUser(currentUser.getUserKey());
     }
 
     @Override
-    public List<Dashboard> monthlyAddedConsignerLog() {
-        return dashboardForCaretakerMapper.monthlyAddedConsignerLog();
+    public List<Dashboard> getMonthlyAddedPetLog() {
+        return dashboardForCaretakerMapper.getMonthlyAddedPetLog();
+    }
+
+    @Override
+    public List<Dashboard> getDailyAddedPetLog() {
+        return dashboardForCaretakerMapper.getDailyAddedPetLog();
+    }
+
+    @Override
+    public List<Dashboard> getMonthlyAddedConsignerLog() {
+        return dashboardForCaretakerMapper.getMonthlyAddedConsignerLog();
+    }
+
+    @Override
+    public List<Dashboard> getDailyAddedConsignerLog() {
+        return dashboardForCaretakerMapper.getDailyAddedConsignerLog();
     }
 }

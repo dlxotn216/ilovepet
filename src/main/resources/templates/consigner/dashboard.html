@@ -51,14 +51,22 @@
 			<div class="col-md-6">
 				<div class="widget-wrap">
 					<h4>공지사항</h4>
-					<table class="table">
+					<table class="table table-striped">
 						<tr>
+							<th>번호</th>
 							<th>제목</th>
 							<th>게시일</th>
 						</tr>
-						<tr>
-							<td>testaaa</td>
-							<td>2017-11-04</td>
+						<tr th:if="${notices != null and notices.size()>0}"
+							th:each="notice : ${notices}"
+							th:onclick="'javascript:onNoticeDetailClick('+${notice.noticeKey}+');'"
+							style="cursor: pointer">
+							<td th:text="${notice.noticeKey}"></td>
+							<td th:text="${notice.title}"></td>
+							<td th:text="${notice.createdAt}"></td>
+						</tr>
+						<tr th:unless="${notices != null and notices.size()>0}">
+							<td align="center" colspan="3">존재하지 않습니다.</td>
 						</tr>
 					</table>
 				</div>

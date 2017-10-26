@@ -24,14 +24,17 @@ const MonthMapper = {
 const initModule = (function () {
 	'use strict';
 
-	const initMounthlyCareLogAsAllUser = function (result) {
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyCareLogAsAllUser = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if (idx >= 0) {
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(75, 192, 192, 0.2)';
+				borderColors[i] = 'rgba(75, 192, 192, 1)';
 			}
 		}
 
@@ -39,27 +42,12 @@ const initModule = (function () {
 		const myChart = new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
-					data: data,
+					data: datas,
 					label: '전체 돌봄 서비스 제공 횟수',
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					backgroundColor: backgroundColors,
+					borderColor: borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -75,42 +63,29 @@ const initModule = (function () {
 		});
 	};
 
-	const initMounthlyAddedCaretakerLog = function (result) {
-		const ctx3 = document.getElementById("monthlyAddedCaretakerLog").getContext('2d');
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyAddedCaretakerLog = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if (idx >= 0) {
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(255, 206, 86, 0.2)';
+				borderColors[i] = 'rgba(255, 206, 86, 1)';
 			}
 		}
-		console.log("DEBUG CHECK DATA33 :", data);
+		const ctx3 = document.getElementById("monthlyAddedCaretakerLog").getContext('2d');
 		const myChart3 = new Chart(ctx3, {
 			type: 'line',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
 					label: '등록 된 돌보미 수',
-					data: data,
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)',
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)',
-					],
+					data: datas,
+					backgroundColor: backgroundColors,
+					borderColor: borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -126,54 +101,31 @@ const initModule = (function () {
 		});
 	}
 
-	const initMonthlyCareLogAsCurrentUser = function (result) {
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyCareLogAsCurrentUser = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if (idx >= 0) {
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(54, 162, 235, 0.2)';
+				borderColors[i] = 'rgba(54, 162, 235, 1)';
 			}
 		}
+
 
 		const ctx2 = document.getElementById("monthlyCareLogAsCurrentUser").getContext('2d');
 		const myChart2 = new Chart(ctx2, {
 			type: 'bar',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
-					data: data,
+					data: datas,
 					label: '나의 돌봄 서비스 제공 횟수',
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)',
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)',
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					backgroundColor: backgroundColors,
+					borderColor: borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -189,14 +141,17 @@ const initModule = (function () {
 		});
 	};
 
-	const initMonthlyAddedPetLog = function (result) {
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyAddedPetLog = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if (idx >= 0) {
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(255, 99, 132, 0.2)';
+				borderColors[i] = 'rgba(255, 99, 132, 1)';
 			}
 		}
 
@@ -204,39 +159,12 @@ const initModule = (function () {
 		const myChart3 = new Chart(ctx3, {
 			type: 'bar',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
-					data: data,
+					data: datas,
 					label: '등록 된 반려동물 수',
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)',
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)',
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					backgroundColor: backgroundColors,
+					borderColor: borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -252,14 +180,17 @@ const initModule = (function () {
 		});
 	};
 
-	const initMonthlyAddedConsignerLog = function (result) {
-		let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	const initDailyAddedConsignerLog = function (result) {
+		let datas = [];
+		let labels = [];
+		let backgroundColors = [];
+		let borderColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				if (idx >= 0) {
-					data[idx] = result[i].count;
-				}
+				labels[i] = result[i].date;
+				datas[i] = result[i].count;
+				backgroundColors[i] = 'rgba(255, 159, 64, 0.2)';
+				borderColors[i] = 'rgba(255, 159, 64, 1)';
 			}
 		}
 
@@ -267,27 +198,12 @@ const initModule = (function () {
 		const myChart4 = new Chart(ctx4, {
 			type: 'line',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
-					data: data,
+					data: datas,
 					label: '등록 맡기미 수',
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					backgroundColor: backgroundColors,
+					borderColor: borderColors,
 					borderWidth: 1
 				}]
 			},
@@ -303,70 +219,51 @@ const initModule = (function () {
 		});
 	};
 
-	const initMonthlyLoginLog = function (result) {
-		let successData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-		let failData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
+	const initDailyLoginLog = function (result) {
+		let successDatas = [];
+		let failDatas = [];
+		let labels = [];
+		let successColors = [];
+		let failColors = [];
 		if (result && result.length > 0) {
 			for (let i = 0; i < result.length; i++) {
-				let idx = MonthMapper[result[i].month];
-				console.log("DEBUG CHECK DIX :", idx);
-				console.log("DEBUG CHECK month :", result[i].month);
-				if (idx >= 0) {
-					if (result[i].isSuccess === '1' || result[i].isSuccess === 1) {
-						successData[idx] = result[i].count;
-					} else {
-						failData[idx] = result[i].count;
+				labels[i] = result[i].date;
+				let inners = result[i].inner;
+				if (inners && inners.length > 0) {
+					for (let j = 0; j < inners.length; j++) {
+						console.log("DEBUG CHECK INNERS PROPERTY IS TRUE:", (inners[j].isSuccess === true));
+						console.log("DEBUG CHECK INNERS PROPERTY IS FASLE:", (inners[j].isSuccess === false));
+
+						if (inners[j].isSuccess === 'true' || inners[j].isSuccess === true) {
+							successDatas[i] = inners[j].count;
+						} else if (inners[j].isSuccess === 'false' || inners[j].isSuccess === false) {
+							failDatas[i] = inners[j].count;
+						} else {
+							successDatas[i] = 0;
+							failDatas[i] = 0;
+						}
 					}
 				}
+				successColors[i] = 'rgba(75, 192, 192, 1)';
+				failColors[i] = 'rgba(255, 159, 64, 1)';
 			}
 		}
-
-		console.log("DEBUG CHECK DATA:", successData);
-		console.log("DEBUG CHECK DATA:", failData);
 
 		const ctx4 = document.getElementById("monthlyLoginLog").getContext('2d');
 		const myChart4 = new Chart(ctx4, {
 			type: 'bar',
 			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"
-					, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				labels: labels,
 				datasets: [{
 					label: '로그인 성공 횟수',
-					backgroundColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)',
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					backgroundColor: successColors,
 					yAxisID: "y-axis-1",
-					data: successData
+					data: successDatas
 				}, {
 					label: '로그인 실패 횟수',
-					backgroundColor: [
-						'rgba(255,99,132,0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)',
-						'rgba(255,99,132,0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
+					backgroundColor: failColors,
 					yAxisID: "y-axis-2",
-					data: failData
+					data: failDatas
 				}]
 			},
 			options: {
@@ -400,12 +297,12 @@ const initModule = (function () {
 	};
 
 	return {
-		'initMonthlyAddedConsignerLog': initMonthlyAddedConsignerLog,
-		'initMonthlyAddedPetLog': initMonthlyAddedPetLog,
-		'initMounthlyAddedCaretakerLog': initMounthlyAddedCaretakerLog,
-		'initMonthlyCareLogAsCurrentUser': initMonthlyCareLogAsCurrentUser,
-		'initMounthlyCareLogAsAllUser': initMounthlyCareLogAsAllUser,
-		'initMonthlyLoginLog': initMonthlyLoginLog
+		'initDailyAddedConsignerLog': initDailyAddedConsignerLog,
+		'initDailyAddedPetLog': initDailyAddedPetLog,
+		'initDailyAddedCaretakerLog': initDailyAddedCaretakerLog,
+		'initDailyCareLogAsCurrentUser': initDailyCareLogAsCurrentUser,
+		'initDailyCareLogAsAllUser': initDailyCareLogAsAllUser,
+		'initDailyLoginLog': initDailyLoginLog
 	}
 })();
 
@@ -417,7 +314,7 @@ const dashboardForCaretakerModule = (function () {
 	xhr.setRequestHeader('Content-Type', 'application/json');
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
-			initModule.initMonthlyAddedPetLog(JSON.parse(xhr.responseText).result);
+			initModule.initDailyAddedPetLog(JSON.parse(xhr.responseText).result);
 		}
 	};
 	xhr.send();
@@ -427,7 +324,7 @@ const dashboardForCaretakerModule = (function () {
 	xhr2.setRequestHeader('Content-Type', 'application/json');
 	xhr2.onreadystatechange = function () {
 		if (xhr2.readyState === 4 && xhr2.status === 200) {
-			initModule.initMounthlyCareLogAsAllUser(JSON.parse(xhr2.responseText).result);
+			initModule.initDailyCareLogAsAllUser(JSON.parse(xhr2.responseText).result);
 		}
 	};
 	xhr2.send();
@@ -437,7 +334,7 @@ const dashboardForCaretakerModule = (function () {
 	xhr4.setRequestHeader('Content-Type', 'application/json');
 	xhr4.onreadystatechange = function () {
 		if (xhr4.readyState === 4 && xhr4.status === 200) {
-			initModule.initMonthlyAddedConsignerLog(JSON.parse(xhr4.responseText).result);
+			initModule.initDailyAddedConsignerLog(JSON.parse(xhr4.responseText).result);
 		}
 	};
 	xhr4.send();
@@ -448,7 +345,7 @@ const dashboardForCaretakerModule = (function () {
 	xhr5.setRequestHeader('Content-Type', 'application/json');
 	xhr5.onreadystatechange = function () {
 		if (xhr5.readyState === 4 && xhr5.status === 200) {
-			initModule.initMounthlyAddedCaretakerLog(JSON.parse(xhr5.responseText).result);
+			initModule.initDailyAddedCaretakerLog(JSON.parse(xhr5.responseText).result);
 		}
 	};
 	xhr5.send();
@@ -458,7 +355,7 @@ const dashboardForCaretakerModule = (function () {
 	xhr6.setRequestHeader('Content-Type', 'application/json');
 	xhr6.onreadystatechange = function () {
 		if (xhr6.readyState === 4 && xhr6.status === 200) {
-			initModule.initMonthlyLoginLog(JSON.parse(xhr6.responseText).result);
+			initModule.initDailyLoginLog(JSON.parse(xhr6.responseText).result);
 		}
 	};
 	xhr6.send();
