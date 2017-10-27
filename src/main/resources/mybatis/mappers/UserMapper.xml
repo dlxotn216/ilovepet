@@ -40,7 +40,8 @@
             IS_ACCOUNT_NON_LOCKED,
             IS_CREDENTIALS_NON_EXPIRED,
             IS_ENABLED,
-            CITY_TYPE_KEY
+            CITY_TYPE_KEY,
+            CREATED_AT
         )
         VALUES
         (
@@ -57,7 +58,8 @@
             1,
             1,
             1,
-            #{cityTypeKey}
+            #{cityTypeKey},
+            #{createdAt}
         )
         <selectKey resultType="Long" keyProperty="userKey" order="AFTER" keyColumn="USER_KRY">
             SELECT LAST_INSERT_ID()

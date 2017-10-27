@@ -20,6 +20,7 @@
         <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.Consigner" alias="Consigner"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.CaretakerColumn" alias="CaretakerColumn"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.ConsignerWithCaretakerMatrix" alias="ConsignerWithCaretakerMatrix"/>
+        <typeAlias type="sch.pl.graduate.recommendation.user.consigner.model.UserProfileForContentBasedRecommendation" alias="UserProfileForContentBasedRecommendation"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.User" alias="User"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.GenderType" alias="GenderType"/>
         <typeAlias type="sch.pl.graduate.recommendation.user.common.model.CityType" alias="CityType"/>

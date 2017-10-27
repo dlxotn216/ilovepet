@@ -42,21 +42,37 @@
     </resultMap>
 
     <insert id="addPet">
-        INSERT INTO PET(PET_NAME, PET_TYPE_KEY, BIRTH, GENDER, NEUTRALIZING, BARKING, MARKING, MOUNTING, AGGRESSION,
-        SIZE, OWNER_KEY, CARETAKER_KEY)
-        VALUE (
-        #{petName},
-        #{petTypeKey},
-        #{birth},
-        #{gender},
-        #{neutralizing},
-        #{barking},
-        #{marking},
-        #{mounting},
-        #{aggression},
-        #{size},
-        #{ownerKey},
-        #{caretakerKey}
+        INSERT INTO PET
+        (
+            PET_NAME,
+            PET_TYPE_KEY,
+            BIRTH,
+            GENDER,
+            NEUTRALIZING,
+            BARKING,
+            MARKING,
+            MOUNTING,
+            AGGRESSION,
+            SIZE,
+            OWNER_KEY,
+            CARETAKER_KEY,
+            CREATED_AT
+        )
+        VALUE
+        (
+            #{petName},
+            #{petTypeKey},
+            #{birth},
+            #{gender},
+            #{neutralizing},
+            #{barking},
+            #{marking},
+            #{mounting},
+            #{aggression},
+            #{size},
+            #{ownerKey},
+            #{caretakerKey},
+            #{createdAt}
         )
         <selectKey resultType="Long" keyProperty="petKey" order="AFTER" keyColumn="PET_KEY">
             SELECT LAST_INSERT_ID()

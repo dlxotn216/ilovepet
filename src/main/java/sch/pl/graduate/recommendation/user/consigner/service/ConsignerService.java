@@ -5,6 +5,7 @@ import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.consigner.model.ConsignerWithCaretakerMatrix;
 import sch.pl.graduate.recommendation.user.consigner.model.RecommendationDataForConsigner;
+import sch.pl.graduate.recommendation.user.consigner.model.UserProfileForContentBasedRecommendation;
 
 import java.util.List;
 
@@ -19,11 +20,15 @@ public interface ConsignerService {
 
     Caretaker getUserForConsigner(Long userKey);
 
-    List<Caretaker> getRecommendedCaretakers();
+    List<Caretaker> getRecommendedCaretakersByCollaborateFiltering();
 
     List<ConsignerWithCaretakerMatrix> getConsignerAndCaretakerMatrix();
+
+    List<? extends Caretaker> getRecommendedCaretakersByContentBasedRecommendation(UserProfileForContentBasedRecommendation userProfileForContentBasedRecommendation);
 
     List<Caretaker> getRecommendedCaretakersFromRequestData(RecommendationDataForConsigner recommendationDataForConsigner);
 
     List<Care> getCareLogsByCaretakerKeyAndWithoutAddCareReview(Long caretakerKey);
+
+
 }

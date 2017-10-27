@@ -5,6 +5,7 @@
 <mapper namespace="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper">
     <resultMap id="CaretakerMap" type="Caretaker">
         <id property="userKey" column="USER_KEY"/>
+        <id property="caretakerKey" column="USER_KEY"/>
         <result property="userId" column="USER_ID"/>
         <result property="userName" column="USER_NAME"/>
         <result property="age" column="AGE"/>
@@ -36,6 +37,7 @@
         <result property="checkOut" column="CHECK_OUT"/>
         <result property="checkOutHour" column="CHECK_OUT_HOUR"/>
         <result property="checkOutMin" column="CHECK_OUT_MIN"/>
+        <result property="reviewCount" column="REVIEW_COUNT"/>
         <association property="cityType" javaType="CityType">
             <result property="cityTypeKey" column="CODE_SEQ"/>
             <result property="cityTypeName" column="CODE_NAME"/>

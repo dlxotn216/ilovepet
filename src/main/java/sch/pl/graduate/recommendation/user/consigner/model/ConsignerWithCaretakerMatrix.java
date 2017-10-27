@@ -22,5 +22,5 @@ public class ConsignerWithCaretakerMatrix extends AbstractModel {
     private Double similarity;      //현재 세션의 사용자와의 유사도
 
     private List<CaretakerColumn> caretakerColumns;    //Consigner에 대한 Caretaker 스코어 및 key column
-    private List<Double> expectedScores;
+    private List<ExpectedScore> expectedScores;
 }

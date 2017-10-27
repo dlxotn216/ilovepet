@@ -21,11 +21,11 @@
 		<div class="row" style="margin-top: 40px; margin-bottom: 20px;">
 			<div class="row">
 				<div class="col-sm-10">
-					<form class="signup" id="recommendationForm" method="POST" action="/consigners/recommendation/process">
+					<form class="signup" id="recommendationForm" method="POST" action="/consigner/recommendation/content-based">
 						<fieldset>
 							<legend>추천 데이터 입력</legend>
 							<div class="form-group">
-								<select id="cityType" class="form-control" name="cityTypeKey">
+								<select id="cityType" class="form-control" name="cityKey">
 									<option value="null" disabled="disabled" selected="selected">거주지를 선택해주세요</option>
 									<option th:each="cityType : ${cityTypes}"
 											th:value="${cityType.cityTypeKey}" th:text="${cityType.cityTypeName}"></option>

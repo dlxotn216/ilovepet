@@ -58,7 +58,7 @@
 					<td th:unless="${row.isCurrentUser}" th:text="${row.consignerKey}"></td>
 
 					<td th:each="col : ${row.expectedScores}"
-						th:text="${col}"></td>
+						th:text="${col.score}"></td>
 
 					<td th:text="${row.avg == null ? 'N/A' : row.avg}"></td>
 					<td th:text="${row.similarity}"></td>

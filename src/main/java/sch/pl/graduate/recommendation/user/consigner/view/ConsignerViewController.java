@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 import sch.pl.graduate.recommendation.care.model.Care;
@@ -29,6 +30,7 @@ import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.CityType;
 import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.consigner.model.ConsignerWithCaretakerMatrix;
+import sch.pl.graduate.recommendation.user.consigner.model.UserProfileForContentBasedRecommendation;
 import sch.pl.graduate.recommendation.user.consigner.service.ConsignerService;
 
 import java.util.List;
@@ -101,13 +103,26 @@ public class ConsignerViewController extends AbstractViewController {
         return "consigner/caretakerDetail";
     }
 
+    @PostMapping("/consigner/recommendation/content-based")
+    public String calculateRecommendationAsContentBased(Model model, UserProfileForContentBasedRecommendation userProfileForContentBasedRecommendation) {
+        List<? extends Caretaker> weightTable
+                = consignerService.getRecommendedCaretakersByContentBasedRecommendation(userProfileForContentBasedRecommendation);
+        model.addAttribute("caretakers", weightTable);
+        model.addAttribute("subTitle", "입력해주신 개인화 데이터를 통해 추천되었습니다");
+        model.addAttribute("recommendationType", "ContentBased");
+        model.addAttribute("detailURL", null);
+
+        return "consigner/recommendation/result";
+    }
+
     @GetMapping("/consigner/recommendation")
     public String getRecommendationForConsignerView(Model model) {
-        List<Caretaker> caretakers = consignerService.getRecommendedCaretakers();
+        List<Caretaker> caretakers = consignerService.getRecommendedCaretakersByCollaborateFiltering();
         Boolean dataNotEnough = caretakers == null;
 
         model.addAttribute("caretakers", caretakers);
         model.addAttribute("dataNotEnough", dataNotEnough);
+        model.addAttribute("subTitle", "이용하신 맡김 서비스 이력을 통해 추천되었습니다");
 
         if(dataNotEnough) {
             return getNotEnoughForRecommendationView(model, null);
@@ -130,6 +145,8 @@ public class ConsignerViewController extends AbstractViewController {
 
     @GetMapping("/consigner/recommendation/result")
     public String getResultRecommendationView(Model model) {
+        model.addAttribute("recommendationType", "CollaborateFiltering");
+        model.addAttribute("detailURL", "/consigner/recommendation/matrix");
         return "consigner/recommendation/result";
     }
 

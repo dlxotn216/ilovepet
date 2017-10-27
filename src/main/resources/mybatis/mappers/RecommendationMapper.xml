@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sch.pl.graduate.recommendation.user.consigner.mapper.RecommendationMapper">
+
+    <resultMap id="matrixMap" type="ConsignerWithCaretakerMatrix">
+        <result property="consignerKey" column="CONSIGNER_KEY"/>
+        <result property="avg" column="AVG"/>
+        <result property="isCurrentUser" column="IS_CURRENT_USER"/>
+        <collection property="caretakerColumns" javaType="java.util.List" ofType="CaretakerColumn">
+            <id property="caretakerKey" column="CARETAKER_KEY"/>
+            <result property="score" column="SCORE"/>
+        </collection>
+    </resultMap>
+
+    <select id="getConsignerAndCaretakerMatrix" resultMap="matrixMap">
+        SELECT
+            A.CONSIGNER_KEY,
+            A.CARETAKER_KEY,
+            A.SCORE AS SCORE,
+            B.AVG AS AVG,
+            CASE A.CONSIGNER_KEY
+            WHEN #{consignerKey} THEN 1
+            ELSE 0
+            END AS IS_CURRENT_USER
+                FROM (SELECT
+                    CONSIGNER.USER_KEY     AS CONSIGNER_KEY,
+                    CARETAKER.USER_KEY     AS CARETAKER_KEY,
+                    AVG(CARE_REVIEW.SCORE) AS SCORE
+                FROM (SELECT
+                        A.USER_KEY,
+                        A.USER_ID
+                        FROM USER A
+                        WHERE A.ROLE_KEY = 2) AS CONSIGNER
+                        CROSS JOIN (SELECT
+                            A.USER_KEY,
+                            A.USER_ID
+                            FROM USER A
+                WHERE A.ROLE_KEY = 3) AS CARETAKER
+                LEFT JOIN CARE
+                ON CONSIGNER.USER_KEY = CARE.CONSIGNER_KEY
+                AND CARETAKER.USER_KEY = CARE.CARETAKER_KEY
+                LEFT JOIN CARE_REVIEW AS CARE_REVIEW
+                ON CARE.CARE_KEY = CARE_REVIEW.CARE_KEY
+                GROUP BY CONSIGNER.USER_KEY, CARETAKER.USER_KEY
+                ) A
+            LEFT JOIN (SELECT
+            CONSIGNER.USER_KEY     AS CONSIGNER_KEY,
+            AVG(CARE_REVIEW.SCORE) AS AVG
+            FROM (SELECT
+            A.USER_KEY,
+            A.USER_ID
+            FROM USER A
+            WHERE A.ROLE_KEY = 2) AS CONSIGNER
+            CROSS JOIN (SELECT
+            A.USER_KEY,
+            A.USER_ID
+            FROM USER A
+            WHERE A.ROLE_KEY = 3) AS CARETAKER
+            LEFT JOIN CARE
+            ON CONSIGNER.USER_KEY = CARE.CONSIGNER_KEY
+            AND CARETAKER.USER_KEY = CARE.CARETAKER_KEY
+            LEFT JOIN CARE_REVIEW AS CARE_REVIEW
+            ON CARE.CARE_KEY = CARE_REVIEW.CARE_KEY
+            GROUP BY CONSIGNER.USER_KEY
+        ) B
+        ON A.CONSIGNER_KEY = B.CONSIGNER_KEY
+        ORDER BY A.CONSIGNER_KEY ASC, A.CARETAKER_KEY ASC
+    </select>
+
+    <select id="getRecommendedCaretakerFromTopNExpectedScores" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
+        SELECT *,
+            (SELECT COUNT(B.CARE_KEY)
+            FROM CARE A
+            LEFT JOIN CARE_REVIEW B
+            ON A.CARE_KEY = B.CARE_KEY
+            WHERE A.CARETAKER_KEY = A.USER_KEY AND B.CARE_KEY IS NOT NULL)
+            AS REVIEW_COUNT
+        FROM USER A
+        LEFT JOIN ROLE B
+            ON A.ROLE_KEY = B.ROLE_KEY
+        LEFT JOIN CARETAKER C
+            ON A.USER_KEY = C.USER_KEY
+        LEFT JOIN CARETAKER_FILE D
+            ON A.USER_KEY = D.USER_KEY
+        LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) E
+            ON A.CITY_TYPE_KEY = E.CODE_SEQ
+        WHERE B.ROLE_NAME LIKE '%CARETAKER'
+        AND (
+        <foreach collection="list" item="item" separator="OR">
+            A.USER_KEY = #{item.caretakerKey}
+        </foreach>
+        )
+        GROUP BY A.USER_KEY
+    </select>
+
+
+    <resultMap id="UserProfileForContentBasedRecommendationMap" type="UserProfileForContentBasedRecommendation">
+        <id property="caretakerKey" column="CARETAKER_KEY"/>
+        <id property="userKey" column="CARETAKER_KEY"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="birth" column="BIRTH"/>
+        <result property="email" column="EMAIL"/>
+        <result property="phone" column="PHONE"/>
+        <result property="profileFileKey" column="PROFILE_FILE_KEY"/>
+        <result property="roleKey" column="ROLE_KEY"/>
+
+        <result property="petCount" column="PET_COUNT"/>
+        <result property="title" column="TITLE"/>
+        <result property="summary" column="SUMMARY"/>
+        <result property="feePerNight" column="FEE_PER_NIGHT"/>
+        <result property="additionalFee" column="ADDITIONAL_FEE"/>
+        <result property="checkIn" column="CHECK_IN"/>
+        <result property="checkInHour" column="CHECK_IN_HOUR"/>
+        <result property="checkInMin" column="CHECK_IN_MIN"/>
+        <result property="checkOut" column="CHECK_OUT"/>
+        <result property="checkOutHour" column="CHECK_OUT_HOUR"/>
+        <result property="checkOutMin" column="CHECK_OUT_MIN"/>
+        <result property="reviewCount" column="REVIEW_COUNT"/>
+
+
+        <result property="age" column="AGE"/>
+        <result property="ageWeight" column="AGE_WEIGHT"/>
+        <result property="ageWeightPercentage" column="AGE_WEIGHT_PERCENTAGE"/>
+
+        <result property="gender" column="GENDER" typeHandler="GenderTypeHandler"/>
+        <result property="genderWeight" column="GENDER_WEIGHT" />
+        <result property="genderWeightPercentage" column="GENDER_WEIGHT_PERCENTAGE" />
+
+        <result property="city" column="CITY"/>
+        <result property="cityKey" column="CITY_KEY"/>
+        <result property="cityWeight" column="CITY_WEIGHT"/>
+        <result property="cityWeightPercentage" column="CITY_WEIGHT_PERCENTAGE"/>
+
+        <result property="barking" column="BARKING"/>
+        <result property="barkingWeight" column="BARKING_WEIGHT"/>
+        <result property="barkingWeightPercentage" column="BARKING_WEIGHT_PERCENTAGE"/>
+
+        <result property="marking" column="MARKING"/>
+        <result property="markingWeight" column="MARKING_WEIGHT"/>
+        <result property="markingWeightPercentage" column="MARKING_WEIGHT_PERCENTAGE"/>
+
+        <result property="mounting" column="MOUNTING"/>
+        <result property="mountingWeight" column="MOUNTING_WEIGHT"/>
+        <result property="mountingWeightPercentage" column="MOUNTING_WEIGHT_PERCENTAGE"/>
+
+        <result property="aggression" column="AGGRESSION"/>
+        <result property="aggressionWeight" column="AGGRESSION_WEIGHT"/>
+        <result property="aggressionWeightPercentage" column="AGGRESSION_WEIGHT_PERCENTAGE"/>
+
+        <result property="size" column="SIZE"/>
+        <result property="sizeWeight" column="SIZE_WEIGHT"/>
+        <result property="sizeWeightPercentage" column="SIZE_WEIGHT_PERCENTAGE"/>
+
+        <result property="liveWithFamily" column="LIVE_WITH_FAMILY" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="liveWithFamilyWeight" column="LIVE_WITH_FAMILY_WEIGHT"/>
+        <result property="liveWithFamilyWeightPercentage" column="LIVE_WITH_FAMILY_WEIGHT_PERCENTAGE"/>
+
+        <result property="hasYoungChildren" column="HAS_YOUNG_CHILDREN" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="hasYoungChildrenWeight" column="HAS_YOUNG_CHILDREN_WEIGHT"/>
+        <result property="hasYoungChildrenWeightPercentage" column="HAS_YOUNG_CHILDREN_WEIGHT_PERCENTAGE"/>
+
+        <result property="yard" column="YARD" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="yardWeight" column="YARD_WEIGHT"/>
+        <result property="yardWeightPercentage" column="YARD_WEIGHT_PERCENTAGE"/>
+
+        <result property="pickup" column="PICKUP" typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+        <result property="pickupWeight" column="PICKUP_WEIGHT"/>
+        <result property="pickupWeightPercentage" column="PICKUP_WEIGHT_PERCENTAGE"/>
+
+        <result property="weightTotal" column="WEIGHT_TOTAL"/>
+
+        <association property="cityType" javaType="CityType">
+            <result property="cityTypeKey" column="CODE_SEQ"/>
+            <result property="cityTypeName" column="CODE_NAME"/>
+        </association>
+
+        <collection property="introductionFiles" javaType="java.util.List" ofType="AppFile">
+            <id property="fileKey" column="FILE_KEY"/>
+            <result property="fileName" column="FILE_NAME"/>
+            <result property="filePath" column="FILE_PATH"/>
+            <result property="fileType" column="FILE_TYPE" typeHandler="FileTypeHandler"/>
+            <result property="format" column="FORMAT"/>
+        </collection>
+    </resultMap>
+
+    <select id="getWeightTable" parameterType="UserProfileForContentBasedRecommendation" resultMap="UserProfileForContentBasedRecommendationMap">
+    SELECT *,
+                (SELECT COUNT(B.CARE_KEY)
+                    FROM CARE A
+                        LEFT JOIN CARE_REVIEW B
+                            ON A.CARE_KEY = B.CARE_KEY
+                    WHERE A.CARETAKER_KEY = A.USER_KEY AND B.CARE_KEY IS NOT NULL)
+                AS REVIEW_COUNT
+     FROM (
+            SELECT
+                T.*,
+                (GENDER_WEIGHT_PERCENTAGE + CITY_WEIGHT_PERCENTAGE
+                + AGE_WEIGHT_PERCENTAGE + YARD_WEIGHT_PERCENTAGE
+                + LIVE_WITH_FAMILY_WEIGHT_PERCENTAGE + HAS_YOUNG_CHILDREN_WEIGHT_PERCENTAGE
+                + PICKUP_WEIGHT_PERCENTAGE + BARKING_WEIGHT_PERCENTAGE
+                + MARKING_WEIGHT_PERCENTAGE + MOUNTING_WEIGHT_PERCENTAGE
+                + AGGRESSION_WEIGHT_PERCENTAGE+ SIZE_WEIGHT_PERCENTAGE)
+                AS WEIGHT_TOTAL
+            FROM (
+                SELECT
+                    R.CARETAKER_KEY,
+
+                    R.GENDER,
+                    GENDER_MAPPING.WEIGHT                                                                  AS GENDER_WEIGHT,
+                    GENDER_MAPPING.WEIGHT * GENDER_MAPPING.WEIGHT_PERCENTAGE / 100                         AS GENDER_WEIGHT_PERCENTAGE,
+
+                    R.CITY_KEY,
+                    R.CITY,
+                    CITY_MAPPING.WEIGHT                                                                    AS CITY_WEIGHT,
+                    CITY_MAPPING.WEIGHT * CITY_MAPPING.WEIGHT_PERCENTAGE / 100                             AS CITY_WEIGHT_PERCENTAGE,
+
+                    R.AGE,
+                    AGE_MAPPING.WEIGHT                                                                     AS AGE_WEIGHT,
+                    AGE_MAPPING.WEIGHT * AGE_MAPPING.WEIGHT_PERCENTAGE / 100                               AS AGE_WEIGHT_PERCENTAGE,
+
+                    R.YARD,
+                    YARD_MAPPING.WEIGHT                                                                    AS YARD_WEIGHT,
+                    YARD_MAPPING.WEIGHT * YARD_MAPPING.WEIGHT_PERCENTAGE / 100                             AS YARD_WEIGHT_PERCENTAGE,
+
+                    R.LIVE_WITH_FAMILY,
+                    LIVE_WITH_FAMILY_MAPPING.WEIGHT                                                        AS LIVE_WITH_FAMILY_WEIGHT,
+                    LIVE_WITH_FAMILY_MAPPING.WEIGHT * LIVE_WITH_FAMILY_MAPPING.WEIGHT_PERCENTAGE / 100     AS LIVE_WITH_FAMILY_WEIGHT_PERCENTAGE,
+
+                    R.HAS_YOUNG_CHILDREN,
+                    HAS_YOUNG_CHILDREN_MAPPING.WEIGHT                                                      AS HAS_YOUNG_CHILDREN_WEIGHT,
+                    HAS_YOUNG_CHILDREN_MAPPING.WEIGHT * HAS_YOUNG_CHILDREN_MAPPING.WEIGHT_PERCENTAGE / 100 AS HAS_YOUNG_CHILDREN_WEIGHT_PERCENTAGE,
+
+                    R.PICKUP,
+                    PICKUP_MAPPING.WEIGHT                                                                  AS PICKUP_WEIGHT,
+                    PICKUP_MAPPING.WEIGHT * PICKUP_MAPPING.WEIGHT_PERCENTAGE / 100                         AS PICKUP_WEIGHT_PERCENTAGE,
+
+                    R.BARKING,
+                    BARKING_MAPPING.WEIGHT                                                                 AS BARKING_WEIGHT,
+                    BARKING_MAPPING.WEIGHT * BARKING_MAPPING.WEIGHT_PERCENTAGE / 100                       AS BARKING_WEIGHT_PERCENTAGE,
+
+                    R.MARKING,
+                    MARKING_MAPPING.WEIGHT                                                                 AS MARKING_WEIGHT,
+                    MARKING_MAPPING.WEIGHT * MARKING_MAPPING.WEIGHT_PERCENTAGE / 100                       AS MARKING_WEIGHT_PERCENTAGE,
+
+                    R.MOUNTING,
+                    MOUNTING_MAPPING.WEIGHT                                                                AS MOUNTING_WEIGHT,
+                    MOUNTING_MAPPING.WEIGHT * MOUNTING_MAPPING.WEIGHT_PERCENTAGE / 100                     AS MOUNTING_WEIGHT_PERCENTAGE,
+
+                    R.AGGRESSION,
+                    AGGRESSION_MAPPING.WEIGHT                                                              AS AGGRESSION_WEIGHT,
+                    AGGRESSION_MAPPING.WEIGHT * AGGRESSION_MAPPING.WEIGHT_PERCENTAGE / 100                 AS AGGRESSION_WEIGHT_PERCENTAGE,
+
+                    R.SIZE,
+                    SIZE_MAPPING.WEIGHT                                                                    AS SIZE_WEIGHT,
+                    SIZE_MAPPING.WEIGHT * SIZE_MAPPING.WEIGHT_PERCENTAGE / 100                             AS SIZE_WEIGHT_PERCENTAGE
+                FROM (
+                    SELECT
+                        A.USER_KEY                         AS CARETAKER_KEY,
+                        B.GENDER,
+                        C.CODE_NAME                        AS CITY,
+                        C.CODE_SEQ                         AS CITY_KEY,
+                        YEAR(CURRENT_DATE) - YEAR(B.BIRTH) AS AGE,
+                        A.YARD,
+                        A.LIVE_WITH_FAMILY,
+                        A.HAS_YOUNG_CHILDREN,
+                        A.PICKUP,
+                        A.BARKING,
+                        A.MARKING,
+                        A.MOUNTING,
+                        A.AGGRESSION,
+                        A.SIZE
+                    FROM CARETAKER A
+                    INNER JOIN USER B
+                        ON A.USER_KEY = B.USER_KEY
+                    INNER JOIN CODE C
+                        ON B.CITY_TYPE_KEY = C.CODE_SEQ
+                        AND C.CODE_TYPE = 1
+                UNION
+                (
+                    SELECT
+                        NULL                                   AS CARETAKER_KEY,
+                        #{gender}                              AS GENDER,
+                        (SELECT CODE_NAME AS CITY
+                        FROM CODE
+                        WHERE CODE_TYPE = 1 AND CODE_SEQ = #{cityKey}) AS CITY_NAME,
+                        (SELECT CODE_SEQ AS CITY_KEY
+                        FROM CODE
+                        WHERE CODE_TYPE = 1 AND CODE_SEQ = #{cityKey}) AS CITY_KEY,
+                        #{age}                                 AS AGE,
+                        #{yard}                                AS YARD,
+                        #{liveWithFamily}                     AS LIVE_WITH_FAMILY,
+                        #{hasYoungChildren}                    AS HAS_YOUNG_CHILDREN,
+                        #{pickup}                              AS PICKUP,
+                        #{barking}                             AS BARKING,
+                        #{marking}                             AS MARKING,
+                        #{mounting}                            AS MOUNTING,
+                        #{aggression}                           AS AGGRESSION,
+                        #{size}                                AS SIZE
+                )
+            ) R
+            LEFT JOIN WEIGHT_MAPPING GENDER_MAPPING
+                ON GENDER_MAPPING.KEY_NAME LIKE '%GENDER'
+                AND GENDER_MAPPING.DIFF = (ABS(CAST(R.GENDER AS SIGNED)- #{gender}))
+
+            LEFT JOIN WEIGHT_MAPPING CITY_MAPPING
+                ON CITY_MAPPING.KEY_NAME LIKE '%CITY_KEY'
+                AND CITY_MAPPING.DIFF = (ABS(CAST(R.CITY_KEY AS SIGNED) - #{cityKey}))
+
+            LEFT JOIN WEIGHT_MAPPING AGE_MAPPING
+                ON AGE_MAPPING.KEY_NAME LIKE '%AGE'
+                AND AGE_MAPPING.DIFF = (ABS(CAST(R.AGE AS SIGNED) - #{age}))
+
+            LEFT JOIN WEIGHT_MAPPING YARD_MAPPING
+                ON YARD_MAPPING.KEY_NAME LIKE '%YARD'
+                AND YARD_MAPPING.DIFF = (ABS(CAST(R.YARD AS SIGNED) - #{yard}))
+
+            LEFT JOIN WEIGHT_MAPPING LIVE_WITH_FAMILY_MAPPING
+                ON LIVE_WITH_FAMILY_MAPPING.KEY_NAME LIKE '%LIVE_WITH_FAMILY'
+                AND LIVE_WITH_FAMILY_MAPPING.DIFF = (ABS(CAST(R.LIVE_WITH_FAMILY AS SIGNED)- #{liveWithFamily}))
+
+            LEFT JOIN WEIGHT_MAPPING HAS_YOUNG_CHILDREN_MAPPING
+                ON HAS_YOUNG_CHILDREN_MAPPING.KEY_NAME LIKE '%HAS_YOUNG_CHILDREN'
+                AND HAS_YOUNG_CHILDREN_MAPPING.DIFF = (ABS(CAST(R.HAS_YOUNG_CHILDREN AS SIGNED)- #{hasYoungChildren}))
+
+            LEFT JOIN WEIGHT_MAPPING PICKUP_MAPPING
+                ON PICKUP_MAPPING.KEY_NAME LIKE '%PICKUP'
+                AND PICKUP_MAPPING.DIFF = (ABS(CAST(R.PICKUP AS SIGNED) - #{pickup}))
+
+            LEFT JOIN WEIGHT_MAPPING BARKING_MAPPING
+                 ON BARKING_MAPPING.KEY_NAME LIKE '%BARKING'
+                    AND BARKING_MAPPING.DIFF = (ABS(((CAST(R.BARKING AS SIGNED) - (#{barking})) DIV 10)))
+
+             LEFT JOIN WEIGHT_MAPPING MARKING_MAPPING
+                 ON MARKING_MAPPING.KEY_NAME LIKE '%MARKING'
+                    AND MARKING_MAPPING.DIFF = (ABS(((CAST(R.MARKING AS SIGNED) - (#{marking})) DIV 10)))
+
+             LEFT JOIN WEIGHT_MAPPING MOUNTING_MAPPING
+                 ON MOUNTING_MAPPING.KEY_NAME LIKE '%MOUNTING'
+                    AND MOUNTING_MAPPING.DIFF = (ABS(((CAST(R.MOUNTING AS SIGNED) -  (#{mounting})) DIV 10)))
+
+             LEFT JOIN WEIGHT_MAPPING AGGRESSION_MAPPING
+                 ON AGGRESSION_MAPPING.KEY_NAME LIKE '%AGGRESSION'
+                    AND AGGRESSION_MAPPING.DIFF = (ABS(((CAST(R.AGGRESSION AS SIGNED) -  (#{aggression})) DIV 10)))
+
+             LEFT JOIN WEIGHT_MAPPING SIZE_MAPPING
+                 ON SIZE_MAPPING.KEY_NAME LIKE '%SIZE'
+                    AND SIZE_MAPPING.DIFF = (ABS(((CAST(R.SIZE AS SIGNED) - (#{size})) DIV 10)))
+            ) T
+            ORDER BY WEIGHT_TOTAL DESC
+            LIMIT 5
+        )N
+        LEFT JOIN USER A
+	        ON N.CARETAKER_KEY = A.USER_KEY
+        LEFT JOIN CARETAKER B
+	        ON B.USER_KEY = A.USER_KEY
+    </select>
+</mapper>

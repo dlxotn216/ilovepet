@@ -19,6 +19,7 @@ import java.util.List;
 
 @Data
 public class Caretaker extends User {
+    private Long caretakerKey;
     private Integer petCount;
     private String title;
     private String summary;
@@ -35,6 +36,7 @@ public class Caretaker extends User {
     private Boolean hasYoungChildren;
     private Boolean pickup;
     private Long introductionFileKey;
+    private Long reviewCount;
 
     //선호 값
     private Double barking;         //짖음

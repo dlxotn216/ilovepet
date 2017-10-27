@@ -20,6 +20,4 @@ public interface ConsignerMapper {
     Integer getUsersForConsignerTotalCount(UserCriteria userCriteria);
 
     Caretaker getUserForConsigner(Long userKey);
-
-    List<ConsignerWithCaretakerMatrix> getConsignerAndCaretakerMatrix(Long consignerKey);
 }

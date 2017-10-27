@@ -17,7 +17,13 @@
     </resultMap>
 
     <select id="getUsersForConsigner" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
-        SELECT *
+        SELECT *,
+            (SELECT COUNT(B.CARE_KEY)
+            FROM CARE A
+            LEFT JOIN CARE_REVIEW B
+            ON A.CARE_KEY = B.CARE_KEY
+            WHERE A.CARETAKER_KEY = A.USER_KEY AND B.CARE_KEY IS NOT NULL)
+            AS REVIEW_COUNT
         FROM USER A
         LEFT JOIN ROLE B
             ON A.ROLE_KEY = B.ROLE_KEY
@@ -34,7 +40,13 @@
     </select>
 
     <select id="getUserForConsigner" resultMap="sch.pl.graduate.recommendation.user.caretaker.mapper.CaretakerMapper.CaretakerMap">
-        SELECT *
+        SELECT *,
+        (SELECT COUNT(B.CARE_KEY)
+            FROM CARE A
+                LEFT JOIN CARE_REVIEW B
+                    ON A.CARE_KEY = B.CARE_KEY
+            WHERE A.CARETAKER_KEY = A.USER_KEY AND B.CARE_KEY IS NOT NULL)
+        AS REVIEW_COUNT
         FROM USER A
         LEFT JOIN ROLE B
             ON A.ROLE_KEY = B.ROLE_KEY
@@ -55,70 +67,4 @@
         ON A.ROLE_KEY = B.ROLE_KEY
         WHERE B.ROLE_NAME LIKE '%CARETAKER'
     </select>
-
-    <resultMap id="matrixMap" type="ConsignerWithCaretakerMatrix">
-        <result property="consignerKey" column="CONSIGNER_KEY"/>
-        <result property="avg" column="AVG"/>
-        <result property="isCurrentUser" column="IS_CURRENT_USER"/>
-        <collection property="caretakerColumns" javaType="java.util.List" ofType="CaretakerColumn">
-            <id property="caretakerKey" column="CARETAKER_KEY"/>
-            <result property="score" column="SCORE"/>
-        </collection>
-    </resultMap>
-
-    <select id="getConsignerAndCaretakerMatrix" resultMap="matrixMap">
-        SELECT
-            A.CONSIGNER_KEY,
-            A.CARETAKER_KEY,
-            A.SCORE AS SCORE,
-            B.AVG AS AVG,
-            CASE A.CONSIGNER_KEY
-                WHEN #{consignerKey} THEN 1
-                ELSE 0
-            END AS IS_CURRENT_USER
-        FROM (SELECT
-                  CONSIGNER.USER_KEY     AS CONSIGNER_KEY,
-                  CARETAKER.USER_KEY     AS CARETAKER_KEY,
-                  AVG(CARE_REVIEW.SCORE) AS SCORE
-              FROM (SELECT
-                        A.USER_KEY,
-                        A.USER_ID
-                    FROM USER A
-                    WHERE A.ROLE_KEY = 2) AS CONSIGNER
-                  CROSS JOIN (SELECT
-                                  A.USER_KEY,
-                                  A.USER_ID
-                              FROM USER A
-                              WHERE A.ROLE_KEY = 3) AS CARETAKER
-                  LEFT JOIN CARE
-                      ON CONSIGNER.USER_KEY = CARE.CONSIGNER_KEY
-                         AND CARETAKER.USER_KEY = CARE.CARETAKER_KEY
-                  LEFT JOIN CARE_REVIEW AS CARE_REVIEW
-                      ON CARE.CARE_KEY = CARE_REVIEW.CARE_KEY
-              GROUP BY CONSIGNER.USER_KEY, CARETAKER.USER_KEY
-             ) A
-            LEFT JOIN (SELECT
-                           CONSIGNER.USER_KEY     AS CONSIGNER_KEY,
-                           AVG(CARE_REVIEW.SCORE) AS AVG
-                       FROM (SELECT
-                                 A.USER_KEY,
-                                 A.USER_ID
-                             FROM USER A
-                             WHERE A.ROLE_KEY = 2) AS CONSIGNER
-                           CROSS JOIN (SELECT
-                                           A.USER_KEY,
-                                           A.USER_ID
-                                       FROM USER A
-                                       WHERE A.ROLE_KEY = 3) AS CARETAKER
-                           LEFT JOIN CARE
-                               ON CONSIGNER.USER_KEY = CARE.CONSIGNER_KEY
-                                  AND CARETAKER.USER_KEY = CARE.CARETAKER_KEY
-                           LEFT JOIN CARE_REVIEW AS CARE_REVIEW
-                               ON CARE.CARE_KEY = CARE_REVIEW.CARE_KEY
-                       GROUP BY CONSIGNER.USER_KEY
-                      ) B
-                ON A.CONSIGNER_KEY = B.CONSIGNER_KEY
-            ORDER BY A.CONSIGNER_KEY ASC, A.CARETAKER_KEY ASC
-    </select>
-
 </mapper>

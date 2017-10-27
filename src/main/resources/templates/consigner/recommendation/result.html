@@ -14,11 +14,12 @@
 	<div class="container">
 		<div class="starter-template view-title">
 			<h3>당신에게 적합 한 돌보미 목록입니다</h3>
-			<h5>사용자 맡김 서비스 이용 이력에 따라 자동 추천되었습니다</h5>
+			<h5 th:if="${subTitle != null}" th:text="${subTitle}"></h5>
+			<a th:href="${detailURL}" th:if="${detailURL != null}" th:text="'결과 상세보기'"></a>
 		</div>
 
 		<div id="listView" class="row" style="margin-top: 40px; margin-left: 0px; margin-right: 0px;">
-			<div th:each="user : ${caretakers}" class="col-md-12" th:onclick="'onUserDetailClick('+${user.userKey}+')'">
+			<div th:each="user : ${caretakers}" th:if="${user.caretakerKey != null}" class="col-md-12" th:onclick="'onUserDetailClick('+${user.userKey}+')'">
 				<div class="row list-row">
 					<div class="list-header"
 						 th:if="${user.introductionFiles != null and user.introductionFiles.size() > 0}"
@@ -97,7 +98,7 @@
 								<div class="panel-footer">
 									<span class="comment">
 										<span class="glyphicon glyphicon-heart-empty"></span>
-										<span>고객 후기 14개</span>
+										<span th:text="'고객 후기 '+${user.reviewCount} + '개'"></span>
 									</span>
 									<span class="check">
 										<span class="glyphicon glyphicon-log-out"></span>
@@ -117,9 +118,6 @@
 	</div>
 </div>
 <div th:replace="fragments/footer :: footer"/>
-<script type="text/javascript"
-		src="/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}"></script>
-<script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
-<script th:src="@{/js/user/notEnough.js}"></script>
+<script th:src="@{/js/user/result.js}"></script>
 </body>
 </html>

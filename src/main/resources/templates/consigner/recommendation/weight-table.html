@@ -1,0 +1,97 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="" style="padding: 20px">
+		<div class="starter-template">
+			<h3>추천 연산 결과</h3>
+		</div>
+
+		<div class="row" style="overflow-x: auto; margin-top: 50px">
+			<h4>가중치 테이블</h4>
+			<table class="table table-striped" style="margin-top: 10px" th:if="${caretakers != null and caretakers.size()> 0 }">
+				<tr>
+					<th>Key</th>
+					<th>Total Weight</th>
+					<th>Gender</th>
+					<th>Weight</th>
+					<th>City Name</th>
+					<th>Weight</th>
+					<th>Age</th>
+					<th>Weight</th>
+					<th>Yard</th>
+					<th>Weight</th>
+					<th>Live With Family</th>
+					<th>Weight</th>
+					<th>Has Young Children</th>
+					<th>Weight</th>
+					<th>Pickup</th>
+					<th>Weight</th>
+					<th>Barking</th>
+					<th>Weight</th>
+					<th>Marking</th>
+					<th>Weight</th>
+					<th>Mounting</th>
+					<th>Weight</th>
+					<th>Aggression</th>
+					<th>Weight</th>
+					<th>Size</th>
+					<th>Weight</th>
+				</tr>
+				<tr th:each="row : ${caretakers}">
+					<td th:text="${row.caretakerKey}"></td>
+					<td th:text="${row.weightTotal}"></td>
+
+					<td th:text="${row.gender}"></td>
+					<td th:text="${row.genderWeight} + '('+ ${row.genderWeightPercentage}+')'"></td>
+
+					<td th:text="${row.city} + '('+ ${row.cityKey}+')'"></td>
+					<td th:text="${row.cityWeight} + '('+ ${row.cityWeightPercentage}+')'"></td>
+
+					<td th:text="${row.age}"></td>
+					<td th:text="${row.ageWeight} + '('+ ${row.ageWeightPercentage}+')'"></td>
+
+					<td th:text="${row.yard}"></td>
+					<td th:text="${row.yardWeight} + '('+ ${row.yardWeightPercentage}+')'"></td>
+
+					<td th:text="${row.liveWithFamily}"></td>
+					<td th:text="${row.liveWithFamilyWeight} + '('+ ${row.liveWithFamilyWeightPercentage}+')'"></td>
+
+					<td th:text="${row.hasYoungChildren}"></td>
+					<td th:text="${row.hasYoungChildrenWeight} + '('+ ${row.hasYoungChildrenWeightPercentage}+')'"></td>
+
+					<td th:text="${row.pickup}"></td>
+					<td th:text="${row.pickupWeight} + '('+ ${row.pickupWeightPercentage}+')'"></td>
+
+					<td th:text="${row.barking}"></td>
+					<td th:text="${row.barkingWeight} + '('+ ${row.barkingWeightPercentage}+')'"></td>
+
+					<td th:text="${row.marking}"></td>
+					<td th:text="${row.markingWeight} + '('+ ${row.markingWeightPercentage}+')'"></td>
+
+					<td th:text="${row.mounting}"></td>
+					<td th:text="${row.mountingWeight} + '('+ ${row.mountingWeightPercentage}+')'"></td>
+
+					<td th:text="${row.aggression}"></td>
+					<td th:text="${row.aggressionWeight} + '('+ ${row.aggressionWeightPercentage}+')'"></td>
+
+					<td th:text="${row.size}"></td>
+					<td th:text="${row.sizeWeight} + '('+ ${row.sizeWeightPercentage}+')'"></td>
+
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
