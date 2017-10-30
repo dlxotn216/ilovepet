@@ -111,7 +111,7 @@
         <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
     </select>
 
-    <select id="getUsersTotalCount">
+    <select id="getUsersTotalCount" resultType="Integer">
         SELECT COUNT(*)
         FROM USER
     </select>

@@ -22,7 +22,7 @@
 					<td th:text="${notice.title}"></td>
 					<td th:text="${notice.createdAt}"></td>
 				</tr>
-				<tr th:unless="${notices != null and notices.size()>0}" th:each="notice : ${notices}">
+				<tr th:unless="${notices != null and notices.size()>0}">
 					<td colspan="3">존재하지 않습니다.</td>
 				</tr>
 			</table>

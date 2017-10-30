@@ -16,4 +16,6 @@ import java.util.List;
 public interface AdminService {
     List<DashboardForLoginHistory> getSystemLoginHistoriesByMonth();
     List<DashboardForLoginHistory> getSystemLoginHistoriesByDaily();
+
+    void generateDefaultData();
 }
