@@ -34,7 +34,7 @@ public class CodeViewController extends AbstractViewController{
 
         model.addAttribute("codes", codes);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalPage", totalPage==0 ? 1: totalPage);
         model.addAttribute("currentPage", currentPage);
 
         return getListView(model, "code/codeList");

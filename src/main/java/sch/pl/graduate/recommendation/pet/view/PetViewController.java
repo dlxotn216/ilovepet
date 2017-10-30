@@ -41,12 +41,12 @@ public class PetViewController extends AbstractController {
         List<Pet> pets = petService.getPets(petCriteria);
         final Integer totalCount = petService.getPetsTotalCount(petCriteria);
         Integer totalPage = totalCount / petCriteria.getLimit();
-        totalPage += (totalCount%petCriteria.getLimit()) == 0 ? 0 : 1;
+        totalPage += (totalCount % petCriteria.getLimit()) == 0 ? 0 : 1;
         final Integer currentPage = petCriteria.getPage();
 
         model.addAttribute("pets", pets);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalPage", totalPage==0 ? 1: totalPage);
         model.addAttribute("currentPage", currentPage);
 
         return "pet/pet";
@@ -84,7 +84,7 @@ public class PetViewController extends AbstractController {
 
         Boolean isOwner = petService.currentUserIsOwner(pet);
 
-        if(!isOwner) {
+        if (!isOwner) {
             return "error/403";
         } else {
             return "pet/petUpdate";

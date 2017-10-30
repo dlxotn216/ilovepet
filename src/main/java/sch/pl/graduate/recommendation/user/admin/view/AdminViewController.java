@@ -39,7 +39,7 @@ public class AdminViewController {
 
         model.addAttribute("users", users);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalPage", totalPage==0 ? 1: totalPage);
         model.addAttribute("currentPage", currentPage);
         return "admin/user";
     }
