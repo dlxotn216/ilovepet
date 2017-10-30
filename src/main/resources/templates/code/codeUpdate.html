@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="page-wrap">
+	<div class="container">
+		<form class="form-horizontal">
+			<h3 style="margin-bottom: 30px;">코드 수정</h3>
+			<div class="form-group">
+				<input type="text" class="form-control" th:value="${code.codeType}" id="codeType" name="title" disabled="disabled" />
+			</div>
+			<div class="form-group">
+				<input type="number" class="form-control" th:value="${code.codeSeq}" id="codeSeq" placeholder="코드 순서" required="required" />
+			</div>
+			<input type="hidden" th:value="${code.codeKey}" id="codeKey" />
+			<div class="form-group">
+				<input type="text" class="form-control" th:value="${code.codeName}" id="codeName" placeholder="코드 이름" required="required" />
+			</div>
+			<div class="form-group" style="margin-bottom: 30px;" sec:authorize="hasRole('ROLE_ADMIN')">
+				<button type="button" id="updateCodeButton" class="btn btn-success">저장</button>
+				<button type="button" id="deleteCodeButton"
+						th:onclick="'javascript:onCodeDeleteButtonClick('+${code.codeKey}+')'" class="btn btn-danger">삭제하기</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+<div th:replace="common/common :: deleteModal"/>
+<div th:replace="common/common :: alertModal"/>
+
+<script th:src="@{/js/code/codeUpdate.js}" src="/js/code/codeUpdate.js"></script>
+<script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
+</body>
+</html>

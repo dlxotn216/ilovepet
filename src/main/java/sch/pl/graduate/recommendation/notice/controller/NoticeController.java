@@ -30,7 +30,8 @@ public class NoticeController extends AbstractController{
     public ResponseEntity getNotices(NoticeCriteria noticeCriteria){
         List<Notice> notices = noticeService.getNotices(noticeCriteria);
         final Integer totalCount = noticeService.getNoticesTotalCount(noticeCriteria);
-        final Integer totalPage = totalCount / noticeCriteria.getLimit();
+        Integer totalPage = totalCount / noticeCriteria.getLimit();
+        totalPage += (totalCount%noticeCriteria.getLimit()) == 0 ? 0 : 1;
         final Integer currentPage = noticeCriteria.getPage();
 
         return getSuccessResponse(notices, totalCount, totalPage, currentPage, "조회 완료하였습니다");

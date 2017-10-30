@@ -33,12 +33,13 @@ public class AdminViewController {
     public String getUserForAdminView(Model model, UserCriteria userCriteria) {
         List<? extends User> users = userService.getUsers(userCriteria);
         final Integer totalCount = userService.getUsersTotalCount(userCriteria);
-        final Integer totalPage = totalCount / userCriteria.getLimit();
+        Integer totalPage = totalCount / userCriteria.getLimit();
+        totalPage += (totalCount % userCriteria.getLimit()) == 0 ? 0 : 1;
         final Integer currentPage = userCriteria.getPage();
 
         model.addAttribute("users", users);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
+        model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
         return "admin/user";
     }

@@ -73,12 +73,13 @@ public class ConsignerViewController extends AbstractViewController {
     public String getUsersForConsignerView(Model model, UserCriteria userCriteria) {
         List<Caretaker> users = consignerService.getUsersForConsigner(userCriteria);
         final Integer totalCount = consignerService.getUsersForConsignerTotalCount(userCriteria);
-        final Integer totalPage = totalCount / userCriteria.getLimit();
+        Integer totalPage = totalCount / userCriteria.getLimit();
+        totalPage += (totalCount%userCriteria.getLimit()) == 0 ? 0 : 1;
         final Integer currentPage = userCriteria.getPage();
 
         model.addAttribute("users", users);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
+        model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
 
         return getListView(model, "consigner/caretakerList");
@@ -154,12 +155,13 @@ public class ConsignerViewController extends AbstractViewController {
     public String getSelectPetForRecommendationView(Model model, PetCriteria petCriteria) {
         List<Pet> pets = petService.getPets(petCriteria);
         final Integer totalCount = petService.getPetsTotalCount(petCriteria);
-        final Integer totalPage = totalCount / petCriteria.getLimit();
+        Integer totalPage = totalCount / petCriteria.getLimit();
+        totalPage += (totalCount%petCriteria.getLimit()) == 0 ? 0 : 1;
         final Integer currentPage = petCriteria.getPage();
 
         model.addAttribute("pets", pets);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
+        model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
 
         final String redirectUrl = petCriteria.getRedirect();

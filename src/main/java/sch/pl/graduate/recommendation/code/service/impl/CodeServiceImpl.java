@@ -9,6 +9,7 @@ package sch.pl.graduate.recommendation.code.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sch.pl.graduate.recommendation.code.mapper.CodeMapper;
+import sch.pl.graduate.recommendation.code.model.Code;
 import sch.pl.graduate.recommendation.code.model.CodeCriteria;
 import sch.pl.graduate.recommendation.code.service.CodeService;
 import sch.pl.graduate.recommendation.pet.model.PetType;
@@ -33,5 +34,35 @@ public class CodeServiceImpl implements CodeService{
     @Override
     public List<CityType> getCityTypes(CodeCriteria codeCriteria) {
         return codeMapper.getCityTypes(codeCriteria);
+    }
+
+    @Override
+    public Integer addCode(Code code) {
+        return codeMapper.addCode(code);
+    }
+
+    @Override
+    public List<Code> getCodes(CodeCriteria codeCriteria) {
+        return codeMapper.getCodes(codeCriteria);
+    }
+
+    @Override
+    public Integer getCodesTotalCount(CodeCriteria codeCriteria) {
+        return codeMapper.getCodesTotalCount(codeCriteria);
+    }
+
+    @Override
+    public Code getCodeByCodeKey(Long codeKey) {
+        return codeMapper.getCodeByCodeKey(codeKey);
+    }
+
+    @Override
+    public Integer updateCode(Code code) {
+        return codeMapper.updateCode(code);
+    }
+
+    @Override
+    public Integer deleteCode(Code code) {
+        return codeMapper.deleteCode(code);
     }
 }

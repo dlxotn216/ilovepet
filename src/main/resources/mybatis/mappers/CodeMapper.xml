@@ -25,4 +25,56 @@
         WHERE CODE_TYPE=1
     </select>
 
+    <resultMap id="CodeMap" type="Code">
+        <id property="codeKey" column="CODE_KEY" />
+        <result property="codeSeq" column="CODE_SEQ"/>
+        <result property="codeType" column="CODE_TYPE"/>
+        <result property="codeName" column="CODE_NAME"/>
+    </resultMap>
+
+    <insert id="addCode" parameterType="Code">
+        INSERT INTO CODE(CODE_SEQ, CODE_TYPE, CODE_NAME)
+        VALUES(#{codeSeq}, #{codeType}, #{codeName});
+    </insert>
+
+    <select id="getCodes" resultMap="CodeMap">
+         SELECT *
+        FROM CODE
+        <include refid="sch.pl.graduate.recommendation.common.mapper.orderBy"/>
+        <include refid="sch.pl.graduate.recommendation.common.mapper.pagingMysqlClosing"/>
+    </select>
+
+    <select id="getCodesTotalCount" resultType="Integer">
+          SELECT COUNT(*)
+        FROM CODE
+    </select>
+
+    <select id="getCodeByCodeKey" resultMap="CodeMap">
+        SELECT *
+        FROM CODE
+        WHERE CODE_KEY=#{codeKey}
+    </select>
+
+    <update id="updateCode" parameterType="Code">
+        UPDATE
+        CODE
+        <set>
+            <if test="codeType != null and !codeType.trim().equals('') ">
+                CODE_TYPE = #{codeType},
+            </if>
+            <if test="codeName != null and !codeName.trim().equals('') ">
+                CODE_NAME = #{codeName},
+            </if>
+            <if test="codeSeq != null">
+                CODE_SEQ = #{codeSeq},
+            </if>
+        </set>
+        WHERE CODE_KEY=#{codeKey}
+    </update>
+
+    <delete id="deleteCode" parameterType="Code">
+        DELETE FROM CODE
+        WHERE CODE_KEY = #{codeKey}
+    </delete>
+
 </mapper>

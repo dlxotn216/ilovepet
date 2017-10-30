@@ -39,6 +39,8 @@ public class DefaultSecurityConfig  extends WebSecurityConfigurerAdapter{
                 .antMatchers("/", "/home", "/files", "/users", "/users/**/caretakers", "/signup", "/consigner/signup", "/caretaker/signup").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/admins/generate").permitAll()
+                .antMatchers("/codes/**").hasAnyRole("ADMIN")
+                .antMatchers("/code/**").hasAnyRole("ADMIN")
                 .antMatchers("/admins/**").hasAnyRole("ADMIN")
                 .antMatchers("/consigner/**").hasAnyRole("CONSIGNER")
                 .antMatchers("/consigners/**").hasAnyRole("CONSIGNER", "ADMIN")

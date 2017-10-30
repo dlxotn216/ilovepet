@@ -24,12 +24,13 @@ public class NoticeViewController extends AbstractViewController {
     public String getNoticeView(Model model, NoticeCriteria noticeCriteria) {
         List<Notice> notices = noticeService.getNotices(noticeCriteria);
         final Integer totalCount = noticeService.getNoticesTotalCount(noticeCriteria);
-        final Integer totalPage = totalCount / noticeCriteria.getLimit();
+        Integer totalPage = totalCount / noticeCriteria.getLimit();
+        totalPage += (totalCount%noticeCriteria.getLimit()) == 0 ? 0 : 1;
         final Integer currentPage = noticeCriteria.getPage();
 
         model.addAttribute("notices", notices);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
+        model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", currentPage);
 
         return getListView(model, "notice/noticeList");

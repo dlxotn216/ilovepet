@@ -36,7 +36,8 @@ public class PetController extends AbstractController {
     public ResponseEntity getPets(PetCriteria petCriteria) {
         List<Pet> pets = petService.getPets(petCriteria);
         final Integer totalCount = petService.getPetsTotalCount(petCriteria);
-        final Integer totalPage = totalCount / petCriteria.getLimit();
+        Integer totalPage = totalCount / petCriteria.getLimit();
+        totalPage += (totalCount%petCriteria.getLimit()) == 0 ? 0 : 1;
         final Integer currentPage = petCriteria.getPage();
 
         return getSuccessResponse(pets, totalCount, totalPage, currentPage, "조회 완료하였습니다");

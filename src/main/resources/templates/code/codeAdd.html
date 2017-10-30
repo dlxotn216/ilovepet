@@ -11,15 +11,18 @@
 <div class="page-wrap">
 	<div class="container">
 		<form class="form-horizontal">
-			<h3 style="margin-bottom: 30px;">공지사항 등록</h3>
+			<h3 style="margin-bottom: 30px;">코드 등록</h3>
 			<div class="form-group">
-				<input type="text" class="form-control" id="title" name="title" placeholder="공지사항 제목" required="required" />
+				<input type="number" class="form-control" id="codeType" name="title" th:value="${0}" placeholder="코드 유형 (0: 반려동물)" disabled="disabled" />
 			</div>
 			<div class="form-group">
-				<textarea class="form-control" id="content" placeholder="공지사항 내용" maxlength="140" rows="7"></textarea>
+				<input type="number" class="form-control" id="codeSeq" placeholder="코드 순서" required="required" />
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" id="codeName" placeholder="코드 이름" required="required" />
 			</div>
 			<div class="form-group" style="margin-bottom: 30px;">
-				<button type="button" id="addNoticeButton" class="btn btn-success">등록</button>
+				<button type="button" id="addCodeButton" class="btn btn-success">등록</button>
 			</div>
 		</form>
 	</div>
@@ -30,7 +33,7 @@
 <div th:replace="common/common :: deleteModal"/>
 <div th:replace="common/common :: alertModal"/>
 
-<script th:src="@{/js/notice/noticeAdd.js}" src="/js/notice/noticeAdd.js"></script>
+<script th:src="@{/js/code/codeAdd.js}" src="/js/code/codeAdd.js"></script>
 <script type="text/javascript" src="/js/common/common.js" th:src="@{/js/common/common.js}"></script>
 </body>
 </html>

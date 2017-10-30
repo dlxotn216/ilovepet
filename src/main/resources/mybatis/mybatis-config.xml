@@ -4,6 +4,7 @@
     <typeAliases>
         <typeAlias type="java.sql.Timestamp" alias="Timestamp" />
         <typeAlias type="sch.pl.graduate.recommendation.Epidemic.model.Epidemic" alias="Epidemic"/>
+        <typeAlias type="sch.pl.graduate.recommendation.code.model.Code" alias="Code"/>
         <typeAlias type="sch.pl.graduate.recommendation.file.model.AppFile" alias="AppFile"/>
         <typeAlias type="sch.pl.graduate.recommendation.file.model.FileType" alias="FileType"/>
         <typeAlias type="sch.pl.graduate.recommendation.file.model.FileTypeHandler" alias="FileTypeHandler"/>

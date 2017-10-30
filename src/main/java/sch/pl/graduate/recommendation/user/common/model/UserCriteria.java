@@ -16,7 +16,6 @@ public class UserCriteria extends AbstractCriteria{
     private String userName;
 
     private static final Map<String, String> MAPPING_FILEDS;
-    public static final String userStatusTypePrefix="UserStatusType_";
 
 
     static {

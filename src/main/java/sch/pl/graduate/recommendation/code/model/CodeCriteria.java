@@ -19,12 +19,11 @@ import java.util.Map;
 @Data
 public class CodeCriteria extends AbstractCriteria{
     private static final Map<String, String> MAPPING_FILEDS;
-    public static final String userStatusTypePrefix="UserStatusType_";
 
 
     static {
         Map<String, String> aMap = new HashMap<>();
-
+        aMap.put("codeType", "CODE_TYPE");
         MAPPING_FILEDS = Collections.unmodifiableMap(aMap);
     }
 
