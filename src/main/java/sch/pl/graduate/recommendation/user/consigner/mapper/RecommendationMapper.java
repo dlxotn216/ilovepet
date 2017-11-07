@@ -7,6 +7,7 @@
 package sch.pl.graduate.recommendation.user.consigner.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.consigner.model.ConsignerWithCaretakerMatrix;
@@ -25,5 +26,8 @@ public interface RecommendationMapper {
 
     List<ConsignerWithCaretakerMatrix> getConsignerAndCaretakerMatrix(Long consignerKey);
 
-    List<Caretaker> getRecommendedCaretakerFromTopNExpectedScores(List<ExpectedScore> expectedScores);
+    List<Caretaker> getRecommendedCaretakerFromTopNExpectedScores(
+            @Param("currentUserKey") Long currentUserKey,
+            @Param("list") List<ExpectedScore> expectedScores,
+            @Param("top") Integer top);
 }

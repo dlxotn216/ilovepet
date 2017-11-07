@@ -9,14 +9,14 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="page-wrap">
-	<div class="container">
+	<div class="container" style="overflow: auto; width: 90%;">
 		<div class="starter-template">
 			<h3>추천 연산 결과</h3>
 		</div>
 
 		<div class="row" style="margin-top: 50px">
 			<h4>사용자 아이템 매트릭스</h4>
-			<table class="table table-striped" style="margin-top: 10px" th:if="${matrix != null and matrix.size()> 0 }">
+			<table class="table table-striped" style="font-weight: bolder; margin-top: 10px" th:if="${matrix != null and matrix.size()> 0 }">
 				<tr>
 					<th>맡기미(사용자) ＼ 돌보미(아이템)</th>
 
@@ -32,9 +32,11 @@
 					<td th:unless="${row.isCurrentUser}" th:text="${row.consignerKey}"></td>
 
 					<td th:each="col : ${row.caretakerColumns}"
+						th:classappend="${col.score == null} ? 'small-text'"
 						th:text="${col.score == null ? 'N/A' : col.score}"></td>
 
-					<td th:text="${row.avg == null ? 'N/A' : row.avg}"></td>
+					<td th:text="${row.avg == null ? 'N/A' : row.avg}"
+						th:classappend="${row.avg == null} ? 'small-text'"></td>
 					<td th:text="${row.similarity}"></td>
 				</tr>
 			</table>
@@ -58,9 +60,10 @@
 					<td th:unless="${row.isCurrentUser}" th:text="${row.consignerKey}"></td>
 
 					<td th:each="col : ${row.expectedScores}"
-						th:text="${col.score}"></td>
+						th:text="${col.score >=0 ? col.score : 'Already used'}"></td>
 
-					<td th:text="${row.avg == null ? 'N/A' : row.avg}"></td>
+					<td th:text="${row.avg == null ? 'N/A' : row.avg}"
+						th:classappend="${row.avg == null} ? 'small-text'"></td>
 					<td th:text="${row.similarity}"></td>
 				</tr>
 			</table>

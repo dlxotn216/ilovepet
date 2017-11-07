@@ -164,3 +164,8 @@ input[type=file] {
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.small-text{
+    font-size: 12px;
+    font-weight: normal;
+}

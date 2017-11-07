@@ -45,6 +45,8 @@ public class Caretaker extends User {
     private Double aggression;      //공격성
     private Double size;             //크기
 
+    private Double expectedScore;             //예상 점수
+
     //readonly
     private List<AppFile> introductionFiles;
 

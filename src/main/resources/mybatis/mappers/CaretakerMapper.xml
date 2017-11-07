@@ -22,6 +22,8 @@
         <result property="aggression" column="AGGRESSION"/>
         <result property="size" column="SIZE"/>
 
+        <result property="expectedScore" column="EXPECTED_SCORE"/>
+
         <result property="petCount" column="PET_COUNT"/>
         <result property="title" column="TITLE"/>
         <result property="summary" column="SUMMARY"/>

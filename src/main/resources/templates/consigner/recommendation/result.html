@@ -33,7 +33,8 @@
 						<div class="col-sm-12 list-content">
 							<div class="panel">
 								<div class="panel-heading">
-									<h4 th:text="${user.title}"></h4>
+									<h4 th:if="${user.expectedScore != null}" th:text="${user.title}+' (예측 점수: '+${user.expectedScore}+')'"></h4>
+									<h4 th:unless="${user.expectedScore != null}" th:text="${user.title}"></h4>
 									<div class="media">
 										<div class="media-left media-top">
 											<img th:if="${user.profileFileKey != null}" th:src="@{'/files/'+${user.profileFileKey}+'/downloads'}"

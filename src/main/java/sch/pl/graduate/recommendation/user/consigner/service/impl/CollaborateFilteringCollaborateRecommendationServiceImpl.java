@@ -7,13 +7,11 @@
 package sch.pl.graduate.recommendation.user.consigner.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import sch.pl.graduate.recommendation.common.exception.SystemException;
 import sch.pl.graduate.recommendation.common.service.AbstractService;
 import sch.pl.graduate.recommendation.user.caretaker.model.Caretaker;
 import sch.pl.graduate.recommendation.user.common.model.User;
-import sch.pl.graduate.recommendation.user.common.model.UserCriteria;
 import sch.pl.graduate.recommendation.user.consigner.mapper.RecommendationMapper;
 import sch.pl.graduate.recommendation.user.consigner.model.CaretakerColumn;
 import sch.pl.graduate.recommendation.user.consigner.model.ConsignerWithCaretakerMatrix;
@@ -23,6 +21,10 @@ import sch.pl.graduate.recommendation.user.consigner.service.CollaborateRecommen
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -104,9 +106,10 @@ public class CollaborateFilteringCollaborateRecommendationServiceImpl extends Ab
     @Override
     public List<Caretaker> recommendByPreviousLog(List<Caretaker> previousLog) {
         List<ConsignerWithCaretakerMatrix> matrices = getConsignerAndCaretakerMatrix();
-        List<ExpectedScore> expectedScores = extractTopNScore(5, matrices);
+        List<ExpectedScore> topNUsers = extractTopNCaretakerKeysByScore(matrices, 5L);
 
-        return recommendationMapper.getRecommendedCaretakerFromTopNExpectedScores(expectedScores);
+        User currentUser = getCurrentUser();
+        return recommendationMapper.getRecommendedCaretakerFromTopNExpectedScores(currentUser.getUserKey(), topNUsers, 5);
     }
 
     @Override
@@ -136,29 +139,46 @@ public class CollaborateFilteringCollaborateRecommendationServiceImpl extends Ab
         throw new SystemException("현재 사용자의 정보를 담은 ROW가 반환되지 않음");
     }
 
-    private List<ExpectedScore> extractTopNScore(Integer n, List<ConsignerWithCaretakerMatrix> matrices) {
+    private List<ExpectedScore> extractTopNCaretakerKeysByScore(List<ConsignerWithCaretakerMatrix> matrices, Long N) {
+        User currentUser = getCurrentUser();
         List<ExpectedScore> expectedScores = new ArrayList<>();
         for(ConsignerWithCaretakerMatrix matrix : matrices) {
-            expectedScores.addAll(matrix.getExpectedScores());
+            if(!currentUser.getUserKey().equals(matrix.getConsignerKey())) {
+                expectedScores.addAll(matrix.getExpectedScores());
+            }
         }
 
         expectedScores = expectedScores
                 .stream()
                 .sorted(Comparator.comparingDouble(ExpectedScore::getScore).reversed())
-                .distinct()
+                .filter(distinctByKey(ExpectedScore::getCaretakerKey))
+                .limit(N)
                 .collect(Collectors.toList());
 
-        return expectedScores.subList(0, n);
+        return expectedScores;
     }
 
+    private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor)
+    {
+        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
     @Override
     public List<ExpectedScore> getExpectedScore(ConsignerWithCaretakerMatrix currentUserRow, ConsignerWithCaretakerMatrix otherUserRow) {
         List<ExpectedScore> expectedScores = new ArrayList<>();
         List<CaretakerColumn> columns = otherUserRow.getCaretakerColumns();
+        List<CaretakerColumn> currentUserColumns = currentUserRow.getCaretakerColumns();
 
         final Double currentUserAvg = currentUserRow.getAvg();
         final Double similarity = otherUserRow.getSimilarity();      //유사도
-        for(CaretakerColumn column : columns) {
+        for(int i = 0; i < columns.size(); i++) {
+            CaretakerColumn column = columns.get(i);
+
+            if(currentUserColumns.get(i).getScore() != null) {   //이미 구매 이력이 있는 경우 제외
+                expectedScores.add(new ExpectedScore(column.getCaretakerKey(), -1D));
+                continue;
+            }
+
             Double scoreOfOtherUser = column.getScore();
             Double otherUserAvg = otherUserRow.getAvg();
 

@@ -76,7 +76,9 @@
             LEFT JOIN CARE_REVIEW B
             ON A.CARE_KEY = B.CARE_KEY
             WHERE A.CARETAKER_KEY = A.USER_KEY AND B.CARE_KEY IS NOT NULL)
-            AS REVIEW_COUNT
+            AS REVIEW_COUNT,
+            F.CARETAKER_KEY AS EXCLUDE_KEY,
+            EXPECTED.EXPECTED_SCORE AS EXPECTED_SCORE
         FROM USER A
         LEFT JOIN ROLE B
             ON A.ROLE_KEY = B.ROLE_KEY
@@ -86,13 +88,27 @@
             ON A.USER_KEY = D.USER_KEY
         LEFT JOIN (SELECT * FROM CODE WHERE CODE_TYPE=1) E
             ON A.CITY_TYPE_KEY = E.CODE_SEQ
+        LEFT JOIN (SELECT T.CARETAKER_KEY
+            FROM CARE T
+        WHERE T.CONSIGNER_KEY = #{currentUserKey}) F
+            ON C.USER_KEY = F.CARETAKER_KEY
+        INNER JOIN(
+                SELECT NULL AS USER_KEY,
+                    NULL AS EXPECTED_SCORE
+                <foreach collection="list" item="item">
+                    UNION ALL SELECT #{item.caretakerKey}, #{item.score}
+                </foreach>) AS EXPECTED
+            ON A.USER_KEY = EXPECTED.USER_KEY
         WHERE B.ROLE_NAME LIKE '%CARETAKER'
+                AND F.CARETAKER_KEY IS NULL
         AND (
         <foreach collection="list" item="item" separator="OR">
             A.USER_KEY = #{item.caretakerKey}
         </foreach>
         )
         GROUP BY A.USER_KEY
+        ORDER BY EXPECTED_SCORE DESC
+        LIMIT #{top}
     </select>
 
 
