@@ -158,34 +158,36 @@ public class CollaborateFilteringCollaborateRecommendationServiceImpl extends Ab
         return expectedScores;
     }
 
-    private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor)
-    {
+    private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
         Map<Object, Boolean> map = new ConcurrentHashMap<>();
         return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
+
     @Override
     public List<ExpectedScore> getExpectedScore(ConsignerWithCaretakerMatrix currentUserRow, ConsignerWithCaretakerMatrix otherUserRow) {
-        List<ExpectedScore> expectedScores = new ArrayList<>();
         List<CaretakerColumn> columns = otherUserRow.getCaretakerColumns();
-        List<CaretakerColumn> currentUserColumns = currentUserRow.getCaretakerColumns();
 
         final Double currentUserAvg = currentUserRow.getAvg();
         final Double similarity = otherUserRow.getSimilarity();      //유사도
+
+        if(similarityNotUseable(similarity)) {
+            return getFilledByDefaultScoreExpectedScores(columns);
+        }
+
+        List<ExpectedScore> expectedScores = new ArrayList<>();
+        List<CaretakerColumn> currentUserColumns = currentUserRow.getCaretakerColumns();
+
         for(int i = 0; i < columns.size(); i++) {
             CaretakerColumn column = columns.get(i);
+            CaretakerColumn currentUserColumn = currentUserColumns.get(i);
 
-            if(currentUserColumns.get(i).getScore() != null) {   //이미 구매 이력이 있는 경우 제외
+            if(hasAlreadyUsed(currentUserColumn)) {
                 expectedScores.add(new ExpectedScore(column.getCaretakerKey(), -1D));
                 continue;
             }
 
             Double scoreOfOtherUser = column.getScore();
             Double otherUserAvg = otherUserRow.getAvg();
-
-            if(similarity.equals(0D)) {
-                expectedScores.add(new ExpectedScore(column.getCaretakerKey(), 0D));
-                continue;
-            }
 
             if(scoreOfOtherUser != null) {
                 Double expectedScore = calcurlateExpectedScore(currentUserAvg, similarity, scoreOfOtherUser, otherUserAvg);
@@ -196,6 +198,22 @@ public class CollaborateFilteringCollaborateRecommendationServiceImpl extends Ab
         }
 
         return expectedScores;
+    }
+
+    private Boolean similarityNotUseable(Double similarity) {
+        return similarity.equals(0D);
+    }
+
+    private List<ExpectedScore> getFilledByDefaultScoreExpectedScores(List<CaretakerColumn> columns) {
+        List<ExpectedScore> expectedScores = new ArrayList<>();
+        for(CaretakerColumn column : columns) {
+            expectedScores.add(new ExpectedScore(column.getCaretakerKey(), 0D));
+        }
+        return expectedScores;
+    }
+
+    private Boolean hasAlreadyUsed(CaretakerColumn caretakerColumn) {
+        return caretakerColumn.getScore() != null;
     }
 
     private Double calcurlateExpectedScore(Double currentUserAvg, Double similarity, Double scoreOfOtherUser, Double otherUserAvg) {
